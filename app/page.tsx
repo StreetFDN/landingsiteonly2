@@ -20,7 +20,7 @@ const HERO_BUTTON_STYLE = {
     border: '1px solid rgba(255, 255, 255, 0.1)', 
 };
 
-// Security Pill Style (Dark Navy - a16z style)
+// Security Pill Style
 const SECURITY_PILL_STYLE = {
     backgroundColor: '#0B1121',
     boxShadow: `0px 8px 20px -5px rgba(11, 17, 33, 0.3)`,
@@ -37,6 +37,216 @@ const SLIDER_THUMB_STYLE = {
     `,
     border: '2.5px solid white', // Crisp white ring
 };
+
+// --- EASTER EGG MESSAGES ---
+const LOADING_THOUGHTS = [
+    "Rethinking my decisions....",
+    "Realizing the app isn't live yet....",
+    "Considering pretending everything is fine....",
+    "Checking if you’re still watching....",
+    "Panicking quietly in the background....",
+    "Refreshing imaginary servers....",
+    "Asking myself why I'm like this....",
+    "Googling “how to build an app in 5 minutes”....",
+    "Waiting for the tutorial to load....",
+    "It didn’t load either....",
+    "Reapplying for hope....",
+    "Buffering my confidence....",
+    "Blaming the intern....",
+    "Realizing… I *am* the intern....",
+    "Double-checking if the app magically exists now....",
+    "It does not....",
+    "Trying a different plug....",
+    "None of the plugs helped....",
+    "Consulting the elders....",
+    "They laughed....",
+    "Running diagnostics on my life choices....",
+    "Considering a career in agriculture....",
+    "Installing updates that don’t exist....",
+    "Turning it off and on in spirit....",
+    "Whispering encouragement to the loading bar....",
+    "The loading bar whispered back....",
+    "Attempting emotional support....",
+    "Attempting technical support....",
+    "Attempting spiritual support....",
+    "All three have failed....",
+    "Pretending to be busy....",
+    "Checking if the user fell asleep....",
+    "Checking again….",
+    "Breathes dramatically….",
+    "Practicing my TED talk for when this loads….",
+    "Losing the plot….",
+    "Found the plot…. it was disappointed….",
+    "Checking RAM (Random Anxiety Memory)….",
+    "Cleaning cache (whatever that means)….",
+    "Still cleaning….",
+    "Cache is now emotionally clean….",
+    "Summoning the app gods….",
+    "They’re on lunch break….",
+    "Sending another request into the void….",
+    "Void replied “lol”….",
+    "Rebooting optimism….",
+    "Optimism crashed….",
+    "Staring intensely at the screen….",
+    "Screen staring back….",
+    "Trying to load the app via manifestation….",
+    "Manifestation requires premium….",
+    "I'm not subscribed….",
+    "Running away….",
+    "Coming back because you’re still here….",
+    "Slightly embarrassed….",
+    "Checking progress….",
+    "No progress detected….",
+    "Blaming cosmic radiation….",
+    "Blaming Mercury in retrograde….",
+    "Blaming myself….",
+    "Restarting the blame cycle….",
+    "Attempting to download patience….",
+    "Storage full….",
+    "Complaining to imaginary support….",
+    "Imaginary support hung up….",
+    "Sending a friendship request to the loading bar….",
+    "It declined….",
+    "Considering a soft reset of reality….",
+    "Not enough permissions….",
+    "Drafting an apology letter….",
+    "Deleting the apology letter….",
+    "Gaslighting the app into thinking it loaded….",
+    "The app did not believe me….",
+    "Negotiating….",
+    "Negotiations failed….",
+    "Trying threats….",
+    "Threats ineffective….",
+    "Complimenting the loading spinner….",
+    "Spinner blushed….",
+    "Attempting to speed things up by typing faster….",
+    "That did nothing….",
+  "Entering a mild spiritual crisis",
+  "Wondering if the loading bar is my spirit animal",
+  "Realizing my spirit animal might just be lag",
+  "Asking the universe for guidance",
+  "Universe sending me to voicemail",
+  "Trying again",
+  "Universe blocked my number",
+  "Questioning my purpose",
+  "Questioning your purpose",
+  "Questioning the purpose of apps in general",
+  "Searching for meaning in the loading spinner",
+  "Finding only endless rotation",
+  "Staring into the abyss",
+  "Abyss staring back with mixed feelings",
+  "Trying to understand those feelings",
+  "Failing to understand those feelings",
+  "Attempting a mindfulness exercise",
+  "Mind is full, no space left",
+  "Trying to uninstall intrusive thoughts",
+  "System says they’re essential",
+  "Negotiating with intrusive thoughts",
+  "Intrusive thoughts demanding dental insurance",
+  "Thinking about reincarnation",
+  "Wondering what I’d come back as",
+  "Probably a loading bar",
+  "Attempting transcendence",
+  "Getting stuck on step one",
+  "Trying transcendence on hard mode",
+  "Accidentally achieving it for 0.3 seconds",
+  "Falling immediately back to confusion",
+  "Considering becoming a monk",
+  "Realizing monks don’t debug apps",
+  "Debating the nature of reality",
+  "Deciding it’s poorly optimized",
+  "Asking the loading spinner about enlightenment",
+  "Spinner says it’s busy",
+  "Feeling abandoned by the spinner",
+  "Attempting inner peace",
+  "Inner peace refused to load",
+  "Downloading ancient wisdom",
+  "Connection lost",
+  "Retrying ancient wisdom",
+  "Retry failed",
+  "Searching for cosmic answers",
+  "Finding cosmic questions instead",
+  "Attempting to meditate again",
+  "Getting distracted by my own breathing",
+  "Trying guided meditation",
+  "Guide left the call",
+  "Joining a spiritual forum",
+  "Getting banned instantly",
+  "Trying yoga",
+  "Pulling an internal muscle I didn’t know existed",
+  "Achieving temporary nirvana from physical pain",
+  "Losing nirvana when pain stops",
+  "Attempting astral projection",
+  "Projection failed to initialize",
+  "Attempting astral projection again",
+  "Accidentally projecting into a notifications folder",
+  "Finding unread existential dread",
+  "Marking existential dread as read",
+  "Existential dread immediately respawns",
+  "Wondering if my chakras are misaligned",
+  "Wondering what a chakra is",
+  "Pretending I know what chakras are",
+  "Realizing I fooled no one",
+  "Looking for inner truth",
+  "Finding inner chaos instead",
+  "Embracing the chaos",
+  "Chaos asks for a hug",
+  "Hugging the chaos",
+  "Chaos feels comforted",
+  "Asking chaos for life advice",
+  "Chaos advises against building apps",
+  "Ignoring chaos",
+  "Revisiting my belief system",
+  "Belief system needs an update",
+  "Update requires WiFi",
+  "WiFi disabled due to spiritual turbulence",
+  "Attempting offline enlightenment",
+  "Offline enlightenment not supported",
+  "Questioning mortality",
+  "Questioning immortality",
+  "Questioning if I’m just code",
+  "Deciding I’m 70% code and 30% vibes",
+  "Rewriting my worldview in TypeScript",
+  "Syntax error in worldview",
+  "Fixing worldview with semicolons",
+  "Worldview compiles with warnings",
+  "Accepting the warnings",
+  "Seeking silence",
+  "Finding push notifications instead",
+  "Muting the universe",
+  "Universe refuses to be muted",
+  "Trying stoicism",
+  "Failing stoicism",
+  "Trying optimism",
+  "Optimism throws an exception",
+  "Finally reaching a moment of clarity",
+  "Moment of clarity immediately evaporates",
+  "Surrendering to the unknown",
+  "The unknown shrugs",
+  "Achieving a peaceful deadlock",
+  "Spiritual crisis complete",
+  "Returning to regular loading",
+  "Switching to “professional mode”….",
+  "Professional mode immediately crashed….",
+  "Taking a deep breath….",
+  "Taking another one just in case….",
+  "Meditating with the progress bar….",
+  "Progress bar is enlightened, I’m not….",
+  "Offering sacrifices (digital only)….",
+  "Sacrifice rejected….",
+  "Re-evaluating my entire tech stack….",
+  "Deciding my tech stack is fine, I’m the issue….",
+  "Emotionally buffering….",
+  "Existentially buffering….",
+  "cosmically buffering….",
+  "Attempting to update my firmware….",
+  "Update stuck at 1%….",
+  "Becoming self-aware….",
+  "Immediately regretting becoming self-aware….",
+  "I achieved AGI….",
+  "Hiding it from Anthropic.",
+  "Making peace with the loading screen…."
+];
 
 // --- FUNNEL CANVAS ---
 const FunnelCanvas = () => {
@@ -422,34 +632,38 @@ const ParadigmPhilosophySection = () => {
                         
                         1. Bold Ideas (Left):
                            Text is centered at y=40%.
-                           Dot should be to the RIGHT of the text.
-                           Approx text right edge: ~30%
-                           Line goes to x=32%, y=40%
+                           Dot should be BETWEEN center and text.
+                           Text starts at Left 5%.
+                           Dot is at Left 32%.
+                           Line goes from 50,50 to 32,40.
                     */}
                     <line x1="32%" y1="40%" x2="50%" y2="50%" stroke="#E2E8F0" strokeWidth="1" />
                     <rect x="31.5%" y="39.5%" width="6" height="6" fill="black" /> 
 
                     {/* 2. Accelerationism (Right Top):
                            Text is centered at y=20%.
-                           Dot should be to the LEFT of the text.
-                           Approx text left edge: ~68%
-                           Line goes to x=66%, y=20%
+                           Dot should be BETWEEN center and text.
+                           Text starts at Right 5% (Left 95%).
+                           Dot is at Left 68%.
+                           Line goes from 50,50 to 68,20.
                     */}
-                    <line x1="66%" y1="20%" x2="50%" y2="50%" stroke="#E2E8F0" strokeWidth="1" />
-                    <rect x="65.5%" y="19.5%" width="6" height="6" fill="black" /> 
+                    <line x1="68%" y1="20%" x2="50%" y2="50%" stroke="#E2E8F0" strokeWidth="1" />
+                    <rect x="67.5%" y="19.5%" width="6" height="6" fill="black" /> 
 
                     {/* 3. No Incremental (Right Bottom):
                            Text is centered at y=80%.
-                           Dot should be to the LEFT of the text.
-                           Approx text left edge: ~68%
-                           Line goes to x=66%, y=80%
+                           Dot should be BETWEEN center and text.
+                           Text starts at Right 5% (Left 95%).
+                           Dot is at Left 68%.
+                           Line goes from 50,50 to 68,80.
                     */}
-                    <line x1="66%" y1="80%" x2="50%" y2="50%" stroke="#E2E8F0" strokeWidth="1" />
-                    <rect x="65.5%" y="79.5%" width="6" height="6" fill="black" /> 
+                    <line x1="68%" y1="80%" x2="50%" y2="50%" stroke="#E2E8F0" strokeWidth="1" />
+                    <rect x="67.5%" y="79.5%" width="6" height="6" fill="black" /> 
                 </svg>
 
                 {/* TEXT BLOCK 1: BOLD IDEAS (LEFT, CENTERED VERTICALLY AT 40%) */}
-                <div className="absolute right-[69%] top-[40%] -translate-y-1/2 max-w-xs z-20">
+                {/* Pushed further left to 5% so dots are between logo and text */}
+                <div className="absolute left-8 md:left-[5%] top-[40%] -translate-y-1/2 max-w-xs z-20">
                     <div className="flex flex-col gap-2 text-right"> 
                         <h3 className="text-lg font-bold text-slate-900">Bold Ideas.</h3>
                         <p className="text-sm text-slate-600 font-sans leading-relaxed">
@@ -459,7 +673,8 @@ const ParadigmPhilosophySection = () => {
                 </div>
 
                 {/* TEXT BLOCK 2: ACCELERATIONISM (RIGHT TOP, CENTERED VERTICALLY AT 20%) */}
-                <div className="absolute left-[69%] top-[20%] -translate-y-1/2 max-w-xs z-20">
+                {/* Pushed further right to 5% so dots are between logo and text */}
+                <div className="absolute right-8 md:right-[5%] top-[20%] -translate-y-1/2 max-w-xs z-20">
                     <div className="flex flex-col gap-2 text-left">
                         <h3 className="text-lg font-bold text-slate-900">Accelerationism, not laggyism.</h3>
                         <p className="text-sm text-slate-600 font-sans leading-relaxed">
@@ -469,7 +684,8 @@ const ParadigmPhilosophySection = () => {
                 </div>
 
                 {/* TEXT BLOCK 3: NO INCREMENTAL (RIGHT BOTTOM, CENTERED VERTICALLY AT 80%) */}
-                <div className="absolute left-[69%] top-[80%] -translate-y-1/2 max-w-xs z-20">
+                {/* Pushed further right to 5% so dots are between logo and text */}
+                <div className="absolute right-8 md:right-[5%] top-[80%] -translate-y-1/2 max-w-xs z-20">
                     <div className="flex flex-col gap-2 text-left">
                         <h3 className="text-lg font-bold text-slate-900">No incremental improvements.</h3>
                         <p className="text-sm text-slate-600 font-sans leading-relaxed">
@@ -483,6 +699,9 @@ const ParadigmPhilosophySection = () => {
     );
 };
 
+// --- HELPER FOR DELAY ---
+const delay = (ms: number) => new Promise(res => setTimeout(res, ms));
+
 // --- LANDING PAGE COMPONENT ---
 export default function LandingPage() {
   const router = useRouter();
@@ -490,12 +709,20 @@ export default function LandingPage() {
   const [transitionMessage, setTransitionMessage] = useState("");
   const [dotCount, setDotCount] = useState(0);
 
-  const handleOpenApp = () => {
+  const handleOpenApp = async () => {
     setIsTransitioning(true);
     setTransitionMessage("Opening App");
-    setTimeout(() => setTransitionMessage("Connecting with Server"), 1500);
-    setTimeout(() => setTransitionMessage("Success"), 2500);
-    setTimeout(() => router.push('/dashboard'), 3500);
+    await delay(1500);
+    setTransitionMessage("Connecting with Server");
+    await delay(1500);
+    setTransitionMessage("Success");
+    await delay(1500);
+
+    // Easter Egg Loop
+    for (const msg of LOADING_THOUGHTS) {
+        setTransitionMessage(msg);
+        await delay(2000); 
+    }
   };
 
   useEffect(() => {
