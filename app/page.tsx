@@ -788,7 +788,7 @@ export default function LandingPage() {
           
           <a href="https://accelerate.street.app" target="_blank" rel="noopener noreferrer">
               <button 
-                className="group relative flex items-center gap-2.5 px-6 py-3 rounded-full overflow-hidden transition-all duration-200 hover:scale-[1.02] active:scale-95"
+                className="group relative flex items-center gap-2.5 px-6 py-3 rounded border-[100px] overflow-hidden transition-all duration-200 hover:scale-[1.02] active:scale-95"
                 style={HERO_BUTTON_STYLE}
               > 
                   <div className="relative z-10 flex items-center justify-center w-5 h-5 rounded border-[1.5px] border-white/90 shadow-sm">
