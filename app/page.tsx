@@ -409,7 +409,7 @@ const ParadigmPhilosophySection = () => {
                         animate={{ rotate: 360 }}
                         transition={{ repeat: Infinity, duration: 20, ease: "linear" }}
                     >
-                        <img src="/Streetmono.png" alt="Street Mono" className="w-full h-full object-contain opacity-90" />
+                        <img src="/streetmono.png" alt="Street Mono" className="w-full h-full object-contain opacity-90" />
                     </motion.div>
                     
                     {/* Center Dot Connection Point */}
