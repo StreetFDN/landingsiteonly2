@@ -10,7 +10,7 @@ import PhysicsFooter from '@/components/PhysicsFooter';
 
 // Premium 3D Button (Hero Section Only)
 const HERO_BUTTON_STYLE = {
-    background: 'linear-gradient(180deg, #4A90E2 0%, #0055D4 100%)', 
+    background: 'linear-gradient(180deg, #2346d0ff 0%, #222b92ff 100%)', 
     boxShadow: `
         0px 10px 20px -5px rgba(0, 85, 212, 0.5),       
         0px 5px 10px rgba(0, 0, 0, 0.1),                
