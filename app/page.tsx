@@ -6,6 +6,38 @@ import { motion, useMotionValue, animate } from 'framer-motion';
 import { Loader2, ArrowUpRight, ArrowRight, Twitter, Globe, X, Check, Building2, TrendingUp, AlertTriangle } from 'lucide-react';
 import PhysicsFooter from '@/components/PhysicsFooter';
 
+// --- STYLES CONSTANTS ---
+
+// Premium 3D Button (Hero Section Only)
+const HERO_BUTTON_STYLE = {
+    background: 'linear-gradient(180deg, #4A90E2 0%, #0055D4 100%)', 
+    boxShadow: `
+        0px 10px 20px -5px rgba(0, 85, 212, 0.5),       
+        0px 5px 10px rgba(0, 0, 0, 0.1),                
+        inset 0px 1px 0px rgba(255, 255, 255, 0.4),     
+        inset 0px -2px 5px rgba(0, 0, 0, 0.1)           
+    `,
+    border: '1px solid rgba(255, 255, 255, 0.1)', 
+};
+
+// Security Pill Style (Dark Navy - a16z style)
+const SECURITY_PILL_STYLE = {
+    backgroundColor: '#0B1121',
+    boxShadow: `0px 8px 20px -5px rgba(11, 17, 33, 0.3)`,
+    border: '1px solid rgba(255, 255, 255, 0.1)',
+};
+
+// Clean Slider Thumb (Small & Precise)
+const SLIDER_THUMB_STYLE = {
+    background: 'linear-gradient(180deg, #4A90E2 0%, #0055D4 100%)',
+    boxShadow: `
+        0px 4px 10px rgba(0, 85, 212, 0.4),
+        0px 2px 5px rgba(0,0,0,0.1),
+        inset 0px 1px 0px rgba(255, 255, 255, 0.6)
+    `,
+    border: '2.5px solid white', // Crisp white ring
+};
+
 // --- FUNNEL CANVAS ---
 const FunnelCanvas = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -171,8 +203,8 @@ const ComparisonSection = () => {
         <section className="relative z-10 w-full bg-white px-6 pb-32">
             <div className="max-w-[1100px] mx-auto">
                 <div className="text-center mb-16 space-y-4">
-                    <h2 className="text-4xl md:text-5xl font-serif text-slate-900 tracking-tight">Liquidity without the Pivot.</h2>
-                    <p className="text-lg text-slate-500 font-medium tracking-wide font-sans max-w-2xl mx-auto">
+                    <h2 className="text-3xl md:text-5xl font-serif text-slate-900 tracking-tight">Liquidity without the Pivot.</h2>
+                    <p className="text-base text-slate-500 font-medium tracking-wide font-sans max-w-2xl mx-auto">
                         Liquidity & Speculation are a public good. You shouldn't have to become a crypto project to access it.
                     </p>
                 </div>
@@ -229,18 +261,20 @@ const ComparisonSection = () => {
     );
 };
 
-// --- EQUITY CALCULATOR SECTION (FIXED SLIDER) ---
+// --- EQUITY CALCULATOR SECTION (PERFECTLY ALIGNED & CENTERED) ---
 const EquityCalculatorSection = () => {
     const equityTiers = [
-        { val: 1, up: "people can speculate on your company, you get revenue from the access and don't lose out to synthetic derivates like RobinHood, you can design engines on user acquisition etc", down: "ceiling on how many people will be interested" },
-        { val: 3, up: "easier user acquisition engine, and higher ceiling, more access to web3 markets and easy to integrate with more liquidity and CEXs, more playing room", down: "still a ceiling on how many people will be interested" },
-        { val: 10, up: "you have full upsides of crypto at this spot, CEX listings, plug into decentralised finance, large interest in your project, high user acquisition engine", down: "lot of people interested now, high commitment" },
-        { val: 20, up: "you are pivoting to embrace crypto but not changing your companies direction, you are a web2.5 company now operating on the edge of both sides, all the upsides of prior", down: "very large commitment, street will usually not advice to commit so hard unless you gradually increase the equity to 20% when seeing value" },
-        { val: 50, up: "you are a crypto company now and people will treat you like one, too heavy commitment (Street will never advice this)", down: "people will expect you to act like a crypto company, to give them updates every day and you will be forced to pivot your communications" }
+        { val: 1, up: "People can speculate on your company. You get revenue from the access and don't lose out to synthetic derivatives like RobinHood.", down: "Ceiling on how many people will be interested." },
+        { val: 3, up: "Easier user acquisition engine and higher ceiling. More access to web3 markets and easy to integrate with CEXs.", down: "Still a ceiling on how many people will be interested." },
+        { val: 10, up: "You have full upsides of crypto at this spot: CEX listings, DeFi integration, and large interest in your project.", down: "Large commitment to this token ecosystem. You have to see substantial value in the token ecosystem to validate this." },
+        { val: 20, up: "You are pivoting to embrace crypto but not changing your company's direction. You are a web2.5 company now.", down: "Very large commitment. Street will usually not advise to commit so hard unless you see value." },
+        { val: 50, up: "You are a crypto company now and people will treat you like one. Too heavy commitment (Street will never advise this).", down: "Street never advices commitments from this extent because it scares off Venture Capital and moves too far away from traditional equity." }
     ];
     const [selectedEquity, setSelectedEquity] = useState(equityTiers[0].val);
     const yMotion = useMotionValue(0);
     const trackHeight = 300; 
+    
+    // Calculate stops based on the total height
     const stops = equityTiers.map((_, index) => (index / (equityTiers.length - 1)) * trackHeight);
 
     useEffect(() => {
@@ -253,13 +287,13 @@ const EquityCalculatorSection = () => {
         let closestIndex = 0;
         let minDiff = Infinity;
         stops.forEach((stop, index) => { const diff = Math.abs(currentY - stop); if (diff < minDiff) { minDiff = diff; closestIndex = index; } });
-        animate(yMotion, stops[closestIndex], { type: "spring", stiffness: 400, damping: 30 });
+        animate(yMotion, stops[closestIndex], { type: "spring", stiffness: 400, damping: 25 });
         setSelectedEquity(equityTiers[closestIndex].val);
     };
 
     const handleTierClick = (val: number, index: number) => {
         setSelectedEquity(val);
-        animate(yMotion, stops[index], { type: "spring", stiffness: 400, damping: 30 });
+        animate(yMotion, stops[index], { type: "spring", stiffness: 400, damping: 25 });
     };
 
     const currentTier = equityTiers.find(t => t.val === selectedEquity) || equityTiers[0];
@@ -268,41 +302,182 @@ const EquityCalculatorSection = () => {
         <section className="relative z-10 w-full bg-white px-6 pb-32">
             <div className="max-w-[1100px] mx-auto">
                 <div className="text-center mb-16 space-y-4">
-                    <h2 className="text-4xl md:text-5xl font-serif text-slate-900 tracking-tight">Scale on your terms.</h2>
-                    <p className="text-lg text-slate-500 font-medium tracking-wide font-sans">Start small and expand your float only when you see the value.</p>
+                    <h2 className="text-3xl md:text-4xl font-serif text-slate-900 tracking-tight">Scale on your terms.</h2>
+                    <p className="text-base text-slate-500 font-medium tracking-wide font-sans">Start small and expand your float only when you see the value.</p>
                 </div>
-                <div className="bg-white/60 backdrop-blur-3xl border border-white/50 shadow-2xl rounded-[2.5rem] p-8 md:p-12 flex flex-col md:flex-row gap-12 items-stretch min-h-[450px] relative overflow-hidden">
+                <div className="bg-white/60 backdrop-blur-3xl border border-white/50 shadow-2xl rounded-[2.5rem] p-8 md:p-12 flex flex-col md:flex-row gap-12 items-center justify-center min-h-[450px] relative overflow-hidden">
                     <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-r from-blue-50/50 via-purple-50/30 to-blue-50/50 blur-[120px] rounded-full pointer-events-none"></div>
-                    <div className="flex-1 flex flex-col justify-center gap-6 relative z-10">
-                        <div className="flex items-center gap-3 text-green-600 mb-2">
-                            <div className="w-8 h-8 rounded-full bg-green-50 border border-green-100 flex items-center justify-center shadow-sm"><TrendingUp size={16} strokeWidth={2.5} /></div>
-                            <span className="text-xs font-bold uppercase tracking-widest font-sans">Upside</span>
+                    
+                    {/* Left Side (Upside) */}
+                    <div className="flex-1 flex flex-col justify-center gap-6 relative z-10 h-full">
+                        <div className="flex flex-col gap-4">
+                            <div className="flex items-center gap-3 text-green-600 mb-2">
+                                <div className="w-8 h-8 rounded-full bg-green-50 border border-green-100 flex items-center justify-center shadow-sm"><TrendingUp size={16} strokeWidth={2.5} /></div>
+                                <span className="text-xs font-bold uppercase tracking-widest font-sans">Upside</span>
+                            </div>
+                            <h3 className="text-lg font-sans text-slate-700 leading-relaxed tracking-tight font-medium">
+                                {currentTier.up}
+                            </h3>
                         </div>
-                        <h3 className="text-2xl font-sans text-slate-900 leading-tight">{currentTier.up}</h3>
                     </div>
-                    <div className="w-full md:w-40 flex flex-col items-center justify-center relative z-20 py-4 select-none">
-                        <div className="relative w-2 h-[300px] bg-slate-100 rounded-full flex flex-col justify-between items-center">
-                            <motion.div className="absolute top-0 w-full bg-blue-100 rounded-full" style={{ height: yMotion }} />
-                            {equityTiers.map((tier, index) => (
-                                <div key={tier.val} className="relative w-full flex items-center justify-center">
-                                    <div className={`w-3 h-3 rounded-full z-10 transition-colors duration-300 ${selectedEquity >= tier.val ? 'bg-blue-500' : 'bg-slate-300'}`} />
-                                    <button onClick={() => handleTierClick(tier.val, index)} className={`absolute left-6 text-xs font-bold font-sans transition-colors duration-300 ${selectedEquity === tier.val ? 'text-blue-600 scale-110' : 'text-slate-400'}`}>{tier.val}%</button>
-                                </div>
-                            ))}
-                            <motion.div drag="y" dragConstraints={{ top: 0, bottom: 300 }} dragElastic={0.1} dragMomentum={false} onDragEnd={handleDragEnd} style={{ y: yMotion }} className="absolute top-0 -left-3 w-8 h-8 bg-slate-900 rounded-full shadow-xl cursor-grab active:cursor-grabbing flex items-center justify-center z-20 ring-4 ring-white">
-                                <div className="w-2 h-2 bg-white rounded-full" />
+
+                    {/* Center Slider Container */}
+                    <div className="w-24 md:w-32 flex flex-col items-center justify-center relative z-20 py-4 select-none shrink-0 h-[360px]">
+                        {/* Track (w-2 = 8px width) */}
+                        <div className="relative w-2 h-[300px] bg-slate-200/60 rounded-full">
+                            
+                            {/* Animated Blue Fill */}
+                            <motion.div 
+                                className="absolute top-0 left-0 right-0 w-full rounded-full bg-blue-500" 
+                                style={{ height: yMotion }} 
+                            />
+                            
+                            {/* Dots Container (Zero width to stay perfectly centered) */}
+                            {equityTiers.map((tier, index) => {
+                                const topPos = (index / (equityTiers.length - 1)) * 100;
+                                return (
+                                    <div 
+                                        key={tier.val} 
+                                        className="absolute left-1/2 w-0 h-0 flex items-center justify-center"
+                                        style={{ top: `${topPos}%` }} 
+                                    >
+                                        {/* Dot (Centered on the zero-width wrapper) */}
+                                        <div className={`absolute w-3 h-3 rounded-full z-10 transition-all duration-300 -translate-x-1/2 -translate-y-1/2 ${selectedEquity >= tier.val ? 'bg-blue-100 ring-2 ring-blue-500' : 'bg-slate-300 ring-4 ring-white'}`} />
+                                        
+                                        {/* Label */}
+                                        <button 
+                                            onClick={() => handleTierClick(tier.val, index)} 
+                                            className={`absolute left-6 text-xs font-bold font-sans transition-all duration-300 whitespace-nowrap -translate-y-1/2 ${selectedEquity === tier.val ? 'text-blue-600 scale-110 opacity-100 translate-x-1' : 'text-slate-400 opacity-60'}`}
+                                        >
+                                            {tier.val}%
+                                        </button>
+                                    </div>
+                                );
+                            })}
+
+                            {/* Draggable Thumb (24px size, Centered) */}
+                            <motion.div 
+                                drag="y" 
+                                dragConstraints={{ top: 0, bottom: 300 }} 
+                                dragElastic={0.05} 
+                                dragMomentum={false} 
+                                onDragEnd={handleDragEnd} 
+                                style={{ y: yMotion, top: -12, left: -8 }} 
+                                className="absolute w-6 h-6 rounded-full cursor-grab active:cursor-grabbing flex items-center justify-center z-20"
+                                whileTap={{ scale: 0.95 }}
+                            >
+                                <div className="w-full h-full rounded-full transition-transform" style={SLIDER_THUMB_STYLE}></div>
                             </motion.div>
                         </div>
                     </div>
-                    <div className="flex-1 flex flex-col justify-center gap-6 relative z-10 text-right items-end">
-                        <div className="flex items-center gap-3 text-orange-500 mb-2">
-                            <span className="text-xs font-bold uppercase tracking-widest font-sans">Downside</span>
-                            <div className="w-8 h-8 rounded-full bg-orange-50 border border-orange-100 flex items-center justify-center shadow-sm"><AlertTriangle size={16} strokeWidth={2.5} /></div>
+
+                    {/* Right Side (Downside) */}
+                    <div className="flex-1 flex flex-col justify-center gap-6 relative z-10 text-right items-end h-full">
+                         <div className="flex flex-col gap-4 items-end">
+                            <div className="flex items-center gap-3 text-orange-500 mb-2">
+                                <span className="text-xs font-bold uppercase tracking-widest font-sans">Downside</span>
+                                <div className="w-8 h-8 rounded-full bg-orange-50 border border-orange-100 flex items-center justify-center shadow-sm"><AlertTriangle size={16} strokeWidth={2.5} /></div>
+                            </div>
+                            {/* Normalized Font Size */}
+                            <h3 className="text-lg font-sans text-slate-600 leading-relaxed tracking-tight max-w-sm font-medium">
+                                {currentTier.down}
+                            </h3>
                         </div>
-                        <h3 className="text-xl font-medium text-slate-700 leading-relaxed max-w-sm font-sans">{currentTier.down}</h3>
                     </div>
                 </div>
                 <div className="mt-8 text-center"><p className="text-[10px] text-slate-400 font-medium font-sans">* Street allows to to start with 1% and gradually increase the equity if you see the benefits and worthy.</p></div>
+            </div>
+        </section>
+    );
+};
+
+// --- NEW PARADIGM-INSPIRED "PHILOSOPHY" SECTION ---
+const ParadigmPhilosophySection = () => {
+    return (
+        <section className="relative w-full py-20 bg-white overflow-hidden border-t border-gray-50">
+            {/* Header */}
+            <div className="text-center mb-8 relative z-10">
+                <h2 className="text-2xl md:text-3xl font-serif text-slate-900 tracking-tight">Our Philosophy</h2>
+            </div>
+
+            <div className="max-w-[1200px] mx-auto relative min-h-[600px] flex items-center justify-center">
+                
+                {/* CENTRAL VISUAL (ROTATING LOGO) */}
+                <div className="relative z-20 w-64 h-64 flex items-center justify-center">
+                    <motion.div 
+                        className="w-full h-full"
+                        animate={{ rotate: 360 }}
+                        transition={{ repeat: Infinity, duration: 20, ease: "linear" }}
+                    >
+                        <img src="/Streetmono.png" alt="Street Mono" className="w-full h-full object-contain opacity-90" />
+                    </motion.div>
+                    
+                    {/* Center Dot Connection Point */}
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-2 bg-black rounded-sm z-30"></div>
+                </div>
+
+                {/* CONNECTING LINES (SVG OVERLAY) - FIXED ALIGNMENT TO SQUARES NEXT TO TEXT */}
+                <svg className="absolute inset-0 w-full h-full pointer-events-none z-10 hidden md:block">
+                    {/* Center: 50% 50%
+                        
+                        1. Bold Ideas (Left):
+                           Text is centered at y=40%.
+                           Dot should be to the RIGHT of the text.
+                           Approx text right edge: ~30%
+                           Line goes to x=32%, y=40%
+                    */}
+                    <line x1="32%" y1="40%" x2="50%" y2="50%" stroke="#E2E8F0" strokeWidth="1" />
+                    <rect x="31.5%" y="39.5%" width="6" height="6" fill="black" /> 
+
+                    {/* 2. Accelerationism (Right Top):
+                           Text is centered at y=20%.
+                           Dot should be to the LEFT of the text.
+                           Approx text left edge: ~68%
+                           Line goes to x=66%, y=20%
+                    */}
+                    <line x1="66%" y1="20%" x2="50%" y2="50%" stroke="#E2E8F0" strokeWidth="1" />
+                    <rect x="65.5%" y="19.5%" width="6" height="6" fill="black" /> 
+
+                    {/* 3. No Incremental (Right Bottom):
+                           Text is centered at y=80%.
+                           Dot should be to the LEFT of the text.
+                           Approx text left edge: ~68%
+                           Line goes to x=66%, y=80%
+                    */}
+                    <line x1="66%" y1="80%" x2="50%" y2="50%" stroke="#E2E8F0" strokeWidth="1" />
+                    <rect x="65.5%" y="79.5%" width="6" height="6" fill="black" /> 
+                </svg>
+
+                {/* TEXT BLOCK 1: BOLD IDEAS (LEFT, CENTERED VERTICALLY AT 40%) */}
+                <div className="absolute right-[69%] top-[40%] -translate-y-1/2 max-w-xs z-20">
+                    <div className="flex flex-col gap-2 text-right"> 
+                        <h3 className="text-lg font-bold text-slate-900">Bold Ideas.</h3>
+                        <p className="text-sm text-slate-600 font-sans leading-relaxed">
+                            SpaceX, AirBNB, Anduril all were contrarian ideas, the more you feel like normal people can't understand your vision, the better.
+                        </p>
+                    </div>
+                </div>
+
+                {/* TEXT BLOCK 2: ACCELERATIONISM (RIGHT TOP, CENTERED VERTICALLY AT 20%) */}
+                <div className="absolute left-[69%] top-[20%] -translate-y-1/2 max-w-xs z-20">
+                    <div className="flex flex-col gap-2 text-left">
+                        <h3 className="text-lg font-bold text-slate-900">Accelerationism, not laggyism.</h3>
+                        <p className="text-sm text-slate-600 font-sans leading-relaxed">
+                            No visions that are unaligned with the direction our society is progressing. No heavy ideological reasons will find you PMF.
+                        </p>
+                    </div>
+                </div>
+
+                {/* TEXT BLOCK 3: NO INCREMENTAL (RIGHT BOTTOM, CENTERED VERTICALLY AT 80%) */}
+                <div className="absolute left-[69%] top-[80%] -translate-y-1/2 max-w-xs z-20">
+                    <div className="flex flex-col gap-2 text-left">
+                        <h3 className="text-lg font-bold text-slate-900">No incremental improvements.</h3>
+                        <p className="text-sm text-slate-600 font-sans leading-relaxed">
+                            Nobody needs a Google clone with a simple added feature or Ethereum but slightly faster. Either you have moat or you die.
+                        </p>
+                    </div>
+                </div>
+
             </div>
         </section>
     );
@@ -357,17 +532,19 @@ export default function LandingPage() {
         </div>
       )}
 
-      <nav className="fixed top-0 left-0 right-0 z-50 py-6 transition-all">
+      {/* NAVBAR: STICKY, CENTERED CONTENT */}
+      <nav className="fixed top-0 left-0 right-0 z-50 py-6 transition-all bg-transparent">
           <div className="max-w-[1100px] mx-auto px-8 flex justify-between items-center">
               <div className="flex items-center gap-3">
                   <img src="/street-logo.png" alt="Street" className="h-8 w-auto object-contain" />
               </div>
               <div className="flex items-center gap-6">
-                   <a href="https://accelerate.street.app" target="_blank">
-                      <button className="bg-white/10 backdrop-blur-md border border-white/30 text-white px-6 py-2.5 rounded-full text-xs font-bold hover:bg-white hover:text-blue-600 transition-all shadow-sm flex items-center gap-2 font-sans">
-                          Apply Now
-                      </button>
-                   </a>
+                   <button 
+                     onClick={handleOpenApp}
+                     className="bg-white/10 backdrop-blur-md border border-white/30 text-white px-6 py-2.5 rounded-full text-xs font-bold hover:bg-white hover:text-blue-600 transition-all shadow-sm flex items-center gap-2 font-sans"
+                   >
+                       Launch App
+                   </button>
               </div>
           </div>
       </nav>
@@ -382,62 +559,69 @@ export default function LandingPage() {
               Deploy equity-grade tokens without it being a security and supercharge your startups growth.
           </p>
           
-          <button 
-            onClick={handleOpenApp}
-            className="group relative flex items-center gap-2.5 px-6 py-3 rounded-xl overflow-hidden"
-            style={{
-                background: 'linear-gradient(180deg, #4689F2 0%, #1A55C9 100%)',
-                boxShadow: `
-                    0px 4px 4px rgba(0, 0, 0, 0.25), 
-                    0px 8px 16px rgba(0, 0, 0, 0.15),
-                    inset 0px 1px 2px rgba(255, 255, 255, 0.4),
-                    inset 0px -2px 4px rgba(0, 0, 0, 0.25)
-                `,
-            }}
-          > 
-              <div className="relative z-10 flex items-center justify-center w-5 h-5 rounded border-[1.5px] border-white/90 shadow-sm">
-                 <ArrowUpRight className="text-white w-3 h-3" strokeWidth={3} />
-              </div>
-              <span className="relative z-10 text-sm font-sans font-bold text-white tracking-wide drop-shadow-sm">
-                  Open App
-              </span>
-              
-              <div className="absolute inset-0 z-0 animate-shimmer pointer-events-none" style={{ background: 'linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent)', backgroundSize: '200% 100%' }}></div>
-          </button>
+          <a href="https://accelerate.street.app" target="_blank" rel="noopener noreferrer">
+              <button 
+                className="group relative flex items-center gap-2.5 px-6 py-3 rounded-full overflow-hidden transition-all duration-200 hover:scale-[1.02] active:scale-95"
+                style={HERO_BUTTON_STYLE}
+              > 
+                  <div className="relative z-10 flex items-center justify-center w-5 h-5 rounded border-[1.5px] border-white/90 shadow-sm">
+                     <ArrowUpRight className="text-white w-3 h-3" strokeWidth={3} />
+                  </div>
+                  <span className="relative z-10 text-sm font-sans font-bold text-white tracking-wide drop-shadow-sm">
+                      Apply Now
+                  </span>
+                  
+                  {/* Subtle shimmer still included for interactivity */}
+                  <div className="absolute inset-0 z-0 animate-shimmer pointer-events-none" style={{ background: 'linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent)', backgroundSize: '200% 100%' }}></div>
+              </button>
+          </a>
       </section>
 
-      <section className="relative z-10 w-full flex items-center justify-center px-6 pb-12">
-          <div className="relative w-full max-w-[1400px] h-[50vh] min-h-[450px] rounded-[2rem] overflow-hidden mx-auto bg-white border border-slate-200 shadow-2xl shadow-blue-900/10">
-              <FunnelCanvas />
-              <div className="absolute bottom-0 left-0 right-0 z-20 h-[65%] bg-gradient-to-t from-white from-10% via-white/90 to-transparent flex items-end pb-10 px-8 md:px-12 pointer-events-none">
-                  <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-8 items-end">
-                      <div className="text-left">
-                          <h1 className="text-3xl md:text-5xl font-serif font-medium tracking-tight text-slate-900 leading-[1.0] drop-shadow-sm">
-                              Standardize Equity.<br/>
-                              On-Chain Liquidity.
-                          </h1>
-                      </div>
-                      <div className="text-left md:text-right pb-1">
-                          <p className="text-[11px] md:text-xs text-slate-500 leading-relaxed font-sans max-w-[280px] ml-auto">
-                              Street transforms illiquid startup stakes into liquid, compliant digital assets. Order out of chaos.
-                          </p>
+      <section className="relative z-10 w-full flex items-center justify-center px-6 pb-24">
+          <div className="relative w-full max-w-[1400px]">
+              <div className="absolute -inset-6 bg-gradient-to-r from-blue-600 via-indigo-400 to-orange-400 opacity-30 blur-[60px] -z-10 rounded-[3rem] pointer-events-none"></div>
+              
+              <div className="relative w-full h-[50vh] min-h-[450px] rounded-[2rem] overflow-hidden mx-auto bg-white border border-slate-200 shadow-2xl shadow-blue-900/10">
+                  <FunnelCanvas />
+                  <div className="absolute bottom-0 left-0 right-0 z-20 h-[65%] bg-gradient-to-t from-white from-10% via-white/90 to-transparent flex items-end pb-10 px-8 md:px-12 pointer-events-none">
+                      <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-8 items-end">
+                          <div className="text-left">
+                              <h1 className="text-3xl md:text-5xl font-serif font-medium tracking-tight text-slate-900 leading-[1.0] drop-shadow-sm">
+                                  Standardize Equity.<br/>
+                                  On-Chain Liquidity.
+                              </h1>
+                          </div>
+                          <div className="text-left md:text-right pb-1">
+                              <p className="text-[11px] md:text-xs text-slate-500 leading-relaxed font-sans max-w-[280px] ml-auto">
+                                  Street transforms illiquid startup stakes into liquid, compliant digital assets. Order out of chaos.
+                              </p>
+                          </div>
                       </div>
                   </div>
               </div>
           </div>
       </section>
 
-      <section className="relative z-10 w-full bg-white px-6 pb-32 pt-20 overflow-hidden">
-          <div className="max-w-[1100px] mx-auto relative z-10">
-             <div className="text-center mb-20">
-                <h2 className="text-4xl md:text-6xl font-serif text-slate-900 mt-6 tracking-tight">
+      <section className="relative z-10 w-full bg-white px-6 pb-32 pt-10 overflow-hidden">
+          <div className="max-w-[1100px] mx-auto relative z-10 flex flex-col items-center">
+             <div className="text-center mb-10">
+                <h2 className="text-3xl md:text-5xl font-serif text-slate-900 mt-2 tracking-tight">
                     We invented ERC-S
                 </h2>
-                <p className="mt-4 text-lg text-slate-500 font-medium tracking-wide font-sans">
+                <p className="mt-4 text-base text-slate-500 font-medium tracking-wide font-sans">
                     Equity grade ownership without it being a security
                 </p>
              </div>
-             <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto_1fr_auto_1fr] gap-6 items-center">
+
+             {/* --- SECURITY PILL PLACED HERE --- */}
+             <div className="mb-16 relative flex items-center justify-center gap-3 px-8 py-2.5 rounded-lg shadow-lg hover:scale-[1.02] transition-all duration-300 cursor-default"
+                  style={SECURITY_PILL_STYLE}>
+                  <span className="text-white/90 font-sans text-xs font-medium tracking-wide">Street strictly follows</span>
+                  <span className="text-[16px] leading-none drop-shadow-sm filter">🇺🇸</span>
+                  <span className="text-white font-sans text-xs font-semibold tracking-wide">American Security Regulations</span>
+             </div>
+
+             <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto_1fr_auto_1fr] gap-6 items-center w-full">
                 <FeatureParticleCard 
                     variant="static"
                     title="Locked Equity"
@@ -464,6 +648,7 @@ export default function LandingPage() {
 
       <ComparisonSection />
       <EquityCalculatorSection />
+      <ParadigmPhilosophySection />
 
       <footer className="w-full border-t border-gray-100 bg-white relative z-10">
           <PhysicsFooter />
@@ -484,7 +669,7 @@ export default function LandingPage() {
                      <ul className="space-y-2 text-xs text-gray-500 font-sans">
                         <li><a href="#" className="hover:text-blue-600 transition">Governance</a></li>
                         <li><a href="#" className="hover:text-blue-600 transition">Treasury</a></li>
-                        <li><a href="#" className="hover:text-blue-600 transition">Documentation</a></li>
+                        <li><a href="https://ERC-S.com" target="_blank" className="hover:text-blue-600 transition">Documentation</a></li>
                      </ul>
                   </div>
                   <div className="space-y-4">
@@ -497,7 +682,7 @@ export default function LandingPage() {
                   </div>
               </div>
               <div className="pt-8 border-t border-gray-100 flex flex-col md:flex-row justify-between items-center gap-4">
-                  <p className="text-[10px] text-gray-400 font-sans">© 2025 Street Protocol. All rights reserved.</p>
+                  <p className="text-[10px] text-gray-400 font-sans">© 2025 Street Labs. All rights reserved.</p>
                   <div className="flex gap-6 text-gray-400">
                       <a href="https://x.com/StreetFDN" target="_blank" rel="noreferrer" className="hover:text-blue-600 transition">
                           <Twitter size={16} />
