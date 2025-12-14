@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion, useMotionValue, animate } from 'framer-motion'; 
 import { Loader2, ArrowUpRight, ArrowRight, Twitter, Globe, X, Check, Building2, TrendingUp, AlertTriangle } from 'lucide-react';
-import PhysicsFooter from '@/components/PhysicsFooter';
+import PhysicsFooter from '@/components/physicsfooter';
 
 // --- STYLES CONSTANTS ---
 
