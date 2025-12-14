@@ -6,15 +6,15 @@ import { useFrame, useThree } from "@react-three/fiber";
 import { ContactShadows } from "@react-three/drei"; 
 import * as THREE from "three";
 
-import { RoadNetwork } from "./layout/RoadNetwork";
-import { Lights } from "./effects/Lights";
-import { Weather } from "./effects/Weather"; 
-import { NatureScatter } from "./assets/Nature";
-import { PostProcessing } from "./effects/PostProcessing"; 
-import { Atmosphere } from "./effects/Atmosphere"; 
-import { EcosystemConnections } from "./assets/EcosystemConnections"; 
+import { RoadNetwork } from "./layout/roadnetwork";
+import { Lights } from "./effects/lights";
+import { Weather } from "./effects/weather"; 
+import { NatureScatter } from "./assets/nature";
+import { PostProcessing } from "./effects/postprocessing"; 
+import { Atmosphere } from "./effects/atmosphere"; 
+import { EcosystemConnections } from "./assets/ecosystemconnections"; 
 import { Startup } from "./types";
-import { CELL_SIZE } from "./assets/Roads";
+import { CELL_SIZE } from "./assets/roads";
 
 // --- DYNAMIC FOG CONTROLLER ---
 const FogController = ({ introFinished }: { introFinished: boolean }) => {
