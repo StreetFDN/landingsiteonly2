@@ -2,7 +2,7 @@
 'use client';
 
 import { X, Handshake } from "lucide-react";
-import { ConnectionData } from "../connectionsConfig";
+import { ConnectionData } from "../connectionsconfig";
 
 interface ConnectionPopupProps {
   data: ConnectionData;
