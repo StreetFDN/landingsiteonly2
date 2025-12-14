@@ -4,10 +4,10 @@
 import { useMemo, useState } from 'react';
 import { Line, Html } from '@react-three/drei'; 
 import * as THREE from 'three';
-import { startups } from '../startupsConfig';
-import { connections, ConnectionData } from '../connectionsConfig';
-import { CELL_SIZE } from './Roads';
-import { ConnectionPopup } from '../ui/ConnectionPopup';
+import { startups } from '../startupsconfig';
+import { connections, ConnectionData } from '../connectionsconfig';
+import { CELL_SIZE } from './roads';
+import { ConnectionPopup } from '../ui/connectionpopup';
 
 const getPos = (gridPos: [number, number], heightOffset: number): THREE.Vector3 => {
   const x = (gridPos[0] - 6) * CELL_SIZE;
