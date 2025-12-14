@@ -5,7 +5,7 @@ import { useGLTF } from "@react-three/drei";
 import { useMemo, useEffect, useState, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
-import { CELL_SIZE } from "./Roads";
+import { CELL_SIZE } from "./roads";
 
 // EXACT FILENAMES FROM YOUR SCREENSHOT
 const NATURE_FILES = {
