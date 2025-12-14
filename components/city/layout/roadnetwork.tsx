@@ -2,12 +2,12 @@
 'use client';
 
 import { useMemo } from "react";
-import { RoadSegment, RoadVariant, CELL_SIZE } from "../assets/Roads";
-import { startups } from "../startupsConfig";
-import { StartupBuilding } from "../StartupBuilding";
-import { Traffic } from "../assets/Traffic";
+import { RoadSegment, RoadVariant, CELL_SIZE } from "../assets/roads";
+import { startups } from "../startupsconfig";
+import { StartupBuilding } from "../startupbuilding";
+import { Traffic } from "../assets/traffic";
 import { Startup } from "../types";
-import { ApplyTile } from "../assets/ApplyTile"; 
+import { ApplyTile } from "../assets/applytile"; 
 
 type RoadConfig = {
   id: string;
