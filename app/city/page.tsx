@@ -4,10 +4,10 @@
 import { Suspense, useState } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Environment, Loader } from '@react-three/drei';
-import { FutureCity } from '@/components/city/FutureCity';
-import { DetailPanel } from '@/components/city/DetailPanel';
+import { FutureCity } from '@/components/city/futurecity';
+import { DetailPanel } from '@/components/city/detailpanel';
 import { Startup } from '@/components/city/types';
-import { CinematicIntro } from '@/components/city/CinematicIntro';
+import { CinematicIntro } from '@/components/city/cinematicintro';
 
 export default function CityPage() {
   const [selected, setSelected] = useState<Startup | null>(null);
