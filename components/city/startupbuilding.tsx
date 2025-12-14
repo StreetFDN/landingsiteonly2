@@ -6,7 +6,7 @@ import { useFrame } from '@react-three/fiber';
 import { Html } from '@react-three/drei';
 import * as THREE from 'three';
 import { Startup } from './types';
-import { BuildingModel } from './assets/Buildings';
+import { BuildingModel } from './assets/buildings';
 
 interface StartupBuildingProps {
   startup: Startup;
