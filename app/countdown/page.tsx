@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { Twitter, Globe } from 'lucide-react';
-import PhysicsFooter from '@/components/PhysicsFooter';
+import PhysicsFooter from '@/components/physicsfooter';
 
 // --- CONFIGURATION ---
 const TARGET_DATE = '2025-12-15T11:00:00Z'; // Monday 15th December 2025, 11am UTC
