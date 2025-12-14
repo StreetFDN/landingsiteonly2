@@ -5,7 +5,7 @@ import { useGLTF } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { useMemo, useRef, useState } from "react";
 import * as THREE from "three";
-import { CELL_SIZE } from "./Roads";
+import { CELL_SIZE } from "./roads";
 
 // --- VEHICLE CONFIGURATION ---
 const VEHICLES = [
