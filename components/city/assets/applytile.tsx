@@ -3,7 +3,7 @@
 
 import { useState, useEffect } from 'react';
 import { Text } from '@react-three/drei';
-import { CELL_SIZE } from './Roads';
+import { CELL_SIZE } from './roads';
 
 export const ApplyTile = ({ position }: { position: [number, number, number] }) => {
   const [hovered, setHover] = useState(false);
