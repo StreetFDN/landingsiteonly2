@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link'; // Added for navigation
 import { motion, useMotionValue, animate } from 'framer-motion'; 
 import { Loader2, ArrowUpRight, ArrowRight, Twitter, Globe, X, Check, Building2, TrendingUp, AlertTriangle } from 'lucide-react';
 import PhysicsFooter from '@/components/physicsfooter';
@@ -766,6 +767,16 @@ export default function LandingPage() {
                   <img src="/street-logo.png" alt="Street" className="h-8 w-auto object-contain" />
               </div>
               <div className="flex items-center gap-6">
+                   {/* NAV LINKS - ADDED: Scouting, Research, Network City (New) */}
+                   <div className="hidden md:flex items-center gap-8 mr-2">
+                        <Link href="/scouting" className="text-sm font-medium text-white/90 hover:text-white transition-colors font-sans">Scouting</Link>
+                        <Link href="/web3" className="text-sm font-medium text-white/90 hover:text-white transition-colors font-sans">Research</Link>
+                        <Link href="/city" className="group flex items-center gap-2 text-sm font-medium text-white/90 hover:text-white transition-colors font-sans">
+                            Network City
+                            <span className="bg-white text-blue-600 text-[10px] font-bold px-2 py-0.5 rounded-full shadow-sm">New</span>
+                        </Link>
+                   </div>
+                   
                    <button 
                      onClick={handleOpenApp}
                      className="bg-white/10 backdrop-blur-md border border-white/30 text-white px-6 py-2.5 rounded-full text-xs font-bold hover:bg-white hover:text-blue-600 transition-all shadow-sm flex items-center gap-2 font-sans"
