@@ -1,63 +1,33 @@
-// FILE: components/city/startupsConfig.ts
-import type { Startup } from "./types";
+// FILE: components/city/connectionsconfig.ts
 
-export const startups: Startup[] = [
+export interface ConnectionData {
+  id: string;
+  startupAId: string;
+  startupBId: string;
+  title: string;
+  description: string;
+}
+
+export const connections: ConnectionData[] = [
   {
-    id: "street",
-    name: "Street Labs",
-    district: "hq",
-    gridPosition: [6, 6], 
-    color: "#00b3ff", 
-    link: "https://street.app",
-    highlight: true,
-    modelKey: "building-skyscraper-a",
-    rotation: 0,
-    description: "Building the ecosystem where founders go to accelerate their radical changes in the world.",
+    id: "kled-opendroids-deal",
+    startupAId: "kled", 
+    startupBId: "opendroids",
+    title: "Strategic Partnership",
+    description: "Announcement: Kled AI and OpenDroids partner in mutual data deal to accelerate humanoid robotics learning."
   },
   {
-    id: "kled",
-    name: "Kled AI",
-    district: "data",
-    gridPosition: [5, 5], 
-    color: "#ff6b00", 
-    link: "https://kled.ai",
-    modelKey: "building-skyscraper-b",
-    rotation: Math.PI / 2,
-    description: "Data Marketplace where everyday citizens earn money for their content. Enabling a whole new job category in third world countries: The data seller.", 
+    id: "street-noice",
+    startupAId: "street",
+    startupBId: "noice",
+    title: "ERC-S Integration",
+    description: "Street announces ERC-S plug & playability to Noice for easy ERC-S integration."
   },
   {
-    id: "opendroids", 
-    name: "OpenDroids", 
-    district: "robotics",
-    gridPosition: [7, 5], 
-    color: "#8b5cff", 
-    link: "https://opendroids.com",
-    modelKey: "building-skyscraper-c", 
-    rotation: 0,
-    description: "Robotics Company out of San Francisco building at the frontier of humanoids.",
-  },
-  {
-    id: "noice", 
-    name: "Noice", 
-    district: "experimental",
-    gridPosition: [5, 7], 
-    color: "#ff0055", 
-    link: "https://noice.so",
-    modelKey: "building-skyscraper-d", 
-    rotation: Math.PI, 
-    scale: 0.7, // RESIZED: Made smaller
-    description: "Accelerator and Launchpad on Base where you can IPO from your desk. Backed by Coinbase and other cool angels.",
-  },
-  {
-    id: "starfun", // NEW: StarFun
-    name: "StarFun", 
-    district: "gaming",
-    gridPosition: [7, 7], 
-    color: "#fbbf24", // Gold/Yellow
-    link: "star.fun",
-    modelKey: "building-skyscraper-e", 
-    rotation: -Math.PI / 2, 
-    scale: 0.75, // Smaller skyscraper
-    description: "Imagine if Twitch, Kickstarter and the NASDAQ had a baby. A fundraising platform where founders raise capital in live, public token sales.",
-  },
+    id: "street-starfun",
+    startupAId: "street",
+    startupBId: "starfun",
+    title: "ERC-S Integration",
+    description: "Street announces ERC-S plug & playability to StarFun for easy ERC-S integration."
+  }
 ];
