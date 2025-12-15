@@ -33,9 +33,7 @@ const Navbar = () => (
                   </a>
               </div>
 
-              <a href="#" className="hidden md:block text-xs font-bold text-slate-500 hover:text-slate-900 transition-colors font-sans uppercase tracking-widest">
-                  Manifesto
-              </a>
+             
 
               <button 
                   className="bg-slate-900/5 backdrop-blur-md border border-slate-900/10 text-slate-900 px-6 py-2.5 rounded-full text-xs font-bold hover:bg-slate-900/10 hover:scale-105 transition-all shadow-sm flex items-center gap-2 font-sans"
