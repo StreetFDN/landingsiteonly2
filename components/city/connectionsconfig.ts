@@ -4,15 +4,15 @@ import type { Startup } from "./types";
 export const startups: Startup[] = [
   {
     id: "street",
-    name: "Street Labs HQ",
+    name: "Street Labs",
     district: "hq",
     gridPosition: [6, 6], 
     color: "#00b3ff", 
-    link: "https://streetlabs.xyz",
+    link: "https://street.app",
     highlight: true,
     modelKey: "building-skyscraper-a",
     rotation: 0,
-    description: "The core infrastructure layer for the Street Network. We provide the legal-technical bridge allowing on-chain entities to own off-chain equity compliantly.",
+    description: "Building the ecosystem where founders go to accelerate their radical changes in the world.",
   },
   {
     id: "kled",
@@ -23,7 +23,7 @@ export const startups: Startup[] = [
     link: "https://kled.ai",
     modelKey: "building-skyscraper-b",
     rotation: Math.PI / 2,
-    description: "Decentralized AI inference network optimizing for low-latency visual processing. Kled utilizes Street to tokenize GPU fleet ownership.", 
+    description: "Data Marketplace where everyday citizens earn money for their content. Enabling a whole new job category in third world countries: The data seller.", 
   },
   {
     id: "opendroids", 
@@ -31,10 +31,10 @@ export const startups: Startup[] = [
     district: "robotics",
     gridPosition: [7, 5], 
     color: "#8b5cff", 
-    link: "https://example.com/robotics",
+    link: "https://opendroids.com",
     modelKey: "building-skyscraper-c", 
     rotation: 0,
-    description: "Open source humanoid hardware platform. Token holders govern the manufacturing pipelines and IP licensing revenue.",
+    description: "Robotics Company out of San Francisco building at the frontier of humanoids.",
   },
   {
     id: "noice", 
@@ -42,11 +42,11 @@ export const startups: Startup[] = [
     district: "experimental",
     gridPosition: [5, 7], 
     color: "#ff0055", 
-    link: "https://example.com/node",
+    link: "https://noice.so",
     modelKey: "building-skyscraper-d", 
     rotation: Math.PI, 
     scale: 0.7, // RESIZED: Made smaller
-    description: "Next-gen noise cancellation and audio augmented reality. Validating the sonic world through cryptographic proof-of-location sensors.",
+    description: "Accelerator and Launchpad on Base where you can IPO from your desk. Backed by Coinbase and other cool angels.",
   },
   {
     id: "starfun", // NEW: StarFun
@@ -54,10 +54,10 @@ export const startups: Startup[] = [
     district: "gaming",
     gridPosition: [7, 7], 
     color: "#fbbf24", // Gold/Yellow
-    link: "https://example.com/starfun",
+    link: "star.fun",
     modelKey: "building-skyscraper-e", 
     rotation: -Math.PI / 2, 
     scale: 0.75, // Smaller skyscraper
-    description: "The leading on-chain arcade and entertainment protocol. Using Street to seamlessly license IP and handle fiat payouts for tournament winners.",
+    description: "Imagine if Twitch, Kickstarter and the NASDAQ had a baby. A fundraising platform where founders raise capital in live, public token sales.",
   },
 ];
