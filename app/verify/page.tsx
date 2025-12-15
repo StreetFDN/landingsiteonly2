@@ -4,7 +4,7 @@
 import { useState } from 'react';
 import { Search, ShieldCheck, AlertTriangle, CheckCircle2, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import PhysicsFooter from '@/components/PhysicsFooter';
+import PhysicsFooter from '@/components/physicsfooter';
 
 // --- VERIFIED DATA ---
 const VERIFIED_SOURCES = [
