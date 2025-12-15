@@ -4,7 +4,7 @@
 import { Suspense, useState, useEffect } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Environment, Loader } from '@react-three/drei';
-import { Loader2 } from 'lucide-react'; // Added Loader2
+import { Loader2 } from 'lucide-react';
 import { FutureCity } from '@/components/city/futurecity';
 import { DetailPanel } from '@/components/city/detailpanel';
 import { Startup } from '@/components/city/types';
@@ -223,7 +223,6 @@ const LOADING_THOUGHTS = [
 const delay = (ms: number) => new Promise(res => setTimeout(res, ms));
 
 // --- NAVBAR COMPONENT ---
-// Updated to accept onLaunch prop
 const Navbar = ({ onLaunch }: { onLaunch: () => void }) => (
   <nav className="fixed top-0 left-0 right-0 z-50 py-6 transition-all bg-transparent pointer-events-none">
       <div className="max-w-[1100px] mx-auto px-8 flex justify-between items-center pointer-events-auto">
@@ -247,9 +246,7 @@ const Navbar = ({ onLaunch }: { onLaunch: () => void }) => (
                   </a>
               </div>
 
-              <a href="#" className="hidden md:block text-xs font-bold text-slate-500 hover:text-slate-900 transition-colors font-sans uppercase tracking-widest">
-                  Manifesto
-              </a>
+            
 
               <button 
                   onClick={onLaunch}
@@ -302,9 +299,9 @@ export default function CityPage() {
   return (
     <div className="w-screen h-screen bg-[#f2f4f7] relative overflow-hidden">
       
-      {/* 1. LOADING OVERLAY (Copied from Landing Page) */}
+      {/* 1. LOADING OVERLAY - CHANGED Z-INDEX TO 2000 TO BEAT THE 3D LABELS */}
       {isTransitioning && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/20 backdrop-blur-sm animate-in fade-in duration-300">
+        <div className="fixed inset-0 z-[2000] flex items-center justify-center bg-black/20 backdrop-blur-sm animate-in fade-in duration-300">
             <div className="bg-white/80 backdrop-blur-2xl border border-white/40 shadow-2xl rounded-3xl p-10 flex flex-col items-center gap-6 max-w-sm w-full mx-4 transform transition-all scale-100">
                 <div className="relative">
                     <div className="absolute inset-0 bg-blue-400/30 blur-xl rounded-full"></div>
