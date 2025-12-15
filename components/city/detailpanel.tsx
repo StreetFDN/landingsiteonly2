@@ -6,9 +6,9 @@ import { ArrowRight, X, ExternalLink } from "lucide-react";
 
 // 1. UPDATED MAPPING: All extensions changed to .jpg
 const LOGO_MAP: Record<string, string> = {
-  "street": "/street-logo.jpg",      
-  "kled": "/kled-logo.jpg",          
-  "starfun": "/starlogo.jpg",        
+  "street": "/streetlogo.jpg",      
+  "kled": "/kledlogo.jpg",          
+  "starfun": "/starlogo.png",        
   "noice": "/noicelogo.jpg",         
   "opendroids": "/opendroidslogo.jpg" 
 };
