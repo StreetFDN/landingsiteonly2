@@ -82,14 +82,16 @@ export const EcosystemConnections = ({ visible = true }: { visible?: boolean }) 
       {selected && (
           <Html 
               position={selected.position} 
-              center 
+              center={false}
               distanceFactor={12} 
               zIndexRange={[1000, 0]}
           >
-              <ConnectionPopup 
-                  data={selected.data} 
-                  onClose={() => setSelected(null)} 
-              />
+              <div style={{ transform: 'translate(-50%, calc(-100% - 6px))' }}>
+                <ConnectionPopup 
+                    data={selected.data} 
+                    onClose={() => setSelected(null)} 
+                />
+              </div>
           </Html>
       )}
     </group>

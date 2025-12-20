@@ -11,9 +11,8 @@ interface ConnectionPopupProps {
 
 export const ConnectionPopup = ({ data, onClose }: ConnectionPopupProps) => {
   return (
-    // Removed fixed positioning. Added a negative margin bottom to sit above the target point.
-    // Added 'group' for hover effects if needed later.
-    <div className="relative group mb-4 animate-in fade-in zoom-in-95 duration-300">
+    // Positioned so arrow tip aligns with curve peak
+    <div className="relative group animate-in fade-in zoom-in-95 duration-300" style={{ marginBottom: 0, paddingBottom: '6px' }}>
        
        {/* GLASS CONTAINER - Tiny sized (w-52), tight padding (p-2.5) */}
        <div className="relative w-52 overflow-hidden rounded-xl border border-white/60 shadow-[0_8px_16px_-4px_rgba(0,0,0,0.1)] ring-1 ring-white/50 p-2.5 backdrop-blur-xl backdrop-saturate-150 bg-gradient-to-b from-white/70 to-white/40">
