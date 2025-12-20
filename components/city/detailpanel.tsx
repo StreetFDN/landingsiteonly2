@@ -30,7 +30,7 @@ export const DetailPanel = ({ startup, onClose }: DetailPanelProps) => {
   const isLive = !isPartner && !isUpcoming; 
 
   return (
-    <div className="absolute right-0 top-0 h-full w-1/3 min-w-[350px] bg-white/80 backdrop-blur-xl border-l border-white/60 shadow-2xl p-8 md:p-12 flex flex-col justify-center z-50 animate-in slide-in-from-right duration-500">
+    <div className="absolute right-0 top-0 h-full w-1/3 min-w-[350px] bg-white/80 backdrop-blur-xl border-l border-white/60 shadow-2xl p-8 md:p-12 flex flex-col justify-center z-[1500] animate-in slide-in-from-right duration-500">
       
       <button onClick={onClose} className="absolute top-8 right-8 text-slate-400 hover:text-slate-800 transition-colors bg-white/50 p-2 rounded-full">
           <X size={24} />
