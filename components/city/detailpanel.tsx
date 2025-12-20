@@ -24,10 +24,10 @@ export const DetailPanel = ({ startup, onClose }: DetailPanelProps) => {
   // --- LOGIC: DETERMINE STATUS ---
   // StarFun & Noice = Partners (Not ERC-S)
   const isPartner = ['starfun', 'noice'].includes(startup.id);
-  // Kled & OpenDroids = Upcoming (Governance not live)
-  const isUpcoming = ['kled', 'opendroids'].includes(startup.id);
-  // Street = Live
-  const isLive = !isPartner && !isUpcoming; 
+  // Kled, OpenDroids & Street = Upcoming (Governance not live)
+  const isUpcoming = ['kled', 'opendroids', 'street'].includes(startup.id);
+  // No live projects currently
+  const isLive = false; 
 
   return (
     <div className="fixed right-0 top-0 h-full w-1/3 min-w-[350px] bg-white/80 backdrop-blur-xl border-l border-white/60 shadow-2xl p-8 md:p-12 flex flex-col justify-center z-[9999] animate-in slide-in-from-right duration-500" style={{ position: 'fixed', zIndex: 9999 }}>
