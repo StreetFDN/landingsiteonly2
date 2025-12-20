@@ -66,7 +66,7 @@ export const StartupBuilding = ({ startup, position, onSelect, visible = true }:
             position={[0, (startup.scale || 1) * 3 + 1, 0]} 
             center 
             distanceFactor={15}
-            zIndexRange={[1000, 0]}
+            zIndexRange={[500, 0]}
         >
             <div className={`
             px-3 py-1.5 rounded-full backdrop-blur-md border border-white/40 shadow-lg
