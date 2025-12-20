@@ -1,6 +1,7 @@
 // FILE: components/city/detailpanel.tsx
 'use client';
 
+import { useEffect, useRef } from 'react';
 import { Startup } from "./types";
 import { ArrowRight, X, ExternalLink, ShieldAlert, Clock } from "lucide-react";
 
@@ -20,6 +21,7 @@ interface DetailPanelProps {
 
 export const DetailPanel = ({ startup, onClose }: DetailPanelProps) => {
   const logoPath = LOGO_MAP[startup.id];
+  const panelRef = useRef<HTMLDivElement>(null);
 
   // --- LOGIC: DETERMINE STATUS ---
   // StarFun & Noice = Partners (Not ERC-S)
@@ -29,8 +31,35 @@ export const DetailPanel = ({ startup, onClose }: DetailPanelProps) => {
   // No live projects currently
   const isLive = false; 
 
+  // Handle click outside to close
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (panelRef.current && !panelRef.current.contains(event.target as Node)) {
+        onClose();
+      }
+    };
+
+    // Add event listener
+    document.addEventListener('mousedown', handleClickOutside);
+    
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [onClose]);
+
   return (
-    <div className="fixed right-0 top-0 h-full w-1/3 min-w-[350px] bg-white/80 backdrop-blur-xl border-l border-white/60 shadow-2xl p-8 md:p-12 flex flex-col justify-center z-[9999] animate-in slide-in-from-right duration-500" style={{ position: 'fixed', zIndex: 9999 }}>
+    <>
+      {/* Backdrop overlay */}
+      <div 
+        className="fixed inset-0 bg-black/10 z-[9998]" 
+        onClick={onClose}
+      />
+      <div 
+        ref={panelRef}
+        className="fixed right-0 top-0 h-full w-1/3 min-w-[350px] bg-white/80 backdrop-blur-xl border-l border-white/60 shadow-2xl p-8 md:p-12 flex flex-col justify-center z-[9999] animate-in slide-in-from-right duration-500" 
+        style={{ position: 'fixed', zIndex: 9999 }}
+        onClick={(e) => e.stopPropagation()}
+      >
       
       <button onClick={onClose} className="absolute top-8 right-8 text-slate-400 hover:text-slate-800 transition-colors bg-white/50 p-2 rounded-full z-[10000]">
           <X size={24} />
@@ -124,5 +153,6 @@ export const DetailPanel = ({ startup, onClose }: DetailPanelProps) => {
           </div>
       </div>
     </div>
+    </>
   );
 };
