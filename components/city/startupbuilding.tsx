@@ -15,6 +15,19 @@ interface StartupBuildingProps {
   visible?: boolean; // NEW PROP
 }
 
+// Building height offsets - adjustments per building model to align name tags with roof
+// OpenDroids (building-skyscraper-c) uses formula: (scale || 1) * 3 + 1 = 4.0 ✓
+// This offset is added to the base formula to account for different building model heights
+// Negative values lower the name tag, positive values raise it
+// Goal: Name tags should hover slightly above the roof
+const BUILDING_HEIGHT_OFFSETS: Record<string, number> = {
+  "building-skyscraper-a": -0.8, // Street Labs - perfect ✓
+  "building-skyscraper-b": 0.8, // Kled AI - raise slightly to hover above roof
+  "building-skyscraper-c": 0, // OpenDroids - reference building, offset is 0
+  "building-skyscraper-d": 0.9, // Noice - raise slightly to hover above roof
+  "building-skyscraper-e": 0.15, // StarFun - raise slightly to hover above roof
+};
+
 export const StartupBuilding = ({ startup, position, onSelect, visible = true }: StartupBuildingProps) => {
   const [hovered, setHover] = useState(false);
   const groupRef = useRef<THREE.Group>(null);
@@ -26,6 +39,13 @@ export const StartupBuilding = ({ startup, position, onSelect, visible = true }:
       groupRef.current.scale.setScalar(s);
     }
   });
+
+  // Calculate name tag position using OpenDroids' working formula
+  // Base formula: (scale || 1) * 3 + 1
+  // Add building-specific offset to account for different model heights
+  const basePosition = (startup.scale || 1) * 3 + 1;
+  const heightOffset = BUILDING_HEIGHT_OFFSETS[startup.modelKey] || 0;
+  const nameTagY = basePosition + heightOffset;
 
   return (
     <group 
@@ -63,7 +83,7 @@ export const StartupBuilding = ({ startup, position, onSelect, visible = true }:
       {/* ONLY RENDER LABEL IF VISIBLE */}
       {visible && (
         <Html 
-            position={[0, (startup.scale || 1) * 3 + 1, 0]} 
+            position={[0, nameTagY, 0]} 
             center 
             distanceFactor={15}
             zIndexRange={[500, 0]}
