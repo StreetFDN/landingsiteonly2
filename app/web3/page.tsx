@@ -6,7 +6,7 @@ import { Twitter, Globe } from 'lucide-react';
 import PhysicsFooter from '@/components/physicsfooter';
 
 // --- CONFIGURATION ---
-const TARGET_DATE = '2025-12-22T15:00:00Z'; // 22nd December 2025, 3pm UTC
+const TARGET_DATE = '2025-12-23T15:00:00Z'; // 23nd December 2025, 3pm UTC
 
 // --- DOT MATRIX LOGIC ---
 const DIGIT_PATTERNS: Record<string, number[]> = {
