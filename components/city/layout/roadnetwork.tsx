@@ -46,7 +46,7 @@ const ROAD_SEGMENTS: RoadConfig[] = [
 interface RoadNetworkProps {
   onBuildingSelect: (s: Startup) => void;
   labelsVisible?: boolean; // NEW PROP
-  groundMaterialRef?: React.RefObject<THREE.MeshStandardMaterial | THREE.ShaderMaterial>;
+  groundMaterialRef?: React.RefObject<THREE.MeshStandardMaterial | THREE.ShaderMaterial | null>;
   timeOfDay?: number; // 0 = day, 1 = night
   isNight?: boolean; // NEW: Night mode prop
 }
@@ -90,7 +90,7 @@ export const RoadNetwork = ({ onBuildingSelect, labelsVisible = true, groundMate
       <mesh position={[0, -0.1, 0]} rotation={[-Math.PI / 2, 0, 0]}>
         <circleGeometry args={[22, 128]} />
         <GroundFadeMaterial 
-          ref={groundMaterialRef}
+          ref={groundMaterialRef as React.RefObject<THREE.ShaderMaterial | null>}
           fadeRadius={22}
           timeOfDay={timeOfDay}
         />

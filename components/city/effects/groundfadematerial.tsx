@@ -8,7 +8,7 @@ interface GroundFadeMaterialProps {
   timeOfDay?: number; // 0 = day, 1 = night
 }
 
-export const GroundFadeMaterial = forwardRef<THREE.ShaderMaterial, GroundFadeMaterialProps>(
+export const GroundFadeMaterial = forwardRef<THREE.ShaderMaterial | null, GroundFadeMaterialProps>(
   ({ fadeRadius = 22, timeOfDay = 0 }, ref) => {
     const material = useMemo(() => {
       const shaderMaterial = new THREE.ShaderMaterial({

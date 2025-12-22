@@ -6,9 +6,9 @@ import { useFrame } from '@react-three/fiber';
 import { Color, DirectionalLight } from 'three';
 
 export interface LightsHandle {
-  directionalRef: React.RefObject<DirectionalLight>;
-  moonRef: React.RefObject<DirectionalLight>;
-  sunLightRef: React.RefObject<DirectionalLight>;
+  directionalRef: React.RefObject<DirectionalLight | null>;
+  moonRef: React.RefObject<DirectionalLight | null>;
+  sunLightRef: React.RefObject<DirectionalLight | null>;
 }
 
 export const Lights = forwardRef<LightsHandle>((props, ref) => {
@@ -65,9 +65,7 @@ export const Lights = forwardRef<LightsHandle>((props, ref) => {
       <ambientLight intensity={0.5} color={new Color("#ffffff")} />
       
       <hemisphereLight 
-        skyColor={new Color("#ffffff")} 
-        groundColor={new Color("#444444")} 
-        intensity={0.5}
+        args={[new Color("#ffffff"), new Color("#444444"), 0.5]}
       />
 
       <directionalLight 

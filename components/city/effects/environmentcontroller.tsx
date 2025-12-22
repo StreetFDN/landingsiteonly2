@@ -8,10 +8,10 @@ export type TimeMode = 'day' | 'night';
 
 interface EnvironmentControllerProps {
   mode: TimeMode;
-  groundMaterialRef?: React.RefObject<THREE.MeshStandardMaterial | THREE.ShaderMaterial>;
-  directionalLightRef?: React.RefObject<THREE.DirectionalLight>;
-  moonLightRef?: React.RefObject<THREE.DirectionalLight>;
-  sunLightRef?: React.RefObject<THREE.DirectionalLight>;
+  groundMaterialRef?: React.RefObject<THREE.MeshStandardMaterial | THREE.ShaderMaterial | null>;
+  directionalLightRef?: React.RefObject<THREE.DirectionalLight | null>;
+  moonLightRef?: React.RefObject<THREE.DirectionalLight | null>;
+  sunLightRef?: React.RefObject<THREE.DirectionalLight | null>;
 }
 
 export const EnvironmentController = ({
