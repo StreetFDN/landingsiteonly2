@@ -26,7 +26,7 @@ export function modifyTextureRegions(
   }>
 ): THREE.Texture {
   // Clone the original texture's image
-  const img = originalTexture.image;
+  const img = originalTexture.image as HTMLImageElement;
   const canvas = document.createElement('canvas');
   const ctx = canvas.getContext('2d')!;
   
@@ -149,7 +149,7 @@ export function modifyTextureByColor(
   tolerance: number,
   modifier: (r: number, g: number, b: number, a: number) => [number, number, number, number]
 ): THREE.Texture {
-  const img = originalTexture.image;
+  const img = originalTexture.image as HTMLImageElement;
   const canvas = document.createElement('canvas');
   const ctx = canvas.getContext('2d')!;
   
