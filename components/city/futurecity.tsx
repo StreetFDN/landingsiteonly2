@@ -1,18 +1,20 @@
 // FILE: components/city/FutureCity.tsx
 'use client';
 
-import { useEffect, Suspense, useRef } from "react";
+import { Suspense, useRef, useEffect } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import { ContactShadows } from "@react-three/drei"; 
 import * as THREE from "three";
 
 import { RoadNetwork } from "./layout/roadnetwork";
-import { Lights } from "./effects/lights";
+import { Lights, LightsHandle } from "./effects/lights";
 import { Weather } from "./effects/weather"; 
 import { NatureScatter } from "./assets/nature";
 import { PostProcessing } from "./effects/postprocessing"; 
 import { Atmosphere } from "./effects/atmosphere"; 
 import { EcosystemConnections } from "./assets/ecosystemconnections"; 
+import { EnvironmentController, NightGlowLights, TimeMode } from "./effects/environmentcontroller";
+import { GroundMaterialInjector } from "./effects/groundmaterialinjector";
 import { Startup } from "./types";
 import { CELL_SIZE } from "./assets/roads";
 
@@ -63,24 +65,47 @@ const CameraController = ({ selectedStartup }: { selectedStartup: Startup | null
 interface FutureCityProps {
   selected: Startup | null;
   onSelect: (s: Startup | null) => void;
-  introFinished?: boolean; 
+  introFinished?: boolean;
+  timeMode?: TimeMode;
 }
 
-export const FutureCity = ({ selected, onSelect, introFinished = true }: FutureCityProps) => {
+export const FutureCity = ({ selected, onSelect, introFinished = true, timeMode = 'day' }: FutureCityProps) => {
+  const lightsRef = useRef<LightsHandle>(null);
+  const groundMaterialRef = useRef<THREE.ShaderMaterial>(null);
+  
+  // Calculate timeOfDay based on mode: 0 = day, 1 = night
+  const timeOfDay = timeMode === 'night' ? 1 : 0;
+  const isNight = timeMode === 'night';
+  
   return (
     <group>
         <FogController introFinished={introFinished} />
         
-        <Lights />
+        <Lights ref={lightsRef} />
+        <EnvironmentController 
+          mode={timeMode}
+          groundMaterialRef={groundMaterialRef}
+          directionalLightRef={lightsRef.current?.directionalRef}
+          moonLightRef={lightsRef.current?.moonRef}
+          sunLightRef={lightsRef.current?.sunLightRef}
+        />
+        <GroundMaterialInjector timeOfDay={timeOfDay} debug={false} />
+        <NightGlowLights isNight={isNight} />
         <Weather />
         <Atmosphere />
-        <PostProcessing />
+        <PostProcessing isNight={isNight} />
 
         {/* Pass visibility prop down */}
-        <RoadNetwork onBuildingSelect={onSelect} labelsVisible={introFinished} />
+        <RoadNetwork 
+          onBuildingSelect={onSelect} 
+          labelsVisible={introFinished}
+          groundMaterialRef={groundMaterialRef}
+          timeOfDay={timeOfDay}
+          isNight={isNight}
+        />
         
         {/* Only render lines if intro is finished */}
-        <EcosystemConnections visible={introFinished} />
+        <EcosystemConnections visible={introFinished} isNight={isNight} />
 
         <Suspense fallback={null}>
           <NatureScatter />

@@ -1,13 +1,15 @@
 // FILE: components/city/layout/RoadNetwork.tsx
 'use client';
 
-import { useMemo } from "react";
+import { useMemo, useRef } from "react";
 import { RoadSegment, RoadVariant, CELL_SIZE } from "../assets/roads";
 import { startups } from "../startupsconfig";
 import { StartupBuilding } from "../startupbuilding";
 import { Traffic } from "../assets/traffic";
 import { Startup } from "../types";
-import { ApplyTile } from "../assets/applytile"; 
+import { ApplyTile } from "../assets/applytile";
+import { GroundFadeMaterial } from "../effects/groundfadematerial";
+import * as THREE from "three"; 
 
 type RoadConfig = {
   id: string;
@@ -44,9 +46,12 @@ const ROAD_SEGMENTS: RoadConfig[] = [
 interface RoadNetworkProps {
   onBuildingSelect: (s: Startup) => void;
   labelsVisible?: boolean; // NEW PROP
+  groundMaterialRef?: React.RefObject<THREE.MeshStandardMaterial | THREE.ShaderMaterial>;
+  timeOfDay?: number; // 0 = day, 1 = night
+  isNight?: boolean; // NEW: Night mode prop
 }
 
-export const RoadNetwork = ({ onBuildingSelect, labelsVisible = true }: RoadNetworkProps) => {
+export const RoadNetwork = ({ onBuildingSelect, labelsVisible = true, groundMaterialRef, timeOfDay = 0, isNight = false }: RoadNetworkProps) => {
   const buildings = useMemo(() => {
     return startups.map(s => {
       const x = (s.gridPosition[0] - 6) * CELL_SIZE;
@@ -58,10 +63,11 @@ export const RoadNetwork = ({ onBuildingSelect, labelsVisible = true }: RoadNetw
             position={[x, 0, z]} 
             onSelect={onBuildingSelect}
             visible={labelsVisible} // PASS DOWN
+            isNight={isNight} // PASS DOWN
         />
       );
     });
-  }, [onBuildingSelect, labelsVisible]);
+  }, [onBuildingSelect, labelsVisible, isNight]);
 
   return (
     <group>
@@ -80,14 +86,21 @@ export const RoadNetwork = ({ onBuildingSelect, labelsVisible = true }: RoadNetw
 
       <ApplyTile position={[0, 0, 3 * CELL_SIZE]} />
 
-      <mesh position={[0, -0.1, 0]} receiveShadow rotation={[-Math.PI / 2, 0, 0]}>
-        <circleGeometry args={[22, 64]} />
-        <meshStandardMaterial color="#c8e6c9" roughness={1} /> 
+      {/* Single ground mesh with smart shader material */}
+      <mesh position={[0, -0.1, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+        <circleGeometry args={[22, 128]} />
+        <GroundFadeMaterial 
+          ref={groundMaterialRef}
+          fadeRadius={22}
+          timeOfDay={timeOfDay}
+        />
       </mesh>
-      
-      <mesh position={[0, -0.15, 0]} rotation={[-Math.PI / 2, 0, 0]}>
-        <ringGeometry args={[21.5, 22, 64]} />
-        <meshBasicMaterial color="#ffffff" transparent opacity={0.9} />
+
+      {/* Transparent shadow-receiving plane above ground for shadows on grass/snow */}
+      {/* This allows shadows to appear without modifying the ground material */}
+      <mesh position={[0, -0.09, 0]} receiveShadow rotation={[-Math.PI / 2, 0, 0]}>
+        <circleGeometry args={[22, 128]} />
+        <shadowMaterial opacity={0.4} transparent />
       </mesh>
     </group>
   );

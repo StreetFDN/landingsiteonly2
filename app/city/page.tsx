@@ -1,12 +1,15 @@
 // FILE: app/city/page.tsx
 'use client';
 
-import { Suspense, useState, useEffect } from 'react';
-import { Canvas } from '@react-three/fiber';
-import { OrbitControls, Environment, Loader } from '@react-three/drei';
+import { Suspense, useState, useEffect, useRef } from 'react';
+import { Canvas, useThree } from '@react-three/fiber';
+import { OrbitControls, Loader } from '@react-three/drei';
 import { Loader2 } from 'lucide-react';
+import * as THREE from 'three';
 import { FutureCity } from '@/components/city/futurecity';
 import { DetailPanel } from '@/components/city/detailpanel';
+import { EnvironmentControls } from '@/components/city/ui/environmentcontrols';
+import { TimeMode } from '@/components/city/effects/environmentcontroller';
 import { Startup } from '@/components/city/types';
 
 // --- CONFIGURATION ---
@@ -222,14 +225,84 @@ const LOADING_THOUGHTS = [
 // Helper
 const delay = (ms: number) => new Promise(res => setTimeout(res, ms));
 
+// Camera Reset Component (inside Canvas)
+const CameraReset = ({ resetTrigger, onResetComplete }: { resetTrigger: number; onResetComplete: () => void }) => {
+  const { camera, controls } = useThree();
+  const prevTriggerRef = useRef(0);
+  const animationFrameRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    if (resetTrigger !== prevTriggerRef.current && resetTrigger > 0) {
+      prevTriggerRef.current = resetTrigger;
+      
+      // Cancel any existing animation
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current);
+      }
+      
+      // Initial camera position and target (20% zoomed in from [25, 25, 25])
+      const initialPosition = new THREE.Vector3(20, 20, 20);
+      const initialTarget = new THREE.Vector3(0, 0, 0);
+      
+      // Smoothly animate camera back
+      const startPosition = camera.position.clone();
+      const startTarget = (controls as any)?.target?.clone() || new THREE.Vector3(0, 0, 0);
+      const duration = 1000; // 1 second
+      const startTime = Date.now();
+      
+      const animate = () => {
+        const elapsed = Date.now() - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        
+        // Easing function for smooth animation
+        const easeInOutCubic = (t: number) => t < 0.5 
+          ? 4 * t * t * t 
+          : 1 - Math.pow(-2 * t + 2, 3) / 2;
+        
+        const eased = easeInOutCubic(progress);
+        
+        camera.position.lerpVectors(startPosition, initialPosition, eased);
+        
+        if (controls && (controls as any).target) {
+          (controls as any).target.lerpVectors(startTarget, initialTarget, eased);
+          (controls as any).update();
+        }
+        
+        if (progress < 1) {
+          animationFrameRef.current = requestAnimationFrame(animate);
+        } else {
+          // Ensure we're exactly at the target
+          camera.position.copy(initialPosition);
+          if (controls && (controls as any).target) {
+            (controls as any).target.copy(initialTarget);
+            (controls as any).update();
+          }
+          animationFrameRef.current = null;
+          onResetComplete();
+        }
+      };
+      
+      animate();
+    }
+    
+    return () => {
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current);
+      }
+    };
+  }, [resetTrigger, camera, controls, onResetComplete]);
+
+  return null;
+};
+
 // --- NAVBAR COMPONENT ---
-const Navbar = ({ onLaunch }: { onLaunch: () => void }) => (
+const Navbar = ({ onLaunch, timeMode }: { onLaunch: () => void; timeMode: TimeMode }) => (
   <nav className="fixed top-0 left-0 right-0 z-50 py-6 transition-all bg-transparent pointer-events-none">
       <div className="max-w-[1100px] mx-auto px-8 flex justify-between items-center pointer-events-auto">
           {/* Logo */}
           <div className="flex items-center gap-3">
               <a href="/">
-                  <img src="/street-logo.png" alt="Street" className="h-8 w-auto object-contain invert" />
+                  <img src="/street-logo.png" alt="Street" className={`h-8 w-auto object-contain ${timeMode === 'day' ? 'invert' : ''}`} style={timeMode === 'night' ? { filter: 'brightness(0) invert(1) opacity(0.9)' } : undefined} />
               </a>
           </div>
           
@@ -238,11 +311,11 @@ const Navbar = ({ onLaunch }: { onLaunch: () => void }) => (
               
               {/* NAV LINKS */}
               <div className="hidden md:flex items-center gap-8 mr-2">
-                  <a href="/scouting" className="text-sm font-medium text-slate-500 hover:text-slate-900 transition-colors font-sans">Scouting</a>
-                  <a href="/web3" className="text-sm font-medium text-slate-500 hover:text-slate-900 transition-colors font-sans">Research</a>
-                  <a href="/city" className="group flex items-center gap-2 text-sm font-medium text-slate-500 hover:text-slate-900 transition-colors font-sans">
+                  <a href="/scouting" className={`text-sm font-medium transition-colors font-sans ${timeMode === 'day' ? 'text-black hover:text-black/80' : 'text-gray-200 hover:text-gray-300'}`}>Scouting</a>
+                  <a href="/web3" className={`text-sm font-medium transition-colors font-sans ${timeMode === 'day' ? 'text-black hover:text-black/80' : 'text-gray-200 hover:text-gray-300'}`}>Research</a>
+                  <a href="/city" className={`group flex items-center gap-2 text-sm font-medium transition-colors font-sans ${timeMode === 'day' ? 'text-black hover:text-black/80' : 'text-gray-200 hover:text-gray-300'}`}>
                       Network City
-                      <span className="bg-blue-100 text-blue-600 text-[10px] font-bold px-2 py-0.5 rounded-full shadow-sm">New</span>
+                      <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full shadow-sm ${timeMode === 'day' ? 'bg-blue-100 text-blue-600' : 'bg-gray-300/20 text-gray-200'}`}>New</span>
                   </a>
               </div>
 
@@ -250,7 +323,11 @@ const Navbar = ({ onLaunch }: { onLaunch: () => void }) => (
 
               <button 
                   onClick={onLaunch}
-                  className="bg-slate-900/5 backdrop-blur-md border border-slate-900/10 text-slate-900 px-6 py-2.5 rounded-full text-xs font-bold hover:bg-slate-900/10 hover:scale-105 transition-all shadow-sm flex items-center gap-2 font-sans"
+                  className={`backdrop-blur-md px-6 py-2.5 rounded-full text-xs font-bold hover:scale-105 transition-all shadow-sm flex items-center gap-2 font-sans ${
+                    timeMode === 'day' 
+                      ? 'bg-slate-900/5 border border-slate-900/10 text-slate-900 hover:bg-slate-900/10' 
+                      : 'bg-white/10 border border-white/20 text-gray-200 hover:bg-white/20'
+                  }`}
               >
                   Launch App
               </button>
@@ -262,6 +339,8 @@ const Navbar = ({ onLaunch }: { onLaunch: () => void }) => (
 // --- MAIN PAGE ---
 export default function CityPage() {
   const [selected, setSelected] = useState<Startup | null>(null);
+  const [timeMode, setTimeMode] = useState<TimeMode>('day');
+  const [cameraResetTrigger, setCameraResetTrigger] = useState(0);
 
   // Loading Sequence State
   const [isTransitioning, setIsTransitioning] = useState(false);
@@ -316,25 +395,37 @@ export default function CityPage() {
       )}
 
       {/* 2. NAVBAR (Pass handleOpenApp) */}
-      <Navbar onLaunch={handleOpenApp} />
+      <Navbar onLaunch={handleOpenApp} timeMode={timeMode} />
+      
+      {/* 3. ENVIRONMENT CONTROLS */}
+      <EnvironmentControls 
+        mode={timeMode} 
+        onModeChange={setTimeMode}
+        onCameraReset={() => setCameraResetTrigger(prev => prev + 1)}
+      />
 
       <Canvas
         dpr={[1, 2]}
-        camera={{ position: [25, 25, 25], fov: 35 }} 
+        camera={{ position: [20, 20, 20], fov: 35 }} 
         shadows
         className="w-full h-full"
+        onCreated={({ gl }) => {
+          gl.toneMapping = THREE.ACESFilmicToneMapping;
+          gl.toneMappingExposure = 1.0;
+        }}
       >
-        <color attach="background" args={['#f2f4f7']} />
+        <color attach="background" args={['#d5a7b4']} />
         
-        <fog attach="fog" args={['#f2f4f7', 10, 120]} />
+        <fog attach="fog" args={['#9BA4B5', 10, 120]} />
 
         <Suspense fallback={null}>
           <FutureCity 
             selected={selected} 
             onSelect={setSelected} 
-            introFinished={true} 
+            introFinished={true}
+            timeMode={timeMode}
           />
-          <Environment preset="city" blur={0.5} background={false} />
+          {/* Environment removed - using Sky component for dynamic day/night */}
         </Suspense>
 
         <OrbitControls 
@@ -344,9 +435,14 @@ export default function CityPage() {
           minPolarAngle={Math.PI / 6}
           maxPolarAngle={Math.PI / 2.2}
           minDistance={10}
-          maxDistance={80}
+          maxDistance={Math.sqrt(20 * 20 + 20 * 20 + 20 * 20)}
           dampingFactor={0.05}
           target={[0, 0, 0]}
+        />
+        
+        <CameraReset 
+          resetTrigger={cameraResetTrigger} 
+          onResetComplete={() => {}}
         />
       </Canvas>
       

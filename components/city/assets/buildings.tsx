@@ -25,27 +25,22 @@ interface BuildingModelProps {
   color: string;
   hovered: boolean;
   scale?: number; // Added scale prop
+  isNight?: boolean; // NEW: Night mode prop
 }
 
-export const BuildingModel = ({ modelKey, color, hovered, scale = 1 }: BuildingModelProps) => {
+export const BuildingModel = ({ modelKey, color, hovered, scale = 1, isNight = false }: BuildingModelProps) => {
   // @ts-ignore
   const path = BUILDING_FILES[modelKey] || BUILDING_FILES["building-skyscraper-a"];
   const { scene } = useGLTF(path);
-
+  
   const clone = useMemo(() => {
     const c = scene.clone();
     
+    // Simple setup - just ensure shadows work
     c.traverse((child: THREE.Object3D) => {
       if ((child as THREE.Mesh).isMesh) {
         child.castShadow = true;
         child.receiveShadow = true;
-
-        if (hovered) {
-          ((child as THREE.Mesh).material as THREE.MeshStandardMaterial).emissive = new THREE.Color(color);
-          ((child as THREE.Mesh).material as THREE.MeshStandardMaterial).emissiveIntensity = 0.2;
-        } else {
-           ((child as THREE.Mesh).material as THREE.MeshStandardMaterial).emissiveIntensity = 0;
-        }
       }
     });
     
@@ -53,7 +48,7 @@ export const BuildingModel = ({ modelKey, color, hovered, scale = 1 }: BuildingM
     c.scale.set(scale, scale, scale); 
     
     return c;
-  }, [scene, color, hovered, scale]);
+  }, [scene, scale]);
 
   return <primitive object={clone} />;
 };

@@ -13,6 +13,7 @@ interface StartupBuildingProps {
   position: [number, number, number];
   onSelect: (startup: Startup) => void;
   visible?: boolean; // NEW PROP
+  isNight?: boolean; // NEW: Night mode prop
 }
 
 // Building height offsets - adjustments per building model to align name tags with roof
@@ -28,7 +29,7 @@ const BUILDING_HEIGHT_OFFSETS: Record<string, number> = {
   "building-skyscraper-e": 0.15, // StarFun - raise slightly to hover above roof
 };
 
-export const StartupBuilding = ({ startup, position, onSelect, visible = true }: StartupBuildingProps) => {
+export const StartupBuilding = ({ startup, position, onSelect, visible = true, isNight = false }: StartupBuildingProps) => {
   const [hovered, setHover] = useState(false);
   const groupRef = useRef<THREE.Group>(null);
   const [targetScale, setTargetScale] = useState(1);
@@ -77,7 +78,8 @@ export const StartupBuilding = ({ startup, position, onSelect, visible = true }:
         modelKey={startup.modelKey} 
         color={startup.color} 
         hovered={hovered} 
-        scale={startup.scale} 
+        scale={startup.scale}
+        isNight={isNight}
       />
       
       {/* ONLY RENDER LABEL IF VISIBLE */}

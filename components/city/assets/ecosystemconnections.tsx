@@ -15,8 +15,8 @@ const getPos = (gridPos: [number, number], heightOffset: number): THREE.Vector3 
   return new THREE.Vector3(x, heightOffset, z);
 };
 
-// Added visible prop
-export const EcosystemConnections = ({ visible = true }: { visible?: boolean }) => {
+// Added visible and isNight props
+export const EcosystemConnections = ({ visible = true, isNight = false }: { visible?: boolean; isNight?: boolean }) => {
   const [hoveredId, setHoveredId] = useState<string | null>(null);
   const [selected, setSelected] = useState<{ data: ConnectionData, position: THREE.Vector3 } | null>(null);
 
@@ -53,12 +53,20 @@ export const EcosystemConnections = ({ visible = true }: { visible?: boolean }) 
         const isHovered = hoveredId === lineData.connectionData.id;
         const isSelected = selected?.data.id === lineData.connectionData.id;
 
+        // Brighter, more glowing colors for night scene (slightly below window glow intensity)
+        const baseColor = isHovered || isSelected ? "#00b3ff" : "#fbbf24";
+        const nightColor = isHovered || isSelected ? "#4dd0ff" : "#ffd54f"; // Brighter yellow/cyan for night
+        const lineColor = isNight ? nightColor : baseColor;
+        const baseWidth = isHovered || isSelected ? 5 : 3;
+        const nightWidth = isHovered || isSelected ? 6 : 4; // Slightly thicker at night
+        const lineWidth = isNight ? nightWidth : baseWidth;
+
         return (
           <group key={lineData.connectionData.id}>
             <Line
                 points={lineData.points}
-                color={isHovered || isSelected ? "#00b3ff" : "#fbbf24"} 
-                lineWidth={isHovered || isSelected ? 5 : 3}
+                color={lineColor} 
+                lineWidth={lineWidth}
                 dashed={false}
                 toneMapped={false} 
                 onClick={(e) => {

@@ -46,8 +46,70 @@ const NatureItem = ({ modelKey, position, rotationY, scale }: NatureItemProps) =
     const c = scene.clone();
     c.traverse((child) => {
       if ((child as THREE.Mesh).isMesh) {
-        child.receiveShadow = true;
+        // Same shadow configuration as buildings - cast and receive shadows
         child.castShadow = true;
+        child.receiveShadow = true;
+        
+        // Ensure materials are MeshStandardMaterial to properly cast/receive shadows (same as buildings)
+        const mesh = child as THREE.Mesh;
+        if (mesh.material) {
+          if (Array.isArray(mesh.material)) {
+            mesh.material = mesh.material.map((mat) => {
+              // Convert MeshBasicMaterial to MeshStandardMaterial for proper shadow casting
+              if (mat instanceof THREE.MeshBasicMaterial) {
+                const standardMat = new THREE.MeshStandardMaterial({
+                  color: mat.color,
+                  map: mat.map,
+                  transparent: mat.transparent,
+                  opacity: mat.opacity,
+                  side: mat.side,
+                });
+                mat.dispose();
+                return standardMat;
+              }
+              // Ensure existing materials are also MeshStandardMaterial compatible
+              if (!(mat instanceof THREE.MeshStandardMaterial)) {
+                // If it's another material type that doesn't support shadows well, convert it
+                const standardMat = new THREE.MeshStandardMaterial({
+                  color: (mat as any).color || new THREE.Color(0xffffff),
+                  map: (mat as any).map || null,
+                  transparent: (mat as any).transparent || false,
+                  opacity: (mat as any).opacity !== undefined ? (mat as any).opacity : 1.0,
+                  side: (mat as any).side || THREE.FrontSide,
+                });
+                mat.dispose();
+                return standardMat;
+              }
+              return mat;
+            });
+          } else {
+            // Single material - same handling
+            if (mesh.material instanceof THREE.MeshBasicMaterial) {
+              const oldMat = mesh.material;
+              const standardMat = new THREE.MeshStandardMaterial({
+                color: oldMat.color,
+                map: oldMat.map,
+                transparent: oldMat.transparent,
+                opacity: oldMat.opacity,
+                side: oldMat.side,
+              });
+              oldMat.dispose();
+              mesh.material = standardMat;
+            } else if (!(mesh.material instanceof THREE.MeshStandardMaterial)) {
+              // Convert other material types to MeshStandardMaterial for shadow support
+              const oldMat = mesh.material;
+              const standardMat = new THREE.MeshStandardMaterial({
+                color: (oldMat as any).color || new THREE.Color(0xffffff),
+                map: (oldMat as any).map || null,
+                transparent: (oldMat as any).transparent || false,
+                opacity: (oldMat as any).opacity !== undefined ? (oldMat as any).opacity : 1.0,
+                side: (oldMat as any).side || THREE.FrontSide,
+              });
+              oldMat.dispose();
+              mesh.material = standardMat;
+            }
+          }
+        }
       }
     });
     return c;
