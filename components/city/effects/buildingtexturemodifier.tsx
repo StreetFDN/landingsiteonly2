@@ -4,6 +4,7 @@ import * as THREE from 'three';
 
 /**
  * Utility functions for modifying specific regions of building textures
+ * Type assertions added for HTMLImageElement to resolve TypeScript compilation errors
  */
 
 /**
