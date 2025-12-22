@@ -12,11 +12,11 @@ export interface LightsHandle {
 }
 
 export const Lights = forwardRef<LightsHandle>((props, ref) => {
-  const directionalRef = useRef<DirectionalLight>(null);
-  const moonRef = useRef<DirectionalLight>(null);
-  const sunLightRef = useRef<DirectionalLight>(null);
+  const directionalRef = useRef<DirectionalLight | null>(null);
+  const moonRef = useRef<DirectionalLight | null>(null);
+  const sunLightRef = useRef<DirectionalLight | null>(null);
 
-  useImperativeHandle<LightsHandle, LightsHandle>(ref, () => ({
+  useImperativeHandle(ref, (): LightsHandle => ({
     directionalRef,
     moonRef,
     sunLightRef,
