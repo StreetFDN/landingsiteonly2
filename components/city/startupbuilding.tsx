@@ -1,8 +1,8 @@
 // FILE: components/city/StartupBuilding.tsx
 'use client';
 
-import { useState, useRef } from 'react';
-import { useFrame } from '@react-three/fiber';
+import { useState, useRef, useEffect } from 'react';
+import { useFrame, useThree } from '@react-three/fiber';
 import { Html } from '@react-three/drei';
 import * as THREE from 'three';
 import { Startup } from './types';
@@ -14,6 +14,8 @@ interface StartupBuildingProps {
   onSelect: (startup: Startup) => void;
   visible?: boolean; // NEW PROP
   isNight?: boolean; // NEW: Night mode prop
+  allBuildingRefs?: React.RefObject<THREE.Group>[]; // Refs to all buildings for occlusion
+  onRegisterRef?: (id: string, ref: React.RefObject<THREE.Group>) => void; // Callback to register this building's ref
 }
 
 // Building height offsets - adjustments per building model to align name tags with roof
@@ -29,10 +31,19 @@ const BUILDING_HEIGHT_OFFSETS: Record<string, number> = {
   "building-skyscraper-e": 0.15, // StarFun - raise slightly to hover above roof
 };
 
-export const StartupBuilding = ({ startup, position, onSelect, visible = true, isNight = false }: StartupBuildingProps) => {
+export const StartupBuilding = ({ startup, position, onSelect, visible = true, isNight = false, allBuildingRefs = [], onRegisterRef }: StartupBuildingProps) => {
   const [hovered, setHover] = useState(false);
   const groupRef = useRef<THREE.Group>(null);
+  const buildingMeshRef = useRef<THREE.Group>(null);
   const [targetScale, setTargetScale] = useState(1);
+  const { camera } = useThree();
+
+  // Register this building's ref with the parent for occlusion
+  useEffect(() => {
+    if (onRegisterRef) {
+      onRegisterRef(startup.id, buildingMeshRef);
+    }
+  }, [startup.id, onRegisterRef]);
 
   useFrame((state, delta) => {
     if (groupRef.current) {
@@ -47,6 +58,9 @@ export const StartupBuilding = ({ startup, position, onSelect, visible = true, i
   const basePosition = (startup.scale || 1) * 3 + 1;
   const heightOffset = BUILDING_HEIGHT_OFFSETS[startup.modelKey] || 0;
   const nameTagY = basePosition + heightOffset;
+
+  // Get all building refs except this one for occlusion
+  const occludeRefs = allBuildingRefs.filter(ref => ref !== buildingMeshRef);
 
   return (
     <group 
@@ -74,13 +88,15 @@ export const StartupBuilding = ({ startup, position, onSelect, visible = true, i
         document.body.style.cursor = 'auto';
       }}
     >
-      <BuildingModel 
-        modelKey={startup.modelKey} 
-        color={startup.color} 
-        hovered={hovered} 
-        scale={startup.scale}
-        isNight={isNight}
-      />
+      <group ref={buildingMeshRef}>
+        <BuildingModel 
+          modelKey={startup.modelKey} 
+          color={startup.color} 
+          hovered={hovered} 
+          scale={startup.scale}
+          isNight={isNight}
+        />
+      </group>
       
       {/* ONLY RENDER LABEL IF VISIBLE */}
       {visible && (
@@ -89,6 +105,7 @@ export const StartupBuilding = ({ startup, position, onSelect, visible = true, i
             center 
             distanceFactor={15}
             zIndexRange={[500, 0]}
+            occlude={occludeRefs.length > 0 ? occludeRefs : undefined}
         >
             <div className={`
             px-3 py-1.5 rounded-full backdrop-blur-md border border-white/40 shadow-lg

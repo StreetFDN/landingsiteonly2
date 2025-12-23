@@ -260,6 +260,8 @@ export const BuildingModel = ({ modelKey, color, hovered, scale = 1, isNight = f
         const mesh = child as THREE.Mesh;
         mesh.castShadow = true;
         mesh.receiveShadow = true;
+        // Set renderOrder to ensure proper depth sorting (lower values render first, behind higher values)
+        mesh.renderOrder = 0;
         
         // Apply window glow shader if material has a texture
         if (mesh.material) {

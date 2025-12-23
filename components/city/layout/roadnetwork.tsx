@@ -1,7 +1,7 @@
 // FILE: components/city/layout/RoadNetwork.tsx
 'use client';
 
-import { useMemo, useRef } from "react";
+import { useMemo, useRef, useCallback, useState } from "react";
 import { RoadSegment, RoadVariant, CELL_SIZE } from "../assets/roads";
 import { startups } from "../startupsconfig";
 import { StartupBuilding } from "../startupbuilding";
@@ -52,6 +52,17 @@ interface RoadNetworkProps {
 }
 
 export const RoadNetwork = ({ onBuildingSelect, labelsVisible = true, groundMaterialRef, timeOfDay = 0, isNight = false }: RoadNetworkProps) => {
+  // Store refs for all buildings using a Map
+  const buildingRefsMap = useRef<Map<string, React.RefObject<THREE.Group>>>(new Map());
+  const [allBuildingRefs, setAllBuildingRefs] = useState<React.RefObject<THREE.Group>[]>([]);
+  
+  // Callback to register a building ref
+  const registerBuildingRef = useCallback((id: string, ref: React.RefObject<THREE.Group>) => {
+    buildingRefsMap.current.set(id, ref);
+    // Update the refs array whenever a ref is registered
+    setAllBuildingRefs(Array.from(buildingRefsMap.current.values()));
+  }, []);
+
   const buildings = useMemo(() => {
     return startups.map(s => {
       const x = (s.gridPosition[0] - 6) * CELL_SIZE;
@@ -64,10 +75,12 @@ export const RoadNetwork = ({ onBuildingSelect, labelsVisible = true, groundMate
             onSelect={onBuildingSelect}
             visible={labelsVisible} // PASS DOWN
             isNight={isNight} // PASS DOWN
+            allBuildingRefs={allBuildingRefs} // Pass all building refs for occlusion
+            onRegisterRef={registerBuildingRef} // Pass callback to register ref
         />
       );
     });
-  }, [onBuildingSelect, labelsVisible, isNight]);
+  }, [onBuildingSelect, labelsVisible, isNight, registerBuildingRef, allBuildingRefs]);
 
   return (
     <group>
