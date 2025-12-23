@@ -794,7 +794,7 @@ export default function LandingPage() {
           </h1>
           <div className="w-full max-w-lg h-px bg-gradient-to-r from-transparent via-white/40 to-transparent mb-6"></div>
           <p className="text-base md:text-lg text-white max-w-2xl mx-auto leading-relaxed font-medium drop-shadow-sm mb-6 px-4 font-sans">
-              Deploy equity-grade tokens without it being a security and supercharge your startups growth.
+              Deploy compliant, equity-anchored tokens and supercharge your startups growth.
           </p>
           
           <a href="https://accelerate.street.app" target="_blank" rel="noopener noreferrer">
