@@ -93,7 +93,7 @@ export const Lights = forwardRef<LightsHandle>((props, ref) => {
         position={[-20, 30, -20]} 
         intensity={0} 
         color={new Color("#ffffff")} 
-        castShadow
+        castShadow={false}
         shadow-bias={-0.0005}
         shadow-mapSize={[2048, 2048]}
         shadow-radius={6}

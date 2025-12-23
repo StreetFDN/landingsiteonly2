@@ -77,8 +77,12 @@ export const EnvironmentController = ({
     if (moonLightRef?.current) {
       if (mode === 'day') {
         moonLightRef.current.position.set(-50, -10, -50);
+        // Disable shadow casting during daytime to prevent doubled shadows
+        moonLightRef.current.castShadow = false;
       } else {
         moonLightRef.current.position.set(50, 50, 50);
+        // Enable shadow casting at night
+        moonLightRef.current.castShadow = true;
       }
     }
   }, [mode, moonLightRef]);

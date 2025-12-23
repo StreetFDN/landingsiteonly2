@@ -14,8 +14,8 @@ interface StartupBuildingProps {
   onSelect: (startup: Startup) => void;
   visible?: boolean; // NEW PROP
   isNight?: boolean; // NEW: Night mode prop
-  allBuildingRefs?: React.RefObject<THREE.Group>[]; // Refs to all buildings for occlusion
-  onRegisterRef?: (id: string, ref: React.RefObject<THREE.Group>) => void; // Callback to register this building's ref
+  allBuildingRefs?: React.RefObject<THREE.Group | null>[]; // Refs to all buildings for occlusion
+  onRegisterRef?: (id: string, ref: React.RefObject<THREE.Group | null>) => void; // Callback to register this building's ref
 }
 
 // Building height offsets - adjustments per building model to align name tags with roof
@@ -60,7 +60,10 @@ export const StartupBuilding = ({ startup, position, onSelect, visible = true, i
   const nameTagY = basePosition + heightOffset;
 
   // Get all building refs except this one for occlusion
-  const occludeRefs = allBuildingRefs.filter(ref => ref !== buildingMeshRef);
+  // Filter out null refs and this building's ref
+  const occludeRefs = allBuildingRefs
+    .filter(ref => ref !== buildingMeshRef && ref.current !== null)
+    .map(ref => ref as React.RefObject<THREE.Group>);
 
   return (
     <group 

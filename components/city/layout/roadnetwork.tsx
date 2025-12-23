@@ -53,11 +53,11 @@ interface RoadNetworkProps {
 
 export const RoadNetwork = ({ onBuildingSelect, labelsVisible = true, groundMaterialRef, timeOfDay = 0, isNight = false }: RoadNetworkProps) => {
   // Store refs for all buildings using a Map
-  const buildingRefsMap = useRef<Map<string, React.RefObject<THREE.Group>>>(new Map());
-  const [allBuildingRefs, setAllBuildingRefs] = useState<React.RefObject<THREE.Group>[]>([]);
+  const buildingRefsMap = useRef<Map<string, React.RefObject<THREE.Group | null>>>(new Map());
+  const [allBuildingRefs, setAllBuildingRefs] = useState<React.RefObject<THREE.Group | null>[]>([]);
   
   // Callback to register a building ref
-  const registerBuildingRef = useCallback((id: string, ref: React.RefObject<THREE.Group>) => {
+  const registerBuildingRef = useCallback((id: string, ref: React.RefObject<THREE.Group | null>) => {
     buildingRefsMap.current.set(id, ref);
     // Update the refs array whenever a ref is registered
     setAllBuildingRefs(Array.from(buildingRefsMap.current.values()));
