@@ -16,11 +16,13 @@ export const Lights = forwardRef<LightsHandle>((props, ref) => {
   const moonRef = useRef<DirectionalLight | null>(null);
   const sunLightRef = useRef<DirectionalLight | null>(null);
 
-  useImperativeHandle<LightsHandle, LightsHandle>(ref, (): LightsHandle => ({
-    directionalRef,
-    moonRef,
-    sunLightRef,
-  }));
+  useImperativeHandle<LightsHandle, LightsHandle>(ref, (): LightsHandle => {
+    return {
+      directionalRef: directionalRef as React.RefObject<DirectionalLight | null>,
+      moonRef: moonRef as React.RefObject<DirectionalLight | null>,
+      sunLightRef: sunLightRef as React.RefObject<DirectionalLight | null>,
+    } satisfies LightsHandle;
+  });
 
   // Set __controlledByEnv flag IMMEDIATELY on mount (synchronously, before first frame)
   // This prevents any movement before EnvironmentController takes control

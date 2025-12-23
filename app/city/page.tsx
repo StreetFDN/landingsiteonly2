@@ -336,10 +336,25 @@ const Navbar = ({ onLaunch, timeMode }: { onLaunch: () => void; timeMode: TimeMo
   </nav>
 );
 
+// --- TIME-BASED DAY/NIGHT CALCULATION ---
+// Dawn: 6:00 AM (switch to day)
+// Dusk: 7:00 PM (19:00) (switch to night)
+const getTimeModeFromCurrentTime = (): TimeMode => {
+  const now = new Date();
+  const hours = now.getHours();
+  
+  // Day: 6:00 AM (6) to 7:00 PM (19)
+  // Night: 7:00 PM (19) to 6:00 AM (6)
+  if (hours >= 6 && hours < 19) {
+    return 'day';
+  }
+  return 'night';
+};
+
 // --- MAIN PAGE ---
 export default function CityPage() {
   const [selected, setSelected] = useState<Startup | null>(null);
-  const [timeMode, setTimeMode] = useState<TimeMode>('day');
+  const [timeMode, setTimeMode] = useState<TimeMode>(() => getTimeModeFromCurrentTime());
   const [cameraResetTrigger, setCameraResetTrigger] = useState(0);
 
   // Loading Sequence State
@@ -373,6 +388,26 @@ export default function CityPage() {
     }
   }, [isTransitioning]);
 
+  // Automatic time-based day/night switching
+  useEffect(() => {
+    // Update immediately on mount
+    setTimeMode(getTimeModeFromCurrentTime());
+    
+    // Check time every minute to update mode if needed
+    const interval = setInterval(() => {
+      const newMode = getTimeModeFromCurrentTime();
+      setTimeMode((currentMode) => {
+        // Only update if mode actually changed (prevents unnecessary re-renders)
+        if (newMode !== currentMode) {
+          return newMode;
+        }
+        return currentMode;
+      });
+    }, 60000); // Check every minute (60000ms)
+    
+    return () => clearInterval(interval);
+  }, []);
+
   const renderDots = () => ".".repeat(dotCount);
 
   return (
@@ -397,12 +432,8 @@ export default function CityPage() {
       {/* 2. NAVBAR (Pass handleOpenApp) */}
       <Navbar onLaunch={handleOpenApp} timeMode={timeMode} />
       
-      {/* 3. ENVIRONMENT CONTROLS */}
-      <EnvironmentControls 
-        mode={timeMode} 
-        onModeChange={setTimeMode}
-        onCameraReset={() => setCameraResetTrigger(prev => prev + 1)}
-      />
+      {/* Day/night mode is automatically controlled by real-world time */}
+      <EnvironmentControls />
 
       <Canvas
         dpr={[1, 2]}
