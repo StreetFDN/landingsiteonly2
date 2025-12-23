@@ -54,12 +54,12 @@ const BUILDING_GLOW_CONFIG: Record<string, GlowConfig> = {
   },
   // OpenDroids (building-skyscraper-c)
   "building-skyscraper-c": {
-    glow1Center: 0.071,
+    glow1Center: 0.0718,
     glow1Height: 0.499,
     glow2Center: 0.8,
     glow2Height: 0.8,
     glow3Center: 0.72,
-    glow3Height: 0.77,
+    glow3Height: 0.78,
   },
   // Noice (building-skyscraper-d)
   "building-skyscraper-d": {
@@ -73,11 +73,11 @@ const BUILDING_GLOW_CONFIG: Record<string, GlowConfig> = {
   // StarFun (building-skyscraper-e)
   "building-skyscraper-e": {
     glow1Center: 0.31,
-    glow1Height: 0.06,
+    glow1Height: 0.088,
     glow2Center: 0.535,
-    glow2Height: 0.1,
-    glow3Center: 0.375,
-    glow3Height: 0.10,
+    glow2Height: 0.01,
+    glow3Center: 0.6,
+    glow3Height: 0.3,
   },
 };
 
@@ -217,13 +217,12 @@ function createWindowGlowShader(originalTexture: THREE.Texture, isNight: boolean
           }
           
           if (shouldGlow) {
-            // Make windows glow at night with very orange color
-            // Use orange directly with controlled brightness to avoid white washout
-            vec3 orangeGlow = vec3(1.0, 0.5, 0.2); // Warm orange (RGB: 255, 128, 51)
+            // Make windows glow at night with darker reddish-orange color
+            // Darker reddish tint (reduced brightness, more red, less orange)
+            vec3 darkReddishGlow = vec3(0.85, 0.35, 0.15); // Darker reddish-orange (RGB: 217, 89, 38)
             
             // Apply intensity (reduced by 28% from 3.0 = 2.16)
-            // But keep it orange by using orange as base, not mixing with brightened blue
-            vec3 glowColor = orangeGlow * 2.16;
+            vec3 glowColor = darkReddishGlow * 2.16;
             
             // Add subtle pulsing effect
             float pulse = sin(uTime * 2.0) * 0.1 + 1.0;
