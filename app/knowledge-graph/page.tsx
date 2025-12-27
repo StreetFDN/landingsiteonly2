@@ -12,7 +12,7 @@ import { DetailPanel } from '@/components/knowledge-graph/detailpanel';
 import { Legend } from '@/components/knowledge-graph/legend';
 import { GraphStats } from '@/components/knowledge-graph/graphstats';
 import { graphData } from '@/components/knowledge-graph/graphdata';
-import { GraphNode, NodeType } from '@/components/knowledge-graph/types';
+import { GraphNode, NodeType, Sector } from '@/components/knowledge-graph/types';
 import { Loader2 } from 'lucide-react';
 
 // Navbar Component
@@ -95,8 +95,8 @@ function CameraController({ resetTrigger }: { resetTrigger: number }) {
       enableRotate
       autoRotate
       autoRotateSpeed={0.3}
-      minDistance={15}
-      maxDistance={100}
+      minDistance={20}
+      maxDistance={150}
       dampingFactor={0.05}
     />
   );
@@ -108,6 +108,9 @@ export default function KnowledgeGraphPage() {
   const [activeFilters, setActiveFilters] = useState<Set<NodeType>>(
     new Set(['company', 'investor', 'founder', 'technology', 'location'])
   );
+  const [activeSectors, setActiveSectors] = useState<Set<Sector>>(
+    new Set(['robotics', 'ai', 'space', 'nuclear', 'defense', 'biotech', 'crypto'])
+  );
   const [cameraResetTrigger, setCameraResetTrigger] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -117,9 +120,11 @@ export default function KnowledgeGraphPage() {
     return () => clearTimeout(timer);
   }, []);
 
-  // Filter data based on active filters
+  // Filter data based on active filters AND sectors
   const filteredData = {
-    nodes: graphData.nodes.filter((node) => activeFilters.has(node.type)),
+    nodes: graphData.nodes.filter((node) => 
+      activeFilters.has(node.type) && activeSectors.has(node.sector)
+    ),
     edges: graphData.edges.filter((edge) => {
       const sourceNode = graphData.nodes.find((n) => n.id === edge.source);
       const targetNode = graphData.nodes.find((n) => n.id === edge.target);
@@ -127,7 +132,9 @@ export default function KnowledgeGraphPage() {
         sourceNode &&
         targetNode &&
         activeFilters.has(sourceNode.type) &&
-        activeFilters.has(targetNode.type)
+        activeFilters.has(targetNode.type) &&
+        activeSectors.has(sourceNode.sector) &&
+        activeSectors.has(targetNode.sector)
       );
     }),
   };
@@ -143,6 +150,20 @@ export default function KnowledgeGraphPage() {
       return newFilters;
     });
     // Clear selection when filters change
+    setSelectedNode(null);
+  };
+
+  const handleSectorToggle = (sector: Sector) => {
+    setActiveSectors((prev) => {
+      const newSectors = new Set(prev);
+      if (newSectors.has(sector)) {
+        newSectors.delete(sector);
+      } else {
+        newSectors.add(sector);
+      }
+      return newSectors;
+    });
+    // Clear selection when sectors change
     setSelectedNode(null);
   };
 
@@ -170,7 +191,7 @@ export default function KnowledgeGraphPage() {
                 Building Knowledge Graph
               </h3>
               <p className="text-sm font-medium text-gray-400 font-mono">
-                Initializing visualization...
+                Loading {graphData.nodes.length} nodes across 7 sectors...
               </p>
             </div>
           </div>
@@ -183,10 +204,10 @@ export default function KnowledgeGraphPage() {
       {/* Title Section */}
       <div className="fixed top-24 left-1/2 -translate-x-1/2 z-40 text-center pointer-events-none">
         <h1 className="text-white text-4xl font-bold mb-2">
-          Robotics Knowledge Graph
+          Multi-Sector Knowledge Graph
         </h1>
         <p className="text-white/60 text-sm">
-          Explore the interconnected world of robotics companies, investors, and technologies
+          Exploring Robotics, AI, Space, Nuclear, Defense, Biotech & Crypto/Web3
         </p>
       </div>
 
@@ -202,9 +223,9 @@ export default function KnowledgeGraphPage() {
         }}
       >
         <color attach="background" args={['#0a0a0a']} />
-        <fog attach="fog" args={['#0a0a0a', 30, 120]} />
+        <fog attach="fog" args={['#0a0a0a', 40, 180]} />
 
-        <PerspectiveCamera makeDefault position={[40, 30, 40]} fov={60} />
+        <PerspectiveCamera makeDefault position={[60, 45, 60]} fov={60} />
 
         <Suspense fallback={null}>
           <Graph3D
@@ -232,7 +253,9 @@ export default function KnowledgeGraphPage() {
       <GraphStats data={filteredData} />
       <GraphControls
         activeFilters={activeFilters}
+        activeSectors={activeSectors}
         onFilterToggle={handleFilterToggle}
+        onSectorToggle={handleSectorToggle}
         onResetView={handleResetView}
       />
       <Legend />
@@ -244,7 +267,8 @@ export default function KnowledgeGraphPage() {
           <p className="text-white/70 text-xs text-center">
             <span className="font-semibold">Click</span> nodes to view details •{' '}
             <span className="font-semibold">Drag</span> to rotate •{' '}
-            <span className="font-semibold">Scroll</span> to zoom
+            <span className="font-semibold">Scroll</span> to zoom •{' '}
+            <span className="font-semibold text-blue-400">{filteredData.nodes.length}</span> nodes visible
           </p>
         </div>
       </div>
