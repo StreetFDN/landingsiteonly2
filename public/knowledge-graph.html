@@ -3,47 +3,325 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Robotics Industry Knowledge Graph</title>
-    <link rel="stylesheet" href="/css/knowledge-graph.css">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Interactive 3D Knowledge Graph - Explore connections and relationships in a dynamic space visualization">
+    <meta name="keywords" content="knowledge graph, 3D visualization, network graph, data visualization">
+    <meta name="author" content="Street Foundation">
+    
+    <!-- Open Graph / Social Media Meta Tags -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="3D Knowledge Graph Visualization">
+    <meta property="og:description" content="Interactive 3D Knowledge Graph - Explore connections and relationships">
+    <meta property="og:image" content="/og-image.png">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="3D Knowledge Graph Visualization">
+    <meta name="twitter:description" content="Interactive 3D Knowledge Graph - Explore connections and relationships">
+    
+    <title>3D Knowledge Graph | Interactive Visualization</title>
+    
+    <!-- Three.js Library from CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+    
+    <!-- OrbitControls for Three.js -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/examples/js/controls/OrbitControls.js"></script>
+    
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="knowledge-graph.css">
+    
+    <!-- Inline Base Styles -->
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            overflow: hidden;
+            background: #000000;
+            color: #ffffff;
+        }
+        
+        /* Space Theme Background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at center, #1a1a2e 0%, #0a0a0f 50%, #000000 100%);
+            z-index: -2;
+        }
+        
+        /* Animated stars background */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(2px 2px at 20% 30%, white, transparent),
+                radial-gradient(2px 2px at 60% 70%, white, transparent),
+                radial-gradient(1px 1px at 50% 50%, white, transparent),
+                radial-gradient(1px 1px at 80% 10%, white, transparent),
+                radial-gradient(2px 2px at 90% 60%, white, transparent),
+                radial-gradient(1px 1px at 33% 90%, white, transparent);
+            background-size: 200% 200%;
+            background-position: 0% 0%;
+            opacity: 0.5;
+            animation: stars 60s linear infinite;
+            z-index: -1;
+        }
+        
+        @keyframes stars {
+            0% { background-position: 0% 0%; }
+            100% { background-position: 100% 100%; }
+        }
+        
+        #canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+        
+        canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+    </style>
 </head>
 <body>
-    <div id="loading-screen">
-        <div class="loader"></div>
-        <p>Loading Knowledge Graph...</p>
+    <!-- Header -->
+    <header id="main-header" style="position: fixed; top: 0; left: 0; right: 0; z-index: 1000; padding: 20px 40px; background: linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%);">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <h1 style="font-size: 24px; font-weight: 600; letter-spacing: -0.5px;">
+                <span style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+                    Knowledge Graph
+                </span>
+            </h1>
+            <nav>
+                <a href="/" style="color: #ffffff; text-decoration: none; margin-left: 30px; font-size: 14px; opacity: 0.8; transition: opacity 0.3s;">Home</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Canvas Container for 3D Visualization -->
+    <div id="canvas-container">
+        <canvas id="knowledge-graph-canvas"></canvas>
     </div>
+
+    <!-- Control Panel -->
+    <aside id="control-panel" style="position: fixed; top: 100px; right: 20px; z-index: 1000; background: rgba(15, 15, 35, 0.9); backdrop-filter: blur(10px); border-radius: 12px; padding: 20px; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.1); max-width: 280px;">
+        <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 20px; color: #ffffff;">Controls</h3>
+        
+        <div style="margin-bottom: 20px;">
+            <label style="display: block; font-size: 12px; color: rgba(255, 255, 255, 0.7); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">Visualization Mode</label>
+            <select id="mode-select" style="width: 100%; padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 6px; color: #ffffff; font-size: 14px; cursor: pointer;">
+                <option value="force">Force-Directed</option>
+                <option value="sphere">Sphere</option>
+                <option value="grid">Grid</option>
+                <option value="hierarchical">Hierarchical</option>
+            </select>
+        </div>
+        
+        <div style="margin-bottom: 20px;">
+            <label style="display: block; font-size: 12px; color: rgba(255, 255, 255, 0.7); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">Node Size</label>
+            <input type="range" id="node-size-slider" min="0.5" max="3" step="0.1" value="1" style="width: 100%; cursor: pointer;">
+        </div>
+        
+        <div style="margin-bottom: 20px;">
+            <label style="display: block; font-size: 12px; color: rgba(255, 255, 255, 0.7); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">Animation Speed</label>
+            <input type="range" id="speed-slider" min="0" max="2" step="0.1" value="1" style="width: 100%; cursor: pointer;">
+        </div>
+        
+        <div style="margin-bottom: 20px;">
+            <label style="display: flex; align-items: center; cursor: pointer; font-size: 14px;">
+                <input type="checkbox" id="labels-toggle" checked style="margin-right: 10px; width: 18px; height: 18px; cursor: pointer;">
+                <span>Show Labels</span>
+            </label>
+        </div>
+        
+        <div style="margin-bottom: 20px;">
+            <label style="display: flex; align-items: center; cursor: pointer; font-size: 14px;">
+                <input type="checkbox" id="connections-toggle" checked style="margin-right: 10px; width: 18px; height: 18px; cursor: pointer;">
+                <span>Show Connections</span>
+            </label>
+        </div>
+        
+        <button id="reset-camera" style="width: 100%; padding: 12px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none; border-radius: 6px; color: white; font-size: 14px; font-weight: 600; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; margin-top: 10px;">
+            Reset Camera
+        </button>
+        
+        <button id="fullscreen-toggle" style="width: 100%; padding: 12px; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 6px; color: white; font-size: 14px; font-weight: 600; cursor: pointer; transition: transform 0.2s, background 0.2s; margin-top: 10px;">
+            Toggle Fullscreen
+        </button>
+    </aside>
+
+    <!-- Company/Node Details Panel -->
+    <aside id="details-panel" style="position: fixed; bottom: 20px; left: 20px; z-index: 1000; background: rgba(15, 15, 35, 0.95); backdrop-filter: blur(10px); border-radius: 12px; padding: 24px; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.1); max-width: 400px; min-width: 320px; display: none;">
+        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 16px;">
+            <h3 id="detail-title" style="font-size: 20px; font-weight: 700; color: #ffffff; margin: 0;">Node Details</h3>
+            <button id="close-details" style="background: none; border: none; color: rgba(255, 255, 255, 0.6); font-size: 24px; cursor: pointer; line-height: 1; padding: 0; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; transition: color 0.2s;">&times;</button>
+        </div>
+        
+        <div id="detail-content" style="color: rgba(255, 255, 255, 0.8); font-size: 14px; line-height: 1.6;">
+            <p style="margin-bottom: 12px;"><strong style="color: #ffffff;">Type:</strong> <span id="detail-type">-</span></p>
+            <p style="margin-bottom: 12px;"><strong style="color: #ffffff;">Category:</strong> <span id="detail-category">-</span></p>
+            <p style="margin-bottom: 12px;"><strong style="color: #ffffff;">Connections:</strong> <span id="detail-connections">0</span></p>
+            <p style="margin-bottom: 16px;"><strong style="color: #ffffff;">Description:</strong></p>
+            <p id="detail-description" style="color: rgba(255, 255, 255, 0.7); font-size: 13px; line-height: 1.7;">
+                Select a node to view details
+            </p>
+            <div id="detail-tags" style="margin-top: 16px; display: flex; flex-wrap: wrap; gap: 8px;">
+                <!-- Tags will be inserted here dynamically -->
+            </div>
+        </div>
+    </aside>
+
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.9); z-index: 9999; display: flex; align-items: center; justify-content: center; flex-direction: column;">
+        <div style="width: 60px; height: 60px; border: 4px solid rgba(255, 255, 255, 0.1); border-top-color: #667eea; border-radius: 50%; animation: spin 1s linear infinite;"></div>
+        <p style="margin-top: 20px; font-size: 16px; color: rgba(255, 255, 255, 0.8);">Loading Knowledge Graph...</p>
+        <style>
+            @keyframes spin {
+                to { transform: rotate(360deg); }
+            }
+        </style>
+    </div>
+
+    <!-- Stats Display -->
+    <div id="stats-panel" style="position: fixed; top: 100px; left: 20px; z-index: 1000; background: rgba(15, 15, 35, 0.9); backdrop-filter: blur(10px); border-radius: 12px; padding: 16px; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.1); font-size: 13px; color: rgba(255, 255, 255, 0.8);">
+        <div style="margin-bottom: 8px;"><strong>Nodes:</strong> <span id="stat-nodes">0</span></div>
+        <div style="margin-bottom: 8px;"><strong>Connections:</strong> <span id="stat-connections">0</span></div>
+        <div><strong>FPS:</strong> <span id="stat-fps">60</span></div>
+    </div>
+
+    <!-- Info Tooltip -->
+    <div id="node-tooltip" style="position: fixed; z-index: 10000; background: rgba(15, 15, 35, 0.95); backdrop-filter: blur(10px); border-radius: 8px; padding: 12px 16px; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4); border: 1px solid rgba(255, 255, 255, 0.2); pointer-events: none; display: none; font-size: 14px; color: #ffffff; max-width: 250px;">
+        <div id="tooltip-content"></div>
+    </div>
+
+    <!-- Instructions Overlay (dismissible) -->
+    <div id="instructions-overlay" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 10001; background: rgba(15, 15, 35, 0.98); backdrop-filter: blur(10px); border-radius: 16px; padding: 40px; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5); border: 1px solid rgba(255, 255, 255, 0.1); max-width: 500px; text-align: center;">
+        <h2 style="font-size: 28px; font-weight: 700; margin-bottom: 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+            Welcome to the Knowledge Graph
+        </h2>
+        <p style="color: rgba(255, 255, 255, 0.8); font-size: 16px; line-height: 1.6; margin-bottom: 24px;">
+            Explore connections in 3D space. Use your mouse to rotate, zoom, and navigate the graph. Click on nodes to view details.
+        </p>
+        <div style="background: rgba(255, 255, 255, 0.05); border-radius: 8px; padding: 20px; margin-bottom: 24px; text-align: left;">
+            <p style="color: rgba(255, 255, 255, 0.7); font-size: 14px; margin-bottom: 10px;"><strong style="color: #ffffff;">🖱️ Left Click + Drag:</strong> Rotate view</p>
+            <p style="color: rgba(255, 255, 255, 0.7); font-size: 14px; margin-bottom: 10px;"><strong style="color: #ffffff;">🖱️ Right Click + Drag:</strong> Pan view</p>
+            <p style="color: rgba(255, 255, 255, 0.7); font-size: 14px; margin-bottom: 10px;"><strong style="color: #ffffff;">🖱️ Scroll:</strong> Zoom in/out</p>
+            <p style="color: rgba(255, 255, 255, 0.7); font-size: 14px;"><strong style="color: #ffffff;">🖱️ Click Node:</strong> View details</p>
+        </div>
+        <button id="start-exploring" style="padding: 14px 32px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none; border-radius: 8px; color: white; font-size: 16px; font-weight: 600; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;">
+            Start Exploring
+        </button>
+    </div>
+
+    <!-- Custom JavaScript for the Knowledge Graph -->
+    <script src="knowledge-graph.js"></script>
     
-    <div id="info-overlay">
-        <h1>Robotics Industry Knowledge Graph</h1>
-        <p>Explore connections between leading robotics companies</p>
-        <div class="controls-hint">
-            <span>🖱️ Drag to rotate</span>
-            <span>🔍 Scroll to zoom</span>
-            <span>👆 Click nodes for details</span>
-        </div>
-    </div>
-
-    <div id="node-detail-card" class="hidden">
-        <button class="close-btn" onclick="closeNodeDetail()">×</button>
-        <h2 id="node-name"></h2>
-        <p id="node-category"></p>
-        <p id="node-description"></p>
-        <div id="node-connections"></div>
-    </div>
-
-    <div id="stats">
-        <div class="stat-item">
-            <span class="stat-label">Companies</span>
-            <span class="stat-value" id="node-count">0</span>
-        </div>
-        <div class="stat-item">
-            <span class="stat-label">Connections</span>
-            <span class="stat-value" id="edge-count">0</span>
-        </div>
-    </div>
-
-    <canvas id="graph-canvas"></canvas>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="/js/knowledge-graph.js"></script>
+    <!-- Additional interaction scripts -->
+    <script>
+        // Hide loading overlay once everything is loaded
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                const loadingOverlay = document.getElementById('loading-overlay');
+                if (loadingOverlay) {
+                    loadingOverlay.style.opacity = '0';
+                    loadingOverlay.style.transition = 'opacity 0.5s';
+                    setTimeout(() => {
+                        loadingOverlay.style.display = 'none';
+                    }, 500);
+                }
+            }, 1000);
+        });
+        
+        // Instructions overlay dismiss
+        document.getElementById('start-exploring')?.addEventListener('click', function() {
+            const overlay = document.getElementById('instructions-overlay');
+            overlay.style.opacity = '0';
+            overlay.style.transition = 'opacity 0.3s';
+            setTimeout(() => {
+                overlay.style.display = 'none';
+            }, 300);
+        });
+        
+        // Close details panel
+        document.getElementById('close-details')?.addEventListener('click', function() {
+            document.getElementById('details-panel').style.display = 'none';
+        });
+        
+        // Fullscreen toggle
+        document.getElementById('fullscreen-toggle')?.addEventListener('click', function() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen();
+            } else {
+                document.exitFullscreen();
+            }
+        });
+        
+        // Button hover effects
+        document.querySelectorAll('button').forEach(button => {
+            button.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-2px)';
+                if (this.id === 'reset-camera' || this.id === 'start-exploring') {
+                    this.style.boxShadow = '0 8px 24px rgba(102, 126, 234, 0.4)';
+                }
+            });
+            button.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+                if (this.id === 'reset-camera' || this.id === 'start-exploring') {
+                    this.style.boxShadow = 'none';
+                }
+            });
+        });
+        
+        // Responsive adjustments
+        function adjustForMobile() {
+            if (window.innerWidth < 768) {
+                const controlPanel = document.getElementById('control-panel');
+                const statsPanel = document.getElementById('stats-panel');
+                const detailsPanel = document.getElementById('details-panel');
+                
+                if (controlPanel) {
+                    controlPanel.style.right = '10px';
+                    controlPanel.style.top = '80px';
+                    controlPanel.style.maxWidth = '240px';
+                    controlPanel.style.padding = '15px';
+                }
+                
+                if (statsPanel) {
+                    statsPanel.style.left = '10px';
+                    statsPanel.style.top = '80px';
+                    statsPanel.style.fontSize = '12px';
+                    statsPanel.style.padding = '12px';
+                }
+                
+                if (detailsPanel) {
+                    detailsPanel.style.left = '10px';
+                    detailsPanel.style.bottom = '10px';
+                    detailsPanel.style.right = '10px';
+                    detailsPanel.style.maxWidth = 'none';
+                    detailsPanel.style.minWidth = '0';
+                }
+            }
+        }
+        
+        adjustForMobile();
+        window.addEventListener('resize', adjustForMobile);
+    </script>
 </body>
 </html>
