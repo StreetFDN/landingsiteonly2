@@ -1,473 +1,579 @@
 // FILE: components/knowledge-graph/graphdata.ts
 import { GraphData, GraphNode, GraphEdge } from './types';
 
-// Comprehensive Robotics Projects Research Database
-// Based on real robotics ecosystem data
+// MULTI-SECTOR KNOWLEDGE GRAPH
+// 7 Sectors: Robotics, Nuclear, Defense, Biotech, Crypto, Space, AI
+
+// ==================== SECTOR COLOR SCHEME ====================
+const SECTOR_COLORS = {
+  robotics: { primary: '#00bfff', secondary: '#4169e1' },
+  nuclear: { primary: '#00ff00', secondary: '#32cd32' },
+  defense: { primary: '#ff0000', secondary: '#dc143c' },
+  biotech: { primary: '#9370db', secondary: '#8a2be2' },
+  crypto: { primary: '#ffa500', secondary: '#ff8c00' },
+  space: { primary: '#00ffff', secondary: '#00ced1' },
+  ai: { primary: '#ff1493', secondary: '#c71585' }
+};
 
 const nodes: GraphNode[] = [
-  // Companies - Humanoid Robotics
+  // ==================== ROBOTICS SECTOR ====================
   {
     id: 'opendroids',
     label: 'OpenDroids',
     type: 'company',
-    description: 'Humanoid robotics company building at the frontier of AI-powered robots',
+    sector: 'robotics',
+    description: 'Humanoid robotics company building AI-powered robots',
     color: '#00bfff',
     size: 1.5,
-    metadata: {
-      founded: 2024,
-      sector: 'Humanoid Robotics',
-      stage: 'Early Stage',
-      funding: '$2M+'
-    }
+    metadata: { founded: 2024, funding: '$2M+', stage: 'Early' }
   },
   {
     id: 'figure-ai',
     label: 'Figure AI',
     type: 'company',
-    description: 'Developing general-purpose humanoid robots for commercial applications',
+    sector: 'robotics',
+    description: 'General-purpose humanoid robots for commercial applications',
     color: '#4169e1',
     size: 1.8,
-    metadata: {
-      founded: 2022,
-      sector: 'Humanoid Robotics',
-      stage: 'Series B',
-      funding: '$754M'
-    }
+    metadata: { founded: 2022, funding: '$754M', stage: 'Series B' }
   },
   {
-    id: '1x-technologies',
+    id: '1x-tech',
     label: '1X Technologies',
     type: 'company',
-    description: 'Norwegian humanoid robotics company, creators of EVE and NEO',
-    color: '#6495ed',
-    size: 1.6,
-    metadata: {
-      founded: 2014,
-      sector: 'Humanoid Robotics',
-      stage: 'Series B',
-      funding: '$125M'
-    }
-  },
-  {
-    id: 'apptronik',
-    label: 'Apptronik',
-    type: 'company',
-    description: 'Building Apollo, a general-purpose humanoid robot for logistics',
+    sector: 'robotics',
+    description: 'Norwegian humanoid robotics (EVE, NEO)',
     color: '#1e90ff',
-    size: 1.4,
-    metadata: {
-      founded: 2016,
-      sector: 'Humanoid Robotics',
-      stage: 'Series A',
-      funding: '$63M'
-    }
+    size: 1.6,
+    metadata: { founded: 2014, funding: '$125M' }
   },
-  
-  // Companies - Industrial & Logistics
   {
     id: 'boston-dynamics',
     label: 'Boston Dynamics',
     type: 'company',
-    description: 'Pioneering robotics company known for Spot, Atlas, and Stretch',
-    color: '#ff6347',
+    sector: 'robotics',
+    description: 'Pioneering robotics: Spot, Atlas, Stretch',
+    color: '#5f9ea0',
     size: 2.0,
-    metadata: {
-      founded: 1992,
-      sector: 'Industrial Robotics',
-      stage: 'Mature',
-      owner: 'Hyundai'
-    }
+    metadata: { founded: 1992, owner: 'Hyundai' }
+  },
+
+  // ==================== NUCLEAR SECTOR ====================
+  {
+    id: 'terrapower',
+    label: 'TerraPower',
+    type: 'company',
+    sector: 'nuclear',
+    description: 'Next-gen nuclear reactor technology (Bill Gates)',
+    color: '#00ff00',
+    size: 1.9,
+    metadata: { founded: 2008, funding: '$1B+', type: 'SMR' }
   },
   {
-    id: 'agility-robotics',
-    label: 'Agility Robotics',
+    id: 'nuscale',
+    label: 'NuScale Power',
     type: 'company',
-    description: 'Creator of Digit, a bipedal robot for logistics and delivery',
-    color: '#ff7f50',
+    sector: 'nuclear',
+    description: 'Small modular reactor technology leader',
+    color: '#32cd32',
     size: 1.7,
-    metadata: {
-      founded: 2015,
-      sector: 'Logistics Robotics',
-      stage: 'Series B',
-      funding: '$178M'
-    }
+    metadata: { founded: 2007, status: 'Public', type: 'SMR' }
   },
   {
-    id: 'sanctuary-ai',
-    label: 'Sanctuary AI',
+    id: 'oklo',
+    label: 'Oklo',
     type: 'company',
-    description: 'Developing Phoenix, a general-purpose humanoid with human-like hands',
-    color: '#da70d6',
+    sector: 'nuclear',
+    description: 'Advanced fission microreactors',
+    color: '#7fff00',
     size: 1.5,
-    metadata: {
-      founded: 2018,
-      sector: 'Humanoid Robotics',
-      stage: 'Series A',
-      funding: '$140M'
-    }
+    metadata: { founded: 2013, funding: '$306M', type: 'Microreactor' }
   },
-  
-  // Companies - AI & Software
   {
-    id: 'covariant',
-    label: 'Covariant',
+    id: 'x-energy',
+    label: 'X-energy',
     type: 'company',
-    description: 'AI platform for robotic manipulation and warehouse automation',
-    color: '#9370db',
+    sector: 'nuclear',
+    description: 'High-temperature gas-cooled reactors',
+    color: '#90ee90',
     size: 1.6,
-    metadata: {
-      founded: 2017,
-      sector: 'Robotics AI',
-      stage: 'Series C',
-      funding: '$222M'
-    }
+    metadata: { founded: 2009, funding: '$500M+' }
+  },
+
+  // ==================== DEFENSE SECTOR ====================
+  {
+    id: 'anduril',
+    label: 'Anduril Industries',
+    type: 'company',
+    sector: 'defense',
+    description: 'AI-powered defense systems and autonomous weapons',
+    color: '#ff0000',
+    size: 2.1,
+    metadata: { founded: 2017, funding: '$3.8B', valuation: '$14B' }
   },
   {
-    id: 'skild-ai',
-    label: 'Skild AI',
+    id: 'palantir',
+    label: 'Palantir',
     type: 'company',
-    description: 'Foundation models for robotics and embodied AI',
-    color: '#8a2be2',
-    size: 1.4,
-    metadata: {
-      founded: 2023,
-      sector: 'Robotics AI',
-      stage: 'Seed',
-      funding: '$300M'
-    }
+    sector: 'defense',
+    description: 'Data analytics for defense and intelligence',
+    color: '#dc143c',
+    size: 2.2,
+    metadata: { founded: 2003, status: 'Public', market_cap: '$60B+' }
   },
   {
-    id: 'physical-intelligence',
-    label: 'Physical Intelligence',
+    id: 'shield-ai',
+    label: 'Shield AI',
     type: 'company',
-    description: 'General-purpose AI for robots to interact with the physical world',
-    color: '#ba55d3',
+    sector: 'defense',
+    description: 'AI pilots for military drones',
+    color: '#ff6347',
+    size: 1.6,
+    metadata: { founded: 2015, funding: '$575M' }
+  },
+  {
+    id: 'scale-ai-defense',
+    label: 'Scale AI (Defense)',
+    type: 'company',
+    sector: 'defense',
+    description: 'AI training data for defense applications',
+    color: '#cd5c5c',
     size: 1.5,
-    metadata: {
-      founded: 2023,
-      sector: 'Robotics AI',
-      stage: 'Seed',
-      funding: '$400M'
-    }
+    metadata: { founded: 2016, funding: '$600M+' }
   },
-  
-  // Investors
+
+  // ==================== BIOTECH SECTOR ====================
   {
-    id: 'street-labs',
-    label: 'Street Labs',
-    type: 'investor',
-    description: 'Early-stage venture capital focused on deep tech and robotics',
-    color: '#ff8c00',
-    size: 1.3,
-    metadata: {
-      type: 'Venture Capital',
-      focus: 'Deep Tech, Robotics, AI'
-    }
+    id: 'crispr-therapeutics',
+    label: 'CRISPR Therapeutics',
+    type: 'company',
+    sector: 'biotech',
+    description: 'Gene editing therapies (Nobel Prize tech)',
+    color: '#9370db',
+    size: 2.0,
+    metadata: { founded: 2013, status: 'Public', market_cap: '$4B+' }
   },
+  {
+    id: 'moderna',
+    label: 'Moderna',
+    type: 'company',
+    sector: 'biotech',
+    description: 'mRNA therapeutics platform',
+    color: '#8a2be2',
+    size: 2.3,
+    metadata: { founded: 2010, status: 'Public', market_cap: '$30B+' }
+  },
+  {
+    id: 'recursion',
+    label: 'Recursion Pharma',
+    type: 'company',
+    sector: 'biotech',
+    description: 'AI-powered drug discovery',
+    color: '#9932cc',
+    size: 1.7,
+    metadata: { founded: 2013, status: 'Public' }
+  },
+  {
+    id: 'ginkgo-bioworks',
+    label: 'Ginkgo Bioworks',
+    type: 'company',
+    sector: 'biotech',
+    description: 'Synthetic biology platform',
+    color: '#ba55d3',
+    size: 1.8,
+    metadata: { founded: 2008, status: 'Public' }
+  },
+
+  // ==================== CRYPTO/WEB3 SECTOR ====================
+  {
+    id: 'coinbase',
+    label: 'Coinbase',
+    type: 'company',
+    sector: 'crypto',
+    description: 'Leading cryptocurrency exchange',
+    color: '#ffa500',
+    size: 2.4,
+    metadata: { founded: 2012, status: 'Public', market_cap: '$50B+' }
+  },
+  {
+    id: 'circle',
+    label: 'Circle',
+    type: 'company',
+    sector: 'crypto',
+    description: 'USDC stablecoin issuer',
+    color: '#ff8c00',
+    size: 1.9,
+    metadata: { founded: 2013, valuation: '$9B' }
+  },
+  {
+    id: 'chainalysis',
+    label: 'Chainalysis',
+    type: 'company',
+    sector: 'crypto',
+    description: 'Blockchain analytics and compliance',
+    color: '#ffd700',
+    size: 1.6,
+    metadata: { founded: 2014, funding: '$366M' }
+  },
+  {
+    id: 'alchemy',
+    label: 'Alchemy',
+    type: 'company',
+    sector: 'crypto',
+    description: 'Web3 development platform',
+    color: '#ffb90f',
+    size: 1.7,
+    metadata: { founded: 2017, valuation: '$10.2B' }
+  },
+
+  // ==================== SPACE SECTOR ====================
+  {
+    id: 'spacex',
+    label: 'SpaceX',
+    type: 'company',
+    sector: 'space',
+    description: 'Reusable rockets and Starship',
+    color: '#00ffff',
+    size: 2.5,
+    metadata: { founded: 2002, valuation: '$180B', launches: '300+' }
+  },
+  {
+    id: 'rocket-lab',
+    label: 'Rocket Lab',
+    type: 'company',
+    sector: 'space',
+    description: 'Small satellite launch provider',
+    color: '#00ced1',
+    size: 1.7,
+    metadata: { founded: 2006, status: 'Public' }
+  },
+  {
+    id: 'planet-labs',
+    label: 'Planet Labs',
+    type: 'company',
+    sector: 'space',
+    description: 'Earth imaging satellite constellation',
+    color: '#40e0d0',
+    size: 1.6,
+    metadata: { founded: 2010, status: 'Public' }
+  },
+  {
+    id: 'axiom-space',
+    label: 'Axiom Space',
+    type: 'company',
+    sector: 'space',
+    description: 'Commercial space station',
+    color: '#48d1cc',
+    size: 1.8,
+    metadata: { founded: 2016, funding: '$505M' }
+  },
+
+  // ==================== AI/AGI SECTOR ====================
   {
     id: 'openai',
     label: 'OpenAI',
-    type: 'investor',
-    description: 'AI research lab investing in robotics and embodied intelligence',
-    color: '#00d4aa',
-    size: 1.9,
-    metadata: {
-      type: 'Strategic Investor',
-      focus: 'AI, Robotics'
-    }
+    type: 'company',
+    sector: 'ai',
+    description: 'ChatGPT, GPT-4, AGI research leader',
+    color: '#ff1493',
+    size: 2.6,
+    metadata: { founded: 2015, valuation: '$157B', model: 'GPT-4' }
   },
   {
-    id: 'amazon',
-    label: 'Amazon',
-    type: 'investor',
-    description: 'Major investor in logistics and warehouse robotics',
-    color: '#ff9900',
-    size: 1.8,
-    metadata: {
-      type: 'Strategic Investor',
-      focus: 'Logistics, Automation'
-    }
+    id: 'anthropic',
+    label: 'Anthropic',
+    type: 'company',
+    sector: 'ai',
+    description: 'Claude AI, AI safety focused',
+    color: '#c71585',
+    size: 2.1,
+    metadata: { founded: 2021, funding: '$7.3B' }
   },
   {
-    id: 'microsoft',
-    label: 'Microsoft',
-    type: 'investor',
-    description: 'Investing in humanoid robotics and AI platforms',
-    color: '#00a4ef',
-    size: 1.7,
-    metadata: {
-      type: 'Strategic Investor',
-      focus: 'AI, Cloud, Robotics'
-    }
+    id: 'cohere',
+    label: 'Cohere',
+    type: 'company',
+    sector: 'ai',
+    description: 'Enterprise AI language models',
+    color: '#db7093',
+    size: 1.5,
+    metadata: { founded: 2019, funding: '$445M' }
   },
   {
-    id: 'nvidia',
-    label: 'NVIDIA',
-    type: 'investor',
-    description: 'GPU maker investing heavily in robotics AI and simulation',
-    color: '#76b900',
-    size: 1.8,
-    metadata: {
-      type: 'Strategic Investor',
-      focus: 'AI Computing, Simulation'
-    }
-  },
-  {
-    id: 'khosla',
-    label: 'Khosla Ventures',
-    type: 'investor',
-    description: 'Leading VC firm with deep robotics portfolio',
-    color: '#ffa500',
+    id: 'perplexity',
+    label: 'Perplexity AI',
+    type: 'company',
+    sector: 'ai',
+    description: 'AI-powered search engine',
+    color: '#ff69b4',
     size: 1.4,
-    metadata: {
-      type: 'Venture Capital',
-      focus: 'Deep Tech, Climate, Robotics'
-    }
+    metadata: { founded: 2022, valuation: '$9B' }
+  },
+
+  // ==================== CROSS-SECTOR INVESTORS ====================
+  {
+    id: 'a16z',
+    label: 'Andreessen Horowitz',
+    type: 'investor',
+    sector: 'crypto',
+    description: 'Leading VC with $42B AUM',
+    color: '#ff4500',
+    size: 2.0,
+    metadata: { founded: 2009, aum: '$42B', focus: 'Crypto, AI, Bio' }
+  },
+  {
+    id: 'founders-fund',
+    label: 'Founders Fund',
+    type: 'investor',
+    sector: 'space',
+    description: 'Peter Thiel\'s deep tech VC',
+    color: '#ff6347',
+    size: 1.8,
+    metadata: { founded: 2005, focus: 'Space, Defense, Bio' }
   },
   {
     id: 'lux-capital',
     label: 'Lux Capital',
     type: 'investor',
-    description: 'Science-focused VC investing in breakthrough robotics',
-    color: '#ff6b6b',
-    size: 1.3,
-    metadata: {
-      type: 'Venture Capital',
-      focus: 'Science, Deep Tech'
-    }
-  },
-  
-  // Founders
-  {
-    id: 'pieter-abbeel',
-    label: 'Pieter Abbeel',
-    type: 'founder',
-    description: 'Berkeley professor, co-founded Covariant and Skild AI',
-    color: '#ffd700',
-    size: 1.2,
-    metadata: {
-      background: 'UC Berkeley',
-      expertise: 'Reinforcement Learning, Robotics'
-    }
-  },
-  {
-    id: 'brett-adcock',
-    label: 'Brett Adcock',
-    type: 'founder',
-    description: 'Serial entrepreneur, founded Figure AI',
-    color: '#ffec8b',
-    size: 1.3,
-    metadata: {
-      background: 'Archer Aviation, Vettery',
-      expertise: 'Startups, Hardware'
-    }
-  },
-  {
-    id: 'bernt-bornich',
-    label: 'Bernt Børnich',
-    type: 'founder',
-    description: 'CEO of 1X Technologies',
-    color: '#f0e68c',
-    size: 1.1,
-    metadata: {
-      background: 'Halodi Robotics',
-      expertise: 'Humanoid Robotics'
-    }
-  },
-  {
-    id: 'damion-shelton',
-    label: 'Damion Shelton',
-    type: 'founder',
-    description: 'CEO of Agility Robotics',
-    color: '#eee8aa',
-    size: 1.1,
-    metadata: {
-      background: 'Ottobock, CMU',
-      expertise: 'Bipedal Robotics'
-    }
-  },
-  {
-    id: 'geordie-rose',
-    label: 'Geordie Rose',
-    type: 'founder',
-    description: 'Co-founder of Sanctuary AI and D-Wave',
-    color: '#fafad2',
-    size: 1.2,
-    metadata: {
-      background: 'D-Wave, Quantum Computing',
-      expertise: 'AI, Physics'
-    }
-  },
-  
-  // Technologies
-  {
-    id: 'llm-robotics',
-    label: 'LLM-based Control',
-    type: 'technology',
-    description: 'Using large language models for robot control and reasoning',
-    color: '#00ff7f',
-    size: 1.4,
-    metadata: {
-      category: 'AI/ML',
-      maturity: 'Emerging'
-    }
-  },
-  {
-    id: 'sim2real',
-    label: 'Sim-to-Real Transfer',
-    type: 'technology',
-    description: 'Training robots in simulation and deploying to real world',
-    color: '#00fa9a',
-    size: 1.3,
-    metadata: {
-      category: 'AI/ML',
-      maturity: 'Established'
-    }
-  },
-  {
-    id: 'dexterous-manipulation',
-    label: 'Dexterous Manipulation',
-    type: 'technology',
-    description: 'Human-like hand dexterity for complex object manipulation',
-    color: '#90ee90',
-    size: 1.2,
-    metadata: {
-      category: 'Hardware',
-      maturity: 'Developing'
-    }
-  },
-  {
-    id: 'bipedal-locomotion',
-    label: 'Bipedal Locomotion',
-    type: 'technology',
-    description: 'Two-legged walking and balance for humanoid robots',
-    color: '#98fb98',
-    size: 1.3,
-    metadata: {
-      category: 'Hardware',
-      maturity: 'Established'
-    }
-  },
-  {
-    id: 'vision-transformers',
-    label: 'Vision Transformers',
-    type: 'technology',
-    description: 'Advanced computer vision for robot perception',
-    color: '#7fffd4',
-    size: 1.1,
-    metadata: {
-      category: 'AI/ML',
-      maturity: 'Established'
-    }
-  },
-  {
-    id: 'isaac-sim',
-    label: 'NVIDIA Isaac',
-    type: 'technology',
-    description: 'GPU-accelerated robotics simulation platform',
-    color: '#66cdaa',
-    size: 1.2,
-    metadata: {
-      category: 'Platform',
-      maturity: 'Established'
-    }
-  },
-  
-  // Locations
-  {
-    id: 'san-francisco',
-    label: 'San Francisco',
-    type: 'location',
-    description: 'Major hub for robotics and AI startups',
-    color: '#ff69b4',
+    sector: 'biotech',
+    description: 'Science and deep tech VC',
+    color: '#ff7f50',
     size: 1.6,
-    metadata: {
-      country: 'USA',
-      companies: 15
-    }
+    metadata: { founded: 2000, focus: 'Bio, Nuclear, Space' }
+  },
+  {
+    id: 'breakthrough-energy',
+    label: 'Breakthrough Energy',
+    type: 'investor',
+    sector: 'nuclear',
+    description: 'Bill Gates climate tech fund',
+    color: '#2e8b57',
+    size: 1.9,
+    metadata: { founded: 2015, focus: 'Nuclear, Clean Energy' }
+  },
+  {
+    id: 'sequoia',
+    label: 'Sequoia Capital',
+    type: 'investor',
+    sector: 'ai',
+    description: 'Legendary VC firm',
+    color: '#ff1493',
+    size: 2.1,
+    metadata: { founded: 1972, aum: '$85B' }
+  },
+
+  // ==================== KEY FOUNDERS ====================
+  {
+    id: 'elon-musk',
+    label: 'Elon Musk',
+    type: 'founder',
+    sector: 'space',
+    description: 'SpaceX, Tesla, Neuralink founder',
+    color: '#00ffff',
+    size: 1.8,
+    metadata: { companies: 'SpaceX, Tesla, Neuralink, X' }
+  },
+  {
+    id: 'sam-altman',
+    label: 'Sam Altman',
+    type: 'founder',
+    sector: 'ai',
+    description: 'OpenAI CEO, Y Combinator',
+    color: '#ff1493',
+    size: 1.7,
+    metadata: { role: 'OpenAI CEO' }
+  },
+  {
+    id: 'palmer-luckey',
+    label: 'Palmer Luckey',
+    type: 'founder',
+    sector: 'defense',
+    description: 'Anduril founder, Oculus creator',
+    color: '#ff0000',
+    size: 1.6,
+    metadata: { previous: 'Oculus VR' }
+  },
+  {
+    id: 'bill-gates',
+    label: 'Bill Gates',
+    type: 'founder',
+    sector: 'nuclear',
+    description: 'Microsoft, TerraPower, Breakthrough Energy',
+    color: '#00ff00',
+    size: 1.9,
+    metadata: { focus: 'Nuclear, Climate' }
+  },
+
+  // ==================== KEY TECHNOLOGIES ====================
+  {
+    id: 'llm-tech',
+    label: 'Large Language Models',
+    type: 'technology',
+    sector: 'ai',
+    description: 'Transformer-based AI models',
+    color: '#ff1493',
+    size: 1.5,
+    metadata: { category: 'AI/ML' }
+  },
+  {
+    id: 'smr-tech',
+    label: 'Small Modular Reactors',
+    type: 'technology',
+    sector: 'nuclear',
+    description: 'Next-gen nuclear reactor design',
+    color: '#00ff00',
+    size: 1.4,
+    metadata: { category: 'Energy' }
+  },
+  {
+    id: 'crispr-tech',
+    label: 'CRISPR Gene Editing',
+    type: 'technology',
+    sector: 'biotech',
+    description: 'Precise DNA modification tool',
+    color: '#9370db',
+    size: 1.6,
+    metadata: { category: 'Biotech' }
+  },
+  {
+    id: 'reusable-rockets',
+    label: 'Reusable Rockets',
+    type: 'technology',
+    sector: 'space',
+    description: 'Dramatically reduced launch costs',
+    color: '#00ffff',
+    size: 1.5,
+    metadata: { category: 'Aerospace' }
+  },
+  {
+    id: 'autonomous-systems',
+    label: 'Autonomous Systems',
+    type: 'technology',
+    sector: 'defense',
+    description: 'AI-powered military platforms',
+    color: '#ff0000',
+    size: 1.3,
+    metadata: { category: 'Defense' }
+  },
+  {
+    id: 'blockchain',
+    label: 'Blockchain',
+    type: 'technology',
+    sector: 'crypto',
+    description: 'Distributed ledger technology',
+    color: '#ffa500',
+    size: 1.4,
+    metadata: { category: 'Web3' }
+  },
+
+  // ==================== MAJOR HUBS ====================
+  {
+    id: 'sf-bay',
+    label: 'San Francisco Bay Area',
+    type: 'location',
+    sector: 'ai',
+    description: 'Global tech & AI capital',
+    color: '#ff69b4',
+    size: 2.0,
+    metadata: { country: 'USA', companies: '50+' }
+  },
+  {
+    id: 'dc-area',
+    label: 'Washington DC',
+    type: 'location',
+    sector: 'defense',
+    description: 'Defense tech hub',
+    color: '#ff1493',
+    size: 1.6,
+    metadata: { country: 'USA', companies: '25+' }
   },
   {
     id: 'boston',
     label: 'Boston',
     type: 'location',
-    description: 'Historic robotics hub, home to Boston Dynamics',
-    color: '#ff1493',
-    size: 1.4,
-    metadata: {
-      country: 'USA',
-      companies: 8
-    }
-  },
-  {
-    id: 'vancouver',
-    label: 'Vancouver',
-    type: 'location',
-    description: 'Emerging robotics cluster in Canada',
+    sector: 'biotech',
+    description: 'Biotech & robotics cluster',
     color: '#db7093',
-    size: 1.2,
-    metadata: {
-      country: 'Canada',
-      companies: 4
-    }
+    size: 1.7,
+    metadata: { country: 'USA', companies: '30+' }
   },
   {
-    id: 'oslo',
-    label: 'Oslo',
+    id: 'la',
+    label: 'Los Angeles',
     type: 'location',
-    description: 'Norwegian robotics hub',
-    color: '#ffb6c1',
-    size: 1.1,
-    metadata: {
-      country: 'Norway',
-      companies: 2
-    }
+    sector: 'space',
+    description: 'Aerospace & space hub',
+    color: '#00ced1',
+    size: 1.5,
+    metadata: { country: 'USA', companies: '20+' }
   },
 ];
 
 const edges: GraphEdge[] = [
-  // Investment Relationships
-  { id: 'e1', source: 'street-labs', target: 'opendroids', type: 'investment', strength: 0.9 },
-  { id: 'e2', source: 'openai', target: 'figure-ai', type: 'investment', strength: 0.8 },
-  { id: 'e3', source: 'openai', target: '1x-technologies', type: 'investment', strength: 0.8 },
-  { id: 'e4', source: 'microsoft', target: 'figure-ai', type: 'investment', strength: 0.7 },
-  { id: 'e5', source: 'nvidia', target: 'figure-ai', type: 'investment', strength: 0.7 },
-  { id: 'e6', source: 'amazon', target: 'agility-robotics', type: 'investment', strength: 0.9 },
-  { id: 'e7', source: 'khosla', target: 'covariant', type: 'investment', strength: 0.8 },
-  { id: 'e8', source: 'lux-capital', target: 'physical-intelligence', type: 'investment', strength: 0.8 },
-  { id: 'e9', source: 'khosla', target: 'skild-ai', type: 'investment', strength: 0.7 },
-  { id: 'e10', source: 'lux-capital', target: 'sanctuary-ai', type: 'investment', strength: 0.7 },
+  // ==================== ROBOTICS INVESTMENTS ====================
+  { id: 'e1', source: 'openai', target: 'figure-ai', type: 'investment', strength: 0.9 },
+  { id: 'e2', source: 'openai', target: '1x-tech', type: 'investment', strength: 0.8 },
   
-  // Founder Relationships
-  { id: 'f1', source: 'brett-adcock', target: 'figure-ai', type: 'founded', strength: 1.0 },
-  { id: 'f2', source: 'pieter-abbeel', target: 'covariant', type: 'founded', strength: 1.0 },
-  { id: 'f3', source: 'pieter-abbeel', target: 'skild-ai', type: 'founded', strength: 1.0 },
-  { id: 'f4', source: 'bernt-bornich', target: '1x-technologies', type: 'founded', strength: 1.0 },
-  { id: 'f5', source: 'damion-shelton', target: 'agility-robotics', type: 'founded', strength: 1.0 },
-  { id: 'f6', source: 'geordie-rose', target: 'sanctuary-ai', type: 'founded', strength: 1.0 },
+  // ==================== NUCLEAR INVESTMENTS ====================
+  { id: 'n1', source: 'breakthrough-energy', target: 'terrapower', type: 'investment', strength: 1.0 },
+  { id: 'n2', source: 'breakthrough-energy', target: 'oklo', type: 'investment', strength: 0.7 },
+  { id: 'n3', source: 'bill-gates', target: 'terrapower', type: 'founded', strength: 1.0 },
   
-  // Geographic Relationships
-  { id: 'g1', source: 'opendroids', target: 'san-francisco', type: 'geographic', strength: 0.6 },
-  { id: 'g2', source: 'figure-ai', target: 'san-francisco', type: 'geographic', strength: 0.6 },
-  { id: 'g3', source: 'physical-intelligence', target: 'san-francisco', type: 'geographic', strength: 0.6 },
-  { id: 'g4', source: 'covariant', target: 'san-francisco', type: 'geographic', strength: 0.6 },
-  { id: 'g5', source: 'boston-dynamics', target: 'boston', type: 'geographic', strength: 0.6 },
-  { id: 'g6', source: 'agility-robotics', target: 'boston', type: 'geographic', strength: 0.6 },
-  { id: 'g7', source: 'sanctuary-ai', target: 'vancouver', type: 'geographic', strength: 0.6 },
-  { id: 'g8', source: '1x-technologies', target: 'oslo', type: 'geographic', strength: 0.6 },
+  // ==================== DEFENSE INVESTMENTS ====================
+  { id: 'd1', source: 'founders-fund', target: 'anduril', type: 'investment', strength: 0.9 },
+  { id: 'd2', source: 'founders-fund', target: 'palantir', type: 'investment', strength: 0.8 },
+  { id: 'd3', source: 'palmer-luckey', target: 'anduril', type: 'founded', strength: 1.0 },
+  { id: 'd4', source: 'a16z', target: 'shield-ai', type: 'investment', strength: 0.7 },
   
-  // Technology Relationships
-  { id: 't1', source: 'figure-ai', target: 'llm-robotics', type: 'technology', strength: 0.7 },
-  { id: 't2', source: 'physical-intelligence', target: 'llm-robotics', type: 'technology', strength: 0.8 },
-  { id: 't3', source: 'covariant', target: 'vision-transformers', type: 'technology', strength: 0.8 },
-  { id: 't4', source: 'skild-ai', target: 'sim2real', type: 'technology', strength: 0.9 },
-  { id: 't5', source: 'boston-dynamics', target: 'bipedal-locomotion', type: 'technology', strength: 0.9 },
-  { id: 't6', source: 'agility-robotics', target: 'bipedal-locomotion', type: 'technology', strength: 0.9 },
-  { id: 't7', source: '1x-technologies', target: 'bipedal-locomotion', type: 'technology', strength: 0.8 },
-  { id: 't8', source: 'sanctuary-ai', target: 'dexterous-manipulation', type: 'technology', strength: 0.9 },
-  { id: 't9', source: 'figure-ai', target: 'dexterous-manipulation', type: 'technology', strength: 0.7 },
-  { id: 't10', source: 'nvidia', target: 'isaac-sim', type: 'technology', strength: 1.0 },
-  { id: 't11', source: 'figure-ai', target: 'isaac-sim', type: 'technology', strength: 0.6 },
-  { id: 't12', source: 'opendroids', target: 'isaac-sim', type: 'technology', strength: 0.6 },
+  // ==================== BIOTECH INVESTMENTS ====================
+  { id: 'b1', source: 'lux-capital', target: 'recursion', type: 'investment', strength: 0.8 },
+  { id: 'b2', source: 'a16z', target: 'moderna', type: 'investment', strength: 0.7 },
+  { id: 'b3', source: 'founders-fund', target: 'crispr-therapeutics', type: 'investment', strength: 0.8 },
+  
+  // ==================== CRYPTO INVESTMENTS ====================
+  { id: 'c1', source: 'a16z', target: 'coinbase', type: 'investment', strength: 0.9 },
+  { id: 'c2', source: 'a16z', target: 'alchemy', type: 'investment', strength: 0.8 },
+  { id: 'c3', source: 'founders-fund', target: 'circle', type: 'investment', strength: 0.7 },
+  
+  // ==================== SPACE INVESTMENTS ====================
+  { id: 's1', source: 'founders-fund', target: 'spacex', type: 'investment', strength: 1.0 },
+  { id: 's2', source: 'elon-musk', target: 'spacex', type: 'founded', strength: 1.0 },
+  { id: 's3', source: 'founders-fund', target: 'planet-labs', type: 'investment', strength: 0.7 },
+  { id: 's4', source: 'lux-capital', target: 'axiom-space', type: 'investment', strength: 0.6 },
+  
+  // ==================== AI INVESTMENTS ====================
+  { id: 'ai1', source: 'sequoia', target: 'openai', type: 'investment', strength: 0.9 },
+  { id: 'ai2', source: 'sam-altman', target: 'openai', type: 'founded', strength: 1.0 },
+  { id: 'ai3', source: 'a16z', target: 'anthropic', type: 'investment', strength: 0.8 },
+  { id: 'ai4', source: 'sequoia', target: 'perplexity', type: 'investment', strength: 0.7 },
+  
+  // ==================== TECHNOLOGY RELATIONSHIPS ====================
+  { id: 't1', source: 'openai', target: 'llm-tech', type: 'technology', strength: 1.0 },
+  { id: 't2', source: 'anthropic', target: 'llm-tech', type: 'technology', strength: 0.9 },
+  { id: 't3', source: 'figure-ai', target: 'llm-tech', type: 'technology', strength: 0.7 },
+  { id: 't4', source: 'terrapower', target: 'smr-tech', type: 'technology', strength: 1.0 },
+  { id: 't5', source: 'nuscale', target: 'smr-tech', type: 'technology', strength: 1.0 },
+  { id: 't6', source: 'crispr-therapeutics', target: 'crispr-tech', type: 'technology', strength: 1.0 },
+  { id: 't7', source: 'spacex', target: 'reusable-rockets', type: 'technology', strength: 1.0 },
+  { id: 't8', source: 'anduril', target: 'autonomous-systems', type: 'technology', strength: 0.9 },
+  { id: 't9', source: 'coinbase', target: 'blockchain', type: 'technology', strength: 0.8 },
+  
+  // ==================== GEOGRAPHIC RELATIONSHIPS ====================
+  { id: 'g1', source: 'openai', target: 'sf-bay', type: 'geographic', strength: 0.6 },
+  { id: 'g2', source: 'anthropic', target: 'sf-bay', type: 'geographic', strength: 0.6 },
+  { id: 'g3', source: 'figure-ai', target: 'sf-bay', type: 'geographic', strength: 0.6 },
+  { id: 'g4', source: 'coinbase', target: 'sf-bay', type: 'geographic', strength: 0.6 },
+  { id: 'g5', source: 'anduril', target: 'dc-area', type: 'geographic', strength: 0.6 },
+  { id: 'g6', source: 'palantir', target: 'dc-area', type: 'geographic', strength: 0.6 },
+  { id: 'g7', source: 'moderna', target: 'boston', type: 'geographic', strength: 0.6 },
+  { id: 'g8', source: 'boston-dynamics', target: 'boston', type: 'geographic', strength: 0.6 },
+  { id: 'g9', source: 'spacex', target: 'la', type: 'geographic', strength: 0.6 },
+  { id: 'g10', source: 'rocket-lab', target: 'la', type: 'geographic', strength: 0.6 },
+  
+  // ==================== CROSS-SECTOR SYNERGIES ====================
+  { id: 'x1', source: 'openai', target: 'anduril', type: 'partnership', strength: 0.5 },
+  { id: 'x2', source: 'spacex', target: 'shield-ai', type: 'partnership', strength: 0.4 },
+  { id: 'x3', source: 'recursion', target: 'openai', type: 'partnership', strength: 0.6 },
 ];
 
 export const graphData: GraphData = {
@@ -475,7 +581,21 @@ export const graphData: GraphData = {
   edges,
 };
 
-// Helper to get node color by type
+// ==================== HELPER FUNCTIONS ====================
+
+export const getSectorColor = (sector: string): string => {
+  const colors: Record<string, string> = {
+    robotics: '#00bfff',
+    nuclear: '#00ff00',
+    defense: '#ff0000',
+    biotech: '#9370db',
+    crypto: '#ffa500',
+    space: '#00ffff',
+    ai: '#ff1493',
+  };
+  return colors[sector] || '#888888';
+};
+
 export const getNodeColorByType = (type: string): string => {
   const colors: Record<string, string> = {
     company: '#00bfff',
@@ -487,13 +607,31 @@ export const getNodeColorByType = (type: string): string => {
   return colors[type] || '#888888';
 };
 
-// Helper to get edge color by type
 export const getEdgeColorByType = (type: string): string => {
   const colors: Record<string, string> = {
     investment: '#ff8c00',
     founded: '#ffd700',
     geographic: '#ff69b4',
     technology: '#00ff7f',
+    partnership: '#00bfff',
+    acquisition: '#ff0000',
   };
   return colors[type] || '#666666';
 };
+
+export const SECTOR_LABELS: Record<string, string> = {
+  robotics: 'Robotics',
+  nuclear: 'Nuclear Energy',
+  defense: 'Defense Tech',
+  biotech: 'Biotechnology',
+  crypto: 'Crypto/Web3',
+  space: 'Space Tech',
+  ai: 'AI/AGI',
+};
+
+// Stats by sector
+export const getNodesBySector = (sector: string) => 
+  nodes.filter(n => n.sector === sector);
+
+export const getAllSectors = () => 
+  Array.from(new Set(nodes.map(n => n.sector)));
