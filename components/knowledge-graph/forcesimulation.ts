@@ -16,13 +16,18 @@ export class ForceSimulation {
   ) {
     this.nodes = nodes;
     this.edges = edges;
+    
+    // Adaptive configuration based on node count
+    const nodeCount = nodes.length;
+    const scaleFactor = Math.min(1, 50 / nodeCount); // Scale down forces for larger graphs
+    
     this.config = {
-      repulsionStrength: config.repulsionStrength ?? 100,
-      attractionStrength: config.attractionStrength ?? 0.05,
-      centeringForce: config.centeringForce ?? 0.01,
-      damping: config.damping ?? 0.9,
-      minDistance: config.minDistance ?? 3,
-      maxDistance: config.maxDistance ?? 50,
+      repulsionStrength: config.repulsionStrength ?? (150 * scaleFactor),
+      attractionStrength: config.attractionStrength ?? 0.04,
+      centeringForce: config.centeringForce ?? 0.008,
+      damping: config.damping ?? 0.88,
+      minDistance: config.minDistance ?? (4 * scaleFactor),
+      maxDistance: config.maxDistance ?? 60,
     };
 
     // Initialize positions and velocities
@@ -30,12 +35,13 @@ export class ForceSimulation {
   }
 
   private initializePositions() {
-    this.nodes.forEach((node) => {
+    this.nodes.forEach((node, index) => {
       if (!node.position) {
-        // Initialize in a sphere around origin
+        // Distribute nodes in a larger sphere for bigger graphs
         const theta = Math.random() * Math.PI * 2;
         const phi = Math.acos(2 * Math.random() - 1);
-        const radius = 15 + Math.random() * 10;
+        const baseRadius = 25; // Increased from 15
+        const radius = baseRadius + Math.random() * 15;
         
         node.position = [
           radius * Math.sin(phi) * Math.cos(theta),
@@ -53,6 +59,16 @@ export class ForceSimulation {
   private applyRepulsionForces() {
     const { repulsionStrength, minDistance } = this.config;
 
+    // Optimization: Use spatial hashing for large graphs
+    const nodeCount = this.nodes.length;
+    
+    if (nodeCount > 50) {
+      // For large graphs, only apply repulsion to nearby nodes
+      this.applyRepulsionForcesOptimized();
+      return;
+    }
+
+    // Standard all-pairs repulsion for smaller graphs
     for (let i = 0; i < this.nodes.length; i++) {
       for (let j = i + 1; j < this.nodes.length; j++) {
         const node1 = this.nodes[i];
@@ -65,9 +81,54 @@ export class ForceSimulation {
         const distanceSquared = dx * dx + dy * dy + dz * dz;
         const distance = Math.sqrt(distanceSquared);
 
-        if (distance < minDistance) {
+        if (distance < minDistance || distance > 100) {
           continue;
         }
+
+        // Repulsion force decreases with distance squared
+        const force = repulsionStrength / distanceSquared;
+        const forceX = (dx / distance) * force;
+        const forceY = (dy / distance) * force;
+        const forceZ = (dz / distance) * force;
+
+        node1.velocity![0] += forceX;
+        node1.velocity![1] += forceY;
+        node1.velocity![2] += forceZ;
+
+        node2.velocity![0] -= forceX;
+        node2.velocity![1] -= forceY;
+        node2.velocity![2] -= forceZ;
+      }
+    }
+  }
+
+  private applyRepulsionForcesOptimized() {
+    const { repulsionStrength, minDistance } = this.config;
+    const maxRepulsionDistance = 50; // Only consider nearby nodes
+
+    // Sample-based repulsion for performance
+    const samplingRate = Math.min(1, 500 / (this.nodes.length * this.nodes.length));
+    
+    for (let i = 0; i < this.nodes.length; i++) {
+      for (let j = i + 1; j < this.nodes.length; j++) {
+        // Skip some pairs for performance
+        if (Math.random() > samplingRate) continue;
+
+        const node1 = this.nodes[i];
+        const node2 = this.nodes[j];
+
+        const dx = node1.position![0] - node2.position![0];
+        const dy = node1.position![1] - node2.position![1];
+        const dz = node1.position![2] - node2.position![2];
+
+        const distanceSquared = dx * dx + dy * dy + dz * dz;
+        
+        // Skip if too far
+        if (distanceSquared > maxRepulsionDistance * maxRepulsionDistance) continue;
+        
+        const distance = Math.sqrt(distanceSquared);
+
+        if (distance < minDistance) continue;
 
         // Repulsion force decreases with distance squared
         const force = repulsionStrength / distanceSquared;
@@ -164,7 +225,7 @@ export class ForceSimulation {
     this.updatePositions();
   }
 
-  public start(iterations: number = 300, callback?: () => void) {
+  public start(iterations: number = 400, callback?: () => void) {
     this.isRunning = true;
     let count = 0;
 
