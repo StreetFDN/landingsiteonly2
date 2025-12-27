@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Robotics Industry Knowledge Graph</title>
+    <link rel="stylesheet" href="/css/knowledge-graph.css">
+</head>
+<body>
+    <div id="loading-screen">
+        <div class="loader"></div>
+        <p>Loading Knowledge Graph...</p>
+    </div>
+    
+    <div id="info-overlay">
+        <h1>Robotics Industry Knowledge Graph</h1>
+        <p>Explore connections between leading robotics companies</p>
+        <div class="controls-hint">
+            <span>🖱️ Drag to rotate</span>
+            <span>🔍 Scroll to zoom</span>
+            <span>👆 Click nodes for details</span>
+        </div>
+    </div>
+
+    <div id="node-detail-card" class="hidden">
+        <button class="close-btn" onclick="closeNodeDetail()">×</button>
+        <h2 id="node-name"></h2>
+        <p id="node-category"></p>
+        <p id="node-description"></p>
+        <div id="node-connections"></div>
+    </div>
+
+    <div id="stats">
+        <div class="stat-item">
+            <span class="stat-label">Companies</span>
+            <span class="stat-value" id="node-count">0</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-label">Connections</span>
+            <span class="stat-value" id="edge-count">0</span>
+        </div>
+    </div>
+
+    <canvas id="graph-canvas"></canvas>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="/js/knowledge-graph.js"></script>
+</body>
+</html>
