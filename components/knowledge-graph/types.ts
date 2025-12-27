@@ -1,12 +1,14 @@
 // FILE: components/knowledge-graph/types.ts
 
 export type NodeType = 'company' | 'investor' | 'founder' | 'technology' | 'location';
-export type EdgeType = 'investment' | 'founded' | 'geographic' | 'technology';
+export type EdgeType = 'investment' | 'founded' | 'geographic' | 'technology' | 'partnership' | 'acquisition';
+export type Sector = 'robotics' | 'nuclear' | 'defense' | 'biotech' | 'crypto' | 'space' | 'ai';
 
 export interface GraphNode {
   id: string;
   label: string;
   type: NodeType;
+  sector: Sector;
   description?: string;
   metadata?: Record<string, any>;
   // Position will be calculated by force-directed algorithm
