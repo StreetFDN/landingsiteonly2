@@ -23,14 +23,14 @@
   gap: 10px;
 }
 
-.controlGroup label {
+.controlGroup :global(label) {
   font-weight: 500;
   color: #555;
   font-size: 0.9rem;
 }
 
-.controlGroup select,
-.controlGroup input {
+.controlGroup :global(select),
+.controlGroup :global(input) {
   padding: 8px 12px;
   border: 2px solid #e0e0e0;
   border-radius: 5px;
@@ -38,13 +38,13 @@
   transition: all 0.3s;
 }
 
-.controlGroup select:focus,
-.controlGroup input:focus {
+.controlGroup :global(select:focus),
+.controlGroup :global(input:focus) {
   outline: none;
   border-color: #667eea;
 }
 
-.controlGroup input {
+.controlGroup :global(input) {
   width: 250px;
 }
 
@@ -73,11 +73,11 @@
   overflow: hidden;
 }
 
-.graphContainer svg {
+.graphContainer :global(svg) {
   cursor: grab;
 }
 
-.graphContainer svg:active {
+.graphContainer :global(svg:active) {
   cursor: grabbing;
 }
 
@@ -127,7 +127,7 @@
   color: #333;
 }
 
-.nodeDetails h2 {
+.nodeDetails :global(h2) {
   font-size: 1.5rem;
   color: #2c3e50;
   margin-bottom: 10px;
@@ -144,25 +144,25 @@
   margin-bottom: 15px;
 }
 
-.nodeDetails p {
+.nodeDetails :global(p) {
   color: #555;
   line-height: 1.6;
   margin-bottom: 20px;
 }
 
-.nodeDetails h3 {
+.nodeDetails :global(h3) {
   font-size: 1.1rem;
   color: #2c3e50;
   margin-bottom: 10px;
   margin-top: 15px;
 }
 
-.nodeDetails ul {
+.nodeDetails :global(ul) {
   list-style: none;
   padding: 0;
 }
 
-.nodeDetails li {
+.nodeDetails :global(li) {
   padding: 8px 12px;
   background: #f8f9fa;
   margin-bottom: 5px;
@@ -182,7 +182,7 @@
   z-index: 1000;
 }
 
-.legend h3 {
+.legend :global(h3) {
   font-size: 1rem;
   margin-bottom: 10px;
   color: #2c3e50;
@@ -222,7 +222,7 @@
     padding: 10px 15px;
   }
 
-  .controlGroup input {
+  .controlGroup :global(input) {
     width: 150px;
   }
 }
