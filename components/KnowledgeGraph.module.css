@@ -1,760 +1,228 @@
-/* ============================================================================
-   KNOWLEDGE GRAPH - CSS MODULE STYLES
-   Dark space theme with glassmorphism effects and professional animations
-   ============================================================================ */
-
-/* ============================================================================
-   Base Container
-   ============================================================================ */
-
 .container {
-  position: relative;
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
-  background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 50%, #0f1229 100%);
-  background-attachment: fixed;
-  color: #ffffff;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-.graphCanvas {
-  position: absolute;
-  top: 0;
-  left: 0;
   width: 100%;
-  height: 100%;
-  cursor: grab;
-  user-select: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
 
-.graphCanvas:active {
+.controls {
+  background: rgba(255, 255, 255, 0.95);
+  padding: 15px 40px;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  flex-wrap: wrap;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  z-index: 99;
+}
+
+.controlGroup {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.controlGroup label {
+  font-weight: 500;
+  color: #555;
+  font-size: 0.9rem;
+}
+
+.controlGroup select,
+.controlGroup input {
+  padding: 8px 12px;
+  border: 2px solid #e0e0e0;
+  border-radius: 5px;
+  font-size: 0.9rem;
+  transition: all 0.3s;
+}
+
+.controlGroup select:focus,
+.controlGroup input:focus {
+  outline: none;
+  border-color: #667eea;
+}
+
+.controlGroup input {
+  width: 250px;
+}
+
+.btn {
+  padding: 8px 20px;
+  background: #667eea;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.btn:hover {
+  background: #5568d3;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(102, 126, 234, 0.3);
+}
+
+.graphContainer {
+  flex: 1;
+  background: white;
+  position: relative;
+  overflow: hidden;
+}
+
+.graphContainer svg {
+  cursor: grab;
+}
+
+.graphContainer svg:active {
   cursor: grabbing;
 }
 
-/* ============================================================================
-   Loading Screen
-   ============================================================================ */
-
-.loadingScreen {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 50%, #0f1229 100%);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-  animation: fadeOut 0.6s ease 1.5s forwards;
-  backdrop-filter: blur(10px);
-}
-
-.loader {
-  position: relative;
-  width: 80px;
-  height: 80px;
-  margin-bottom: 30px;
-}
-
-.loader::before,
-.loader::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  border: 4px solid transparent;
-  transform: translate(-50%, -50%);
-}
-
-.loader::before {
-  border-top-color: #6366f1;
-  border-right-color: #6366f1;
-  animation: spin 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
-}
-
-.loader::after {
-  border-bottom-color: #a855f7;
-  border-left-color: #a855f7;
-  animation: spin 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite reverse;
-  animation-delay: 0.3s;
-}
-
-@keyframes spin {
-  0% { transform: translate(-50%, -50%) rotate(0deg); }
-  100% { transform: translate(-50%, -50%) rotate(360deg); }
-}
-
-@keyframes fadeOut {
-  to {
-    opacity: 0;
-    pointer-events: none;
-    visibility: hidden;
-  }
-}
-
-.loadingScreen p {
-  color: #a5b4fc;
-  font-size: 18px;
-  font-weight: 500;
-  letter-spacing: 1.5px;
-  animation: pulse 2s ease-in-out infinite;
-}
-
-@keyframes pulse {
-  0%, 100% { opacity: 0.6; }
-  50% { opacity: 1; }
-}
-
-/* ============================================================================
-   Error Screen
-   ============================================================================ */
-
-.errorScreen {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
-  padding: 50px;
-  background: rgba(15, 23, 42, 0.95);
-  backdrop-filter: blur(30px);
-  border-radius: 24px;
-  border: 1px solid rgba(239, 68, 68, 0.3);
-  box-shadow: 0 25px 80px rgba(239, 68, 68, 0.2),
-              0 0 0 1px rgba(239, 68, 68, 0.1);
-  max-width: 500px;
-  z-index: 1001;
-  animation: slideUp 0.5s ease;
-}
-
-@keyframes slideUp {
-  from {
-    opacity: 0;
-    transform: translate(-50%, -40%);
-  }
-  to {
-    opacity: 1;
-    transform: translate(-50%, -50%);
-  }
-}
-
-.errorScreen h2 {
-  font-size: 28px;
-  font-weight: 700;
-  color: #ef4444;
-  margin-bottom: 15px;
-}
-
-.errorScreen p {
-  color: #cbd5e1;
-  font-size: 16px;
-  line-height: 1.6;
-  margin-bottom: 10px;
-}
-
-.errorScreen button {
-  margin-top: 25px;
-  padding: 12px 32px;
-  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
-  color: white;
-  border: none;
-  border-radius: 12px;
-  font-size: 16px;
-  font-weight: 600;
+.node {
   cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 20px rgba(99, 102, 241, 0.4);
 }
 
-.errorScreen button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 30px rgba(99, 102, 241, 0.6);
-}
-
-.errorScreen button:active {
-  transform: translateY(0);
-}
-
-/* ============================================================================
-   Info Overlay
-   ============================================================================ */
-
-.infoOverlay {
-  position: fixed;
-  top: 40px;
-  left: 50%;
-  transform: translateX(-50%);
-  text-align: center;
-  z-index: 100;
-  pointer-events: none;
-  animation: fadeInDown 1s ease;
-  max-width: 90%;
-}
-
-@keyframes fadeInDown {
-  from {
-    opacity: 0;
-    transform: translateX(-50%) translateY(-30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(-50%) translateY(0);
-  }
-}
-
-.infoOverlay h1 {
-  font-size: 42px;
-  font-weight: 800;
-  background: linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #ec4899 100%);
-  background-size: 200% 200%;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  margin-bottom: 12px;
-  animation: gradientShift 5s ease infinite;
-  text-shadow: 0 0 40px rgba(99, 102, 241, 0.3);
-}
-
-@keyframes gradientShift {
-  0%, 100% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-}
-
-.infoOverlay > p {
-  color: #c7d2fe;
-  font-size: 18px;
-  font-weight: 400;
-  margin-bottom: 25px;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-}
-
-.controlsHint {
-  display: flex;
-  gap: 15px;
-  justify-content: center;
-  flex-wrap: wrap;
-  pointer-events: auto;
-}
-
-.controlsHint span {
-  background: rgba(15, 23, 42, 0.7);
-  backdrop-filter: blur(20px);
-  padding: 10px 20px;
-  border-radius: 24px;
-  font-size: 14px;
+.nodeLabel {
+  font-size: 12px;
   font-weight: 500;
-  border: 1px solid rgba(99, 102, 241, 0.4);
-  color: #e0e7ff;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3),
-              inset 0 1px 0 rgba(255, 255, 255, 0.1);
-  transition: all 0.3s ease;
+  fill: #2c3e50;
+  pointer-events: none;
 }
 
-.controlsHint span:hover {
-  transform: translateY(-3px);
-  border-color: rgba(99, 102, 241, 0.7);
-  box-shadow: 0 12px 32px rgba(99, 102, 241, 0.3),
-              inset 0 1px 0 rgba(255, 255, 255, 0.15);
+.link {
+  stroke: #999;
+  stroke-opacity: 0.6;
 }
 
-/* ============================================================================
-   Node Detail Card - Glassmorphism Style
-   ============================================================================ */
-
-.nodeDetailCard {
-  position: fixed;
-  top: 50%;
-  right: 40px;
-  transform: translateY(-50%);
-  width: 420px;
-  max-height: 85vh;
+.nodeDetails {
+  position: absolute;
+  right: 20px;
+  top: 80px;
+  width: 350px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  padding: 25px;
+  z-index: 1000;
+  max-height: calc(100vh - 200px);
   overflow-y: auto;
-  overflow-x: hidden;
-  background: rgba(15, 23, 42, 0.85);
-  backdrop-filter: blur(40px) saturate(180%);
-  -webkit-backdrop-filter: blur(40px) saturate(180%);
-  border-radius: 24px;
-  padding: 35px;
-  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.6),
-              0 0 0 1px rgba(99, 102, 241, 0.3),
-              0 0 60px rgba(99, 102, 241, 0.15),
-              inset 0 1px 0 rgba(255, 255, 255, 0.1);
-  z-index: 200;
-  animation: slideInRight 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-  border: 1px solid rgba(148, 163, 184, 0.1);
-}
-
-@keyframes slideInRight {
-  from {
-    opacity: 0;
-    transform: translateY(-50%) translateX(100px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(-50%) translateX(0);
-  }
 }
 
 .closeBtn {
   position: absolute;
-  top: 20px;
-  right: 20px;
-  width: 36px;
-  height: 36px;
+  top: 15px;
+  right: 15px;
+  background: none;
   border: none;
-  background: rgba(99, 102, 241, 0.15);
-  backdrop-filter: blur(10px);
-  color: #ffffff;
-  font-size: 28px;
-  font-weight: 300;
-  border-radius: 50%;
+  font-size: 24px;
+  color: #999;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  line-height: 1;
-  border: 1px solid rgba(99, 102, 241, 0.3);
+  transition: color 0.3s;
 }
 
 .closeBtn:hover {
-  background: rgba(239, 68, 68, 0.25);
-  border-color: rgba(239, 68, 68, 0.5);
-  transform: rotate(90deg) scale(1.1);
-  box-shadow: 0 0 20px rgba(239, 68, 68, 0.4);
+  color: #333;
 }
 
-.closeBtn:active {
-  transform: rotate(90deg) scale(0.95);
-}
-
-.nodeDetailCard h2 {
-  font-size: 28px;
-  font-weight: 800;
-  margin-bottom: 12px;
-  margin-right: 30px;
-  background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  line-height: 1.2;
-}
-
-.nodeCategory {
-  display: inline-block;
-  padding: 6px 16px;
-  background: rgba(99, 102, 241, 0.2);
-  backdrop-filter: blur(10px);
-  border-radius: 16px;
-  font-size: 13px;
-  font-weight: 600;
-  color: #c7d2fe;
-  margin-bottom: 20px;
-  border: 1px solid rgba(99, 102, 241, 0.4);
-  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.nodeDescription {
-  color: #e2e8f0;
-  line-height: 1.7;
-  margin-bottom: 25px;
-  font-size: 15px;
-  font-weight: 400;
-}
-
-.nodeConnections {
-  margin-top: 25px;
-  padding-top: 25px;
-  border-top: 1px solid rgba(99, 102, 241, 0.3);
-}
-
-.nodeConnections h3 {
-  font-size: 13px;
-  font-weight: 700;
-  color: #c7d2fe;
-  margin-bottom: 15px;
-  text-transform: uppercase;
-  letter-spacing: 1.5px;
-}
-
-.connectionItem {
-  padding: 12px 16px;
-  background: rgba(30, 41, 59, 0.5);
-  backdrop-filter: blur(10px);
-  border-radius: 12px;
+.nodeDetails h2 {
+  font-size: 1.5rem;
+  color: #2c3e50;
   margin-bottom: 10px;
-  font-size: 14px;
-  color: #f1f5f9;
-  border-left: 3px solid;
-  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-  cursor: pointer;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  padding-right: 30px;
 }
 
-.connectionItem:hover {
-  background: rgba(99, 102, 241, 0.2);
-  transform: translateX(8px) scale(1.02);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-}
-
-.connectionItem strong {
-  display: block;
-  font-weight: 700;
-  margin-bottom: 4px;
-  font-size: 15px;
-}
-
-.connectionItem small {
-  display: block;
-  color: #cbd5e1;
-  font-size: 12px;
-  font-weight: 500;
-}
-
-/* ============================================================================
-   Stats Panel - Glassmorphism Style
-   ============================================================================ */
-
-.stats {
-  position: fixed;
-  bottom: 40px;
-  left: 40px;
-  display: flex;
-  gap: 20px;
-  z-index: 100;
-  animation: fadeInUp 1s ease 0.5s both;
-}
-
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.statItem {
-  background: rgba(15, 23, 42, 0.75);
-  backdrop-filter: blur(30px) saturate(180%);
-  -webkit-backdrop-filter: blur(30px) saturate(180%);
-  padding: 18px 28px;
+.categoryBadge {
+  display: inline-block;
+  padding: 5px 15px;
   border-radius: 20px;
-  border: 1px solid rgba(99, 102, 241, 0.4);
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4),
-              inset 0 1px 0 rgba(255, 255, 255, 0.1);
-  transition: all 0.3s ease;
-  min-width: 140px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: white;
+  margin-bottom: 15px;
 }
 
-.statItem:hover {
-  transform: translateY(-5px);
-  border-color: rgba(99, 102, 241, 0.6);
-  box-shadow: 0 15px 50px rgba(99, 102, 241, 0.3),
-              inset 0 1px 0 rgba(255, 255, 255, 0.15);
+.nodeDetails p {
+  color: #555;
+  line-height: 1.6;
+  margin-bottom: 20px;
 }
 
-.statLabel {
-  display: block;
-  font-size: 12px;
-  font-weight: 700;
-  color: #a5b4fc;
-  text-transform: uppercase;
-  letter-spacing: 1.5px;
+.nodeDetails h3 {
+  font-size: 1.1rem;
+  color: #2c3e50;
+  margin-bottom: 10px;
+  margin-top: 15px;
+}
+
+.nodeDetails ul {
+  list-style: none;
+  padding: 0;
+}
+
+.nodeDetails li {
+  padding: 8px 12px;
+  background: #f8f9fa;
+  margin-bottom: 5px;
+  border-radius: 5px;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.legend {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 15px 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+.legend h3 {
+  font-size: 1rem;
+  margin-bottom: 10px;
+  color: #2c3e50;
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   margin-bottom: 8px;
+  font-size: 0.85rem;
+  color: #555;
 }
 
-.statValue {
-  display: block;
-  font-size: 36px;
-  font-weight: 800;
-  background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  line-height: 1;
+.legendColor {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-/* ============================================================================
-   Custom Scrollbar
-   ============================================================================ */
-
-.nodeDetailCard::-webkit-scrollbar {
-  width: 10px;
-}
-
-.nodeDetailCard::-webkit-scrollbar-track {
-  background: rgba(30, 41, 59, 0.3);
-  border-radius: 12px;
-  margin: 10px 0;
-}
-
-.nodeDetailCard::-webkit-scrollbar-thumb {
-  background: linear-gradient(135deg, rgba(99, 102, 241, 0.5) 0%, rgba(168, 85, 247, 0.5) 100%);
-  border-radius: 12px;
-  border: 2px solid rgba(15, 23, 42, 0.5);
-  transition: all 0.3s ease;
-}
-
-.nodeDetailCard::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(135deg, rgba(99, 102, 241, 0.8) 0%, rgba(168, 85, 247, 0.8) 100%);
-}
-
-/* ============================================================================
-   Responsive Design
-   ============================================================================ */
-
-/* Tablet (portrait and landscape) */
-@media (max-width: 1024px) {
-  .infoOverlay h1 {
-    font-size: 32px;
-  }
-  
-  .infoOverlay > p {
-    font-size: 16px;
-  }
-  
-  .nodeDetailCard {
-    width: 360px;
-    right: 30px;
-    padding: 30px;
-  }
-  
-  .stats {
-    bottom: 30px;
-    left: 30px;
-    gap: 15px;
-  }
-  
-  .statItem {
-    padding: 15px 24px;
-    min-width: 120px;
-  }
-}
-
-/* Mobile devices */
 @media (max-width: 768px) {
-  .infoOverlay {
-    top: 20px;
-    padding: 0 15px;
+  .controls {
+    padding: 10px 20px;
   }
-  
-  .infoOverlay h1 {
-    font-size: 24px;
-  }
-  
-  .infoOverlay > p {
-    font-size: 14px;
-    margin-bottom: 15px;
-  }
-  
-  .controlsHint {
-    flex-direction: column;
-    gap: 8px;
-    align-items: center;
-  }
-  
-  .controlsHint span {
-    padding: 8px 16px;
-    font-size: 12px;
-  }
-  
-  .nodeDetailCard {
-    right: 15px;
-    left: 15px;
-    width: auto;
-    max-width: none;
-    transform: none;
-    top: auto;
-    bottom: 15px;
-    max-height: 60vh;
-    padding: 25px 20px;
-    border-radius: 20px;
-  }
-  
-  .nodeDetailCard h2 {
-    font-size: 22px;
-  }
-  
-  .nodeDescription {
-    font-size: 14px;
-    line-height: 1.6;
-  }
-  
-  .closeBtn {
-    top: 15px;
-    right: 15px;
-    width: 32px;
-    height: 32px;
-    font-size: 24px;
-  }
-  
-  .stats {
-    bottom: 15px;
-    left: 15px;
-    right: 15px;
-    flex-direction: row;
-    justify-content: space-between;
-    gap: 10px;
-  }
-  
-  .statItem {
-    padding: 12px 16px;
-    min-width: 0;
-    flex: 1;
-  }
-  
-  .statLabel {
-    font-size: 10px;
-    margin-bottom: 6px;
-  }
-  
-  .statValue {
-    font-size: 24px;
-  }
-  
-  .errorScreen {
-    padding: 30px 25px;
-    margin: 0 20px;
-    max-width: calc(100% - 40px);
-  }
-  
-  .errorScreen h2 {
-    font-size: 22px;
-  }
-  
-  .errorScreen p {
-    font-size: 14px;
-  }
-}
 
-/* Small mobile devices */
-@media (max-width: 480px) {
-  .infoOverlay h1 {
-    font-size: 20px;
+  .nodeDetails {
+    width: calc(100vw - 40px);
+    right: 20px;
+    left: 20px;
   }
-  
-  .infoOverlay > p {
-    font-size: 12px;
-  }
-  
-  .controlsHint span {
-    font-size: 11px;
-    padding: 6px 12px;
-  }
-  
-  .nodeDetailCard {
-    max-height: 55vh;
-    padding: 20px 15px;
-  }
-  
-  .nodeDetailCard h2 {
-    font-size: 20px;
-  }
-  
-  .nodeCategory {
-    font-size: 11px;
-    padding: 5px 12px;
-  }
-  
-  .nodeDescription {
-    font-size: 13px;
-  }
-  
-  .connectionItem {
-    padding: 10px 12px;
-    font-size: 13px;
-  }
-  
-  .stats {
-    gap: 8px;
-  }
-  
-  .statItem {
-    padding: 10px 12px;
-  }
-  
-  .statLabel {
-    font-size: 9px;
-  }
-  
-  .statValue {
-    font-size: 20px;
-  }
-}
 
-/* ============================================================================
-   Accessibility Enhancements
-   ============================================================================ */
-
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
+  .legend {
+    bottom: 10px;
+    left: 10px;
+    padding: 10px 15px;
   }
-}
 
-/* Focus states for keyboard navigation */
-.closeBtn:focus-visible,
-.errorScreen button:focus-visible {
-  outline: 3px solid #6366f1;
-  outline-offset: 3px;
-}
-
-.controlsHint span:focus-visible {
-  outline: 2px solid #6366f1;
-  outline-offset: 2px;
-}
-
-/* High contrast mode support */
-@media (prefers-contrast: high) {
-  .container {
-    background: #000000;
-  }
-  
-  .nodeDetailCard,
-  .statItem {
-    border-width: 2px;
-  }
-  
-  .infoOverlay h1 {
-    -webkit-text-fill-color: #ffffff;
-  }
-}
-
-/* ============================================================================
-   Print Styles
-   ============================================================================ */
-
-@media print {
-  .loadingScreen,
-  .controlsHint,
-  .closeBtn {
-    display: none !important;
-  }
-  
-  .nodeDetailCard {
-    position: static;
-    transform: none;
-    page-break-inside: avoid;
+  .controlGroup input {
+    width: 150px;
   }
 }

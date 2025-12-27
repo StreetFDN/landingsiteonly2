@@ -1,135 +1,445 @@
 {
-  "companies": [
+  "nodes": [
     {
-      "id": "tesla",
-      "name": "Tesla",
-      "sector": "Automotive & AI Robotics",
-      "description": "Leading electric vehicle manufacturer developing advanced autonomous driving systems, humanoid robots (Optimus), and AI-powered manufacturing automation. Pioneer in integrating robotics with sustainable energy solutions.",
-      "color": "#E82127",
-      "connections": ["nvidia", "waymo", "amazon-robotics"]
+      "id": "autonomous-nav",
+      "label": "Autonomous Navigation",
+      "category": "algorithms",
+      "importance": 3,
+      "description": "Systems enabling robots to navigate and move in environments without human intervention, using sensor data and path planning algorithms."
     },
     {
-      "id": "boston-dynamics",
-      "name": "Boston Dynamics",
-      "sector": "Advanced Mobility Robotics",
-      "description": "Creator of highly dynamic robots including Spot (quadruped), Atlas (humanoid), and Stretch (warehouse automation). Known for breakthrough achievements in robot mobility, balance, and agility using advanced control systems.",
-      "color": "#00A4E4",
-      "connections": ["abb-robotics", "amazon-robotics", "universal-robots"]
+      "id": "lidar",
+      "label": "LiDAR",
+      "category": "sensors",
+      "importance": 2.5,
+      "description": "Light Detection and Ranging sensor that measures distances using laser light, creating detailed 3D maps of surroundings."
     },
     {
-      "id": "nvidia",
-      "name": "NVIDIA",
-      "sector": "AI Computing & Robotics Platform",
-      "description": "Leading AI computing company providing Isaac robotics platform, Jetson edge AI modules, and GPU-accelerated simulation tools. Powers AI and vision systems for autonomous machines, robots, and intelligent devices worldwide.",
-      "color": "#76B900",
-      "connections": ["tesla", "waymo", "dji", "boston-dynamics"]
+      "id": "slam",
+      "label": "SLAM",
+      "category": "algorithms",
+      "importance": 3,
+      "description": "Simultaneous Localization and Mapping - technique for robots to build a map while tracking their position within that map."
     },
     {
-      "id": "abb-robotics",
-      "name": "ABB Robotics",
-      "sector": "Industrial Automation",
-      "description": "Global leader in industrial robotics with 500,000+ robot installations worldwide. Specializes in manufacturing automation, collaborative robots (YuMi), and digital solutions for automotive, electronics, and logistics industries.",
-      "color": "#FF000F",
-      "connections": ["kuka", "fanuc", "universal-robots", "tesla"]
+      "id": "computer-vision",
+      "label": "Computer Vision",
+      "category": "software",
+      "importance": 3,
+      "description": "Field enabling machines to interpret and understand visual information from the world, essential for object recognition and scene understanding."
     },
     {
-      "id": "kuka",
-      "name": "KUKA",
-      "sector": "Industrial Robotics",
-      "description": "German robotics pioneer providing industrial robots, cobots, and automated manufacturing systems. Renowned for precision, reliability, and innovation in automotive production, aerospace, and general industry applications.",
-      "color": "#FF6B00",
-      "connections": ["abb-robotics", "fanuc", "universal-robots"]
+      "id": "ros",
+      "label": "ROS",
+      "category": "software",
+      "importance": 2.8,
+      "description": "Robot Operating System - flexible framework for writing robot software, providing tools and libraries for robot applications."
     },
     {
-      "id": "universal-robots",
-      "name": "Universal Robots",
-      "sector": "Collaborative Robotics",
-      "description": "Market leader in collaborative robot arms (cobots) designed to work safely alongside humans. Offers flexible, easy-to-program automation solutions for small and medium enterprises across diverse industries.",
-      "color": "#0099CC",
-      "connections": ["abb-robotics", "kuka", "boston-dynamics", "fanuc"]
+      "id": "actuators",
+      "label": "Actuators",
+      "category": "hardware",
+      "importance": 2.5,
+      "description": "Components that convert energy into motion, enabling robots to move and interact with their environment."
     },
     {
-      "id": "fanuc",
-      "name": "FANUC",
-      "sector": "Industrial Automation & CNC",
-      "description": "World's largest industrial robot manufacturer with over 750,000 robots installed globally. Provides comprehensive factory automation including CNC systems, robots, and smart manufacturing solutions with legendary reliability.",
-      "color": "#FFDD00",
-      "connections": ["abb-robotics", "kuka", "universal-robots", "amazon-robotics"]
+      "id": "machine-learning",
+      "label": "Machine Learning",
+      "category": "algorithms",
+      "importance": 3,
+      "description": "AI technique enabling robots to learn from data and improve performance without explicit programming."
     },
     {
-      "id": "irobot",
-      "name": "iRobot",
-      "sector": "Consumer Robotics",
-      "description": "Pioneer in consumer robotics, creator of Roomba robotic vacuum cleaners and Braava mopping robots. Leader in autonomous home cleaning with over 40 million robots sold, utilizing advanced navigation and mapping technologies.",
-      "color": "#6CC24A",
-      "connections": ["amazon-robotics", "boston-dynamics"]
+      "id": "imu",
+      "label": "IMU",
+      "category": "sensors",
+      "importance": 2,
+      "description": "Inertial Measurement Unit - measures acceleration, rotation, and magnetic fields to determine orientation and movement."
     },
     {
-      "id": "intuitive-surgical",
-      "name": "Intuitive Surgical",
-      "sector": "Medical Robotics",
-      "description": "Global leader in robotic-assisted surgery with the da Vinci Surgical System. Enables minimally invasive procedures with enhanced vision, precision, and control. Revolutionizing healthcare with over 10 million procedures performed worldwide.",
-      "color": "#00A6D6",
-      "connections": ["nvidia", "abb-robotics"]
+      "id": "path-planning",
+      "label": "Path Planning",
+      "category": "algorithms",
+      "importance": 2.5,
+      "description": "Algorithms that compute optimal or feasible paths for robots to move from one position to another while avoiding obstacles."
     },
     {
-      "id": "dji",
-      "name": "DJI",
-      "sector": "Aerial Robotics & Drones",
-      "description": "World's leading drone manufacturer controlling 70%+ of the consumer and commercial drone market. Provides advanced aerial imaging, agricultural drones, industrial inspection systems, and autonomous flight technologies.",
-      "color": "#000000",
-      "connections": ["nvidia", "waymo", "tesla"]
+      "id": "manipulator",
+      "label": "Robotic Arm",
+      "category": "hardware",
+      "importance": 2.5,
+      "description": "Mechanical arm with multiple joints, enabling precise manipulation of objects in industrial and service applications."
     },
     {
-      "id": "waymo",
-      "name": "Waymo",
-      "sector": "Autonomous Vehicles",
-      "description": "Alphabet's self-driving technology company and leader in autonomous vehicle development. Operating commercial robotaxi services with millions of autonomous miles driven. Pioneer in sensor fusion, machine learning, and safe autonomous mobility.",
-      "color": "#1A73E8",
-      "connections": ["tesla", "nvidia", "dji", "amazon-robotics"]
+      "id": "depth-camera",
+      "label": "Depth Camera",
+      "category": "sensors",
+      "importance": 2,
+      "description": "Camera that captures depth information, providing 3D understanding of scenes for navigation and manipulation."
     },
     {
-      "id": "amazon-robotics",
-      "name": "Amazon Robotics",
-      "sector": "Logistics & Warehouse Automation",
-      "description": "Develops and deploys advanced mobile robots, robotic arms, and AI-powered systems for warehouse automation. Over 750,000 robots operating in Amazon fulfillment centers, revolutionizing e-commerce logistics and supply chain efficiency.",
-      "color": "#FF9900",
-      "connections": ["boston-dynamics", "fanuc", "irobot", "waymo", "universal-robots"]
+      "id": "industrial-automation",
+      "label": "Industrial Automation",
+      "category": "applications",
+      "importance": 2.5,
+      "description": "Use of robots in manufacturing and industrial processes to increase efficiency, precision, and safety."
     },
     {
-      "id": "yaskawa",
-      "name": "Yaskawa",
-      "sector": "Motion Control & Robotics",
-      "description": "Japanese robotics and motion control leader producing Motoman industrial robots and advanced servo systems. Specializes in arc welding, material handling, and assembly automation with over 500,000 robots installed worldwide.",
-      "color": "#0066CC",
-      "connections": ["fanuc", "abb-robotics", "kuka"]
+      "id": "autonomous-vehicles",
+      "label": "Autonomous Vehicles",
+      "category": "applications",
+      "importance": 3,
+      "description": "Self-driving vehicles that use sensors and AI to navigate roads without human intervention."
     },
     {
-      "id": "omron",
-      "name": "Omron",
-      "sector": "Industrial Automation & AI",
-      "description": "Global automation leader providing mobile robots, collaborative systems, and AI-powered industrial solutions. Focuses on human-machine collaboration, sensing technology, and intelligent factory automation for Industry 4.0.",
-      "color": "#EC6800",
-      "connections": ["universal-robots", "abb-robotics", "nvidia"]
+      "id": "reinforcement-learning",
+      "label": "Reinforcement Learning",
+      "category": "algorithms",
+      "importance": 2.5,
+      "description": "Machine learning approach where agents learn optimal behaviors through trial and error and reward signals."
+    },
+    {
+      "id": "drone",
+      "label": "Drones/UAVs",
+      "category": "hardware",
+      "importance": 2.5,
+      "description": "Unmanned Aerial Vehicles capable of autonomous or remote-controlled flight for various applications."
+    },
+    {
+      "id": "object-detection",
+      "label": "Object Detection",
+      "category": "algorithms",
+      "importance": 2.5,
+      "description": "Computer vision technique to identify and locate objects within images or video streams."
+    },
+    {
+      "id": "grasping",
+      "label": "Robotic Grasping",
+      "category": "algorithms",
+      "importance": 2,
+      "description": "Techniques enabling robots to pick up and manipulate objects of various shapes and materials."
+    },
+    {
+      "id": "control-systems",
+      "label": "Control Systems",
+      "category": "software",
+      "importance": 2.5,
+      "description": "Systems that manage robot behavior and ensure desired performance through feedback and regulation."
+    },
+    {
+      "id": "medical-robotics",
+      "label": "Medical Robotics",
+      "category": "applications",
+      "importance": 2.5,
+      "description": "Robots used in healthcare for surgery, rehabilitation, and patient care, enhancing precision and outcomes."
+    },
+    {
+      "id": "force-sensors",
+      "label": "Force/Torque Sensors",
+      "category": "sensors",
+      "importance": 1.8,
+      "description": "Sensors measuring forces and torques applied to robot components, crucial for safe interaction and manipulation."
+    },
+    {
+      "id": "neural-networks",
+      "label": "Neural Networks",
+      "category": "algorithms",
+      "importance": 2.8,
+      "description": "Deep learning models inspired by biological neurons, used for perception, decision-making, and control."
+    },
+    {
+      "id": "warehouse-automation",
+      "label": "Warehouse Automation",
+      "category": "applications",
+      "importance": 2.3,
+      "description": "Automated systems for storage, retrieval, and movement of goods in warehouses and distribution centers."
+    },
+    {
+      "id": "servos",
+      "label": "Servo Motors",
+      "category": "hardware",
+      "importance": 2,
+      "description": "Precision motors with feedback control, essential for accurate positioning in robotic joints."
+    },
+    {
+      "id": "semantic-segmentation",
+      "label": "Semantic Segmentation",
+      "category": "algorithms",
+      "importance": 2,
+      "description": "Computer vision task of classifying each pixel in an image, enabling detailed scene understanding."
+    },
+    {
+      "id": "collision-avoidance",
+      "label": "Collision Avoidance",
+      "category": "algorithms",
+      "importance": 2.3,
+      "description": "Algorithms that detect and prevent collisions between robots and obstacles or other agents."
     }
   ],
-  "metadata": {
-    "version": "1.0",
-    "lastUpdated": "2025-12-27",
-    "totalCompanies": 14,
-    "sectors": [
-      "Automotive & AI Robotics",
-      "Advanced Mobility Robotics",
-      "AI Computing & Robotics Platform",
-      "Industrial Automation",
-      "Industrial Robotics",
-      "Collaborative Robotics",
-      "Consumer Robotics",
-      "Medical Robotics",
-      "Aerial Robotics & Drones",
-      "Autonomous Vehicles",
-      "Logistics & Warehouse Automation",
-      "Motion Control & Robotics"
-    ]
-  }
+  "links": [
+    {
+      "source": "autonomous-nav",
+      "target": "lidar",
+      "type": "uses",
+      "value": 3
+    },
+    {
+      "source": "autonomous-nav",
+      "target": "slam",
+      "type": "requires",
+      "value": 4
+    },
+    {
+      "source": "autonomous-nav",
+      "target": "path-planning",
+      "type": "includes",
+      "value": 4
+    },
+    {
+      "source": "slam",
+      "target": "lidar",
+      "type": "uses",
+      "value": 3
+    },
+    {
+      "source": "slam",
+      "target": "depth-camera",
+      "type": "uses",
+      "value": 2
+    },
+    {
+      "source": "slam",
+      "target": "imu",
+      "type": "uses",
+      "value": 2
+    },
+    {
+      "source": "computer-vision",
+      "target": "object-detection",
+      "type": "includes",
+      "value": 3
+    },
+    {
+      "source": "computer-vision",
+      "target": "semantic-segmentation",
+      "type": "includes",
+      "value": 3
+    },
+    {
+      "source": "computer-vision",
+      "target": "depth-camera",
+      "type": "uses",
+      "value": 2
+    },
+    {
+      "source": "ros",
+      "target": "autonomous-nav",
+      "type": "supports",
+      "value": 3
+    },
+    {
+      "source": "ros",
+      "target": "computer-vision",
+      "type": "integrates",
+      "value": 3
+    },
+    {
+      "source": "ros",
+      "target": "slam",
+      "type": "implements",
+      "value": 3
+    },
+    {
+      "source": "machine-learning",
+      "target": "computer-vision",
+      "type": "enhances",
+      "value": 4
+    },
+    {
+      "source": "machine-learning",
+      "target": "object-detection",
+      "type": "powers",
+      "value": 4
+    },
+    {
+      "source": "machine-learning",
+      "target": "neural-networks",
+      "type": "uses",
+      "value": 4
+    },
+    {
+      "source": "path-planning",
+      "target": "collision-avoidance",
+      "type": "includes",
+      "value": 3
+    },
+    {
+      "source": "manipulator",
+      "target": "actuators",
+      "type": "contains",
+      "value": 4
+    },
+    {
+      "source": "manipulator",
+      "target": "servos",
+      "type": "uses",
+      "value": 4
+    },
+    {
+      "source": "manipulator",
+      "target": "grasping",
+      "type": "performs",
+      "value": 3
+    },
+    {
+      "source": "manipulator",
+      "target": "force-sensors",
+      "type": "uses",
+      "value": 2
+    },
+    {
+      "source": "industrial-automation",
+      "target": "manipulator",
+      "type": "uses",
+      "value": 4
+    },
+    {
+      "source": "industrial-automation",
+      "target": "computer-vision",
+      "type": "uses",
+      "value": 3
+    },
+    {
+      "source": "autonomous-vehicles",
+      "target": "autonomous-nav",
+      "type": "requires",
+      "value": 5
+    },
+    {
+      "source": "autonomous-vehicles",
+      "target": "lidar",
+      "type": "uses",
+      "value": 4
+    },
+    {
+      "source": "autonomous-vehicles",
+      "target": "computer-vision",
+      "type": "requires",
+      "value": 4
+    },
+    {
+      "source": "reinforcement-learning",
+      "target": "machine-learning",
+      "type": "subset-of",
+      "value": 3
+    },
+    {
+      "source": "reinforcement-learning",
+      "target": "control-systems",
+      "type": "optimizes",
+      "value": 3
+    },
+    {
+      "source": "drone",
+      "target": "autonomous-nav",
+      "type": "uses",
+      "value": 3
+    },
+    {
+      "source": "drone",
+      "target": "imu",
+      "type": "requires",
+      "value": 4
+    },
+    {
+      "source": "drone",
+      "target": "computer-vision",
+      "type": "uses",
+      "value": 3
+    },
+    {
+      "source": "object-detection",
+      "target": "neural-networks",
+      "type": "uses",
+      "value": 4
+    },
+    {
+      "source": "grasping",
+      "target": "force-sensors",
+      "type": "requires",
+      "value": 3
+    },
+    {
+      "source": "grasping",
+      "target": "computer-vision",
+      "type": "uses",
+      "value": 3
+    },
+    {
+      "source": "grasping",
+      "target": "machine-learning",
+      "type": "uses",
+      "value": 3
+    },
+    {
+      "source": "control-systems",
+      "target": "actuators",
+      "type": "controls",
+      "value": 4
+    },
+    {
+      "source": "control-systems",
+      "target": "ros",
+      "type": "integrates",
+      "value": 3
+    },
+    {
+      "source": "medical-robotics",
+      "target": "manipulator",
+      "type": "uses",
+      "value": 4
+    },
+    {
+      "source": "medical-robotics",
+      "target": "force-sensors",
+      "type": "requires",
+      "value": 3
+    },
+    {
+      "source": "medical-robotics",
+      "target": "computer-vision",
+      "type": "uses",
+      "value": 3
+    },
+    {
+      "source": "warehouse-automation",
+      "target": "autonomous-nav",
+      "type": "uses",
+      "value": 3
+    },
+    {
+      "source": "warehouse-automation",
+      "target": "object-detection",
+      "type": "uses",
+      "value": 3
+    },
+    {
+      "source": "semantic-segmentation",
+      "target": "neural-networks",
+      "type": "uses",
+      "value": 4
+    },
+    {
+      "source": "collision-avoidance",
+      "target": "lidar",
+      "type": "uses",
+      "value": 3
+    },
+    {
+      "source": "collision-avoidance",
+      "target": "depth-camera",
+      "type": "uses",
+      "value": 2
+    }
+  ]
 }
