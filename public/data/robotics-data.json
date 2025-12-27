@@ -1,0 +1,324 @@
+{
+  "metadata": {
+    "title": "Robotics Industry Knowledge Graph",
+    "description": "Leading companies in the robotics and automation industry",
+    "version": "1.0.0",
+    "lastUpdated": "2025-12-27"
+  },
+  "nodes": [
+    {
+      "id": 1,
+      "name": "Tesla",
+      "category": "Automotive & AI Robotics",
+      "description": "Leading electric vehicle manufacturer developing advanced autopilot systems, humanoid robots (Optimus), and AI-driven manufacturing automation.",
+      "color": "#e74c3c",
+      "founded": 2003,
+      "website": "https://www.tesla.com"
+    },
+    {
+      "id": 2,
+      "name": "Boston Dynamics",
+      "category": "Advanced Robotics",
+      "description": "Pioneering advanced robotics with dynamic mobility systems. Known for Spot (quadruped robot), Atlas (humanoid), and Stretch (logistics robot).",
+      "color": "#3498db",
+      "founded": 1992,
+      "website": "https://www.bostondynamics.com"
+    },
+    {
+      "id": 3,
+      "name": "NVIDIA",
+      "category": "AI & Computing",
+      "description": "Leader in GPU computing and AI platforms. Provides Isaac robotics platform, Omniverse simulation, and Jetson edge AI computing for robotics.",
+      "color": "#76b900",
+      "founded": 1993,
+      "website": "https://www.nvidia.com"
+    },
+    {
+      "id": 4,
+      "name": "ABB Robotics",
+      "category": "Industrial Automation",
+      "description": "Global leader in industrial robots and automation solutions. Specializes in collaborative robots, machine automation, and smart manufacturing systems.",
+      "color": "#ff6b6b",
+      "founded": 1988,
+      "website": "https://new.abb.com/products/robotics"
+    },
+    {
+      "id": 5,
+      "name": "KUKA",
+      "category": "Industrial Robotics",
+      "description": "German robotics company providing intelligent automation solutions for industries including automotive, electronics, and logistics.",
+      "color": "#f39c12",
+      "founded": 1898,
+      "website": "https://www.kuka.com"
+    },
+    {
+      "id": 6,
+      "name": "Universal Robots",
+      "category": "Collaborative Robots",
+      "description": "Pioneer in collaborative robot arms (cobots) designed to work alongside humans safely. Focus on flexible, easy-to-program automation.",
+      "color": "#1abc9c",
+      "founded": 2005,
+      "website": "https://www.universal-robots.com"
+    },
+    {
+      "id": 7,
+      "name": "FANUC",
+      "category": "Industrial Automation",
+      "description": "Japanese robotics giant specializing in CNC systems, industrial robots, and factory automation with AI-enhanced capabilities.",
+      "color": "#e67e22",
+      "founded": 1956,
+      "website": "https://www.fanuc.com"
+    },
+    {
+      "id": 8,
+      "name": "iRobot",
+      "category": "Consumer Robotics",
+      "description": "Consumer robotics company famous for Roomba vacuum robots and developing home automation solutions with advanced navigation.",
+      "color": "#9b59b6",
+      "founded": 1990,
+      "website": "https://www.irobot.com"
+    },
+    {
+      "id": 9,
+      "name": "Intuitive Surgical",
+      "category": "Medical Robotics",
+      "description": "Leader in robotic-assisted minimally invasive surgery with the da Vinci Surgical System, transforming healthcare worldwide.",
+      "color": "#16a085",
+      "founded": 1995,
+      "website": "https://www.intuitive.com"
+    },
+    {
+      "id": 10,
+      "name": "DJI",
+      "category": "Aerial Robotics",
+      "description": "World leader in drone technology and aerial imaging systems for consumer, enterprise, and agricultural applications.",
+      "color": "#2980b9",
+      "founded": 2006,
+      "website": "https://www.dji.com"
+    },
+    {
+      "id": 11,
+      "name": "Waymo",
+      "category": "Autonomous Vehicles",
+      "description": "Alphabet's self-driving technology company developing autonomous vehicle systems with advanced sensor fusion and AI.",
+      "color": "#27ae60",
+      "founded": 2009,
+      "website": "https://waymo.com"
+    },
+    {
+      "id": 12,
+      "name": "Amazon Robotics",
+      "category": "Warehouse Automation",
+      "description": "Develops mobile robots, automated storage systems, and AI-powered logistics solutions for Amazon's fulfillment centers.",
+      "color": "#ff9800",
+      "founded": 2003,
+      "website": "https://www.amazonrobotics.com"
+    }
+  ],
+  "edges": [
+    {
+      "source": 1,
+      "target": 3,
+      "relationship": "AI Partnership",
+      "strength": "strong",
+      "description": "Tesla uses NVIDIA's AI computing platforms for autonomous driving development"
+    },
+    {
+      "source": 1,
+      "target": 11,
+      "relationship": "Autonomous Tech",
+      "strength": "medium",
+      "description": "Both companies compete and share insights in autonomous vehicle technology"
+    },
+    {
+      "source": 2,
+      "target": 3,
+      "relationship": "AI Computing",
+      "strength": "strong",
+      "description": "Boston Dynamics leverages NVIDIA's AI platforms for robot control systems"
+    },
+    {
+      "source": 2,
+      "target": 4,
+      "relationship": "Industrial Collab",
+      "strength": "medium",
+      "description": "Collaboration on industrial robotics applications and standards"
+    },
+    {
+      "source": 3,
+      "target": 4,
+      "relationship": "AI Integration",
+      "strength": "strong",
+      "description": "ABB integrates NVIDIA AI technology into their industrial robots"
+    },
+    {
+      "source": 3,
+      "target": 5,
+      "relationship": "Smart Manufacturing",
+      "strength": "strong",
+      "description": "KUKA uses NVIDIA platforms for smart manufacturing solutions"
+    },
+    {
+      "source": 3,
+      "target": 6,
+      "relationship": "Vision Systems",
+      "strength": "medium",
+      "description": "Universal Robots incorporates NVIDIA vision systems in cobots"
+    },
+    {
+      "source": 3,
+      "target": 11,
+      "relationship": "Autonomous Driving",
+      "strength": "strong",
+      "description": "Waymo uses NVIDIA's AI computing infrastructure extensively"
+    },
+    {
+      "source": 4,
+      "target": 5,
+      "relationship": "Industry Standards",
+      "strength": "medium",
+      "description": "Both companies collaborate on industrial robotics standards"
+    },
+    {
+      "source": 4,
+      "target": 7,
+      "relationship": "Automation Tech",
+      "strength": "medium",
+      "description": "Share automation technology and best practices"
+    },
+    {
+      "source": 5,
+      "target": 7,
+      "relationship": "Manufacturing",
+      "strength": "medium",
+      "description": "Compete and collaborate in manufacturing robotics space"
+    },
+    {
+      "source": 6,
+      "target": 4,
+      "relationship": "Collaborative Robots",
+      "strength": "medium",
+      "description": "Partnership in developing safer collaborative robot solutions"
+    },
+    {
+      "source": 6,
+      "target": 7,
+      "relationship": "Cobot Technology",
+      "strength": "weak",
+      "description": "Technology exchange in collaborative robotics field"
+    },
+    {
+      "source": 8,
+      "target": 12,
+      "relationship": "Consumer Robotics",
+      "strength": "weak",
+      "description": "Both operate in consumer-facing robotics applications"
+    },
+    {
+      "source": 9,
+      "target": 3,
+      "relationship": "Medical AI",
+      "strength": "strong",
+      "description": "Intuitive Surgical uses NVIDIA AI for surgical robotics"
+    },
+    {
+      "source": 10,
+      "target": 3,
+      "relationship": "Computer Vision",
+      "strength": "strong",
+      "description": "DJI incorporates NVIDIA vision processing in drones"
+    },
+    {
+      "source": 11,
+      "target": 3,
+      "relationship": "AI Platform",
+      "strength": "strong",
+      "description": "Core AI partnership for autonomous vehicle development"
+    },
+    {
+      "source": 12,
+      "target": 3,
+      "relationship": "Logistics AI",
+      "strength": "strong",
+      "description": "Amazon uses NVIDIA AI for warehouse robot navigation"
+    },
+    {
+      "source": 12,
+      "target": 6,
+      "relationship": "Warehouse Automation",
+      "strength": "medium",
+      "description": "Partnership in warehouse automation solutions"
+    },
+    {
+      "source": 1,
+      "target": 2,
+      "relationship": "Robotics Innovation",
+      "strength": "medium",
+      "description": "Both pushing boundaries in humanoid robotics"
+    },
+    {
+      "source": 2,
+      "target": 12,
+      "relationship": "Logistics Robots",
+      "strength": "medium",
+      "description": "Boston Dynamics' Stretch robot used in Amazon facilities"
+    }
+  ],
+  "categories": [
+    {
+      "name": "Automotive & AI Robotics",
+      "color": "#e74c3c",
+      "description": "Companies focused on autonomous vehicles and AI-driven robotics"
+    },
+    {
+      "name": "Advanced Robotics",
+      "color": "#3498db",
+      "description": "Cutting-edge mobile and humanoid robotics"
+    },
+    {
+      "name": "AI & Computing",
+      "color": "#76b900",
+      "description": "AI platforms and computing infrastructure for robotics"
+    },
+    {
+      "name": "Industrial Automation",
+      "color": "#ff6b6b",
+      "description": "Traditional industrial robotics and automation systems"
+    },
+    {
+      "name": "Industrial Robotics",
+      "color": "#f39c12",
+      "description": "Manufacturing-focused robotics solutions"
+    },
+    {
+      "name": "Collaborative Robots",
+      "color": "#1abc9c",
+      "description": "Safe human-robot collaboration systems (cobots)"
+    },
+    {
+      "name": "Consumer Robotics",
+      "color": "#9b59b6",
+      "description": "Home and consumer-facing robotics products"
+    },
+    {
+      "name": "Medical Robotics",
+      "color": "#16a085",
+      "description": "Healthcare and surgical robotics systems"
+    },
+    {
+      "name": "Aerial Robotics",
+      "color": "#2980b9",
+      "description": "Drones and aerial imaging systems"
+    },
+    {
+      "name": "Autonomous Vehicles",
+      "color": "#27ae60",
+      "description": "Self-driving car technology"
+    },
+    {
+      "name": "Warehouse Automation",
+      "color": "#ff9800",
+      "description": "Logistics and warehouse robotics solutions"
+    }
+  ]
+}
