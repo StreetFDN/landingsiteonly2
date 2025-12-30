@@ -69,7 +69,7 @@ export const LoadingClouds = forwardRef<LoadingCloudsHandle, LoadingCloudsProps>
     const loader = new FBXLoader();
     loader.load(
       '/models/clouds/Cloud_1.fbx',
-      (object) => {
+      (object: THREE.Group) => {
         const box = new THREE.Box3().setFromObject(object);
         const center = box.getCenter(new THREE.Vector3());
         const size = box.getSize(new THREE.Vector3());
@@ -83,7 +83,7 @@ export const LoadingClouds = forwardRef<LoadingCloudsHandle, LoadingCloudsProps>
       (progress) => {
         // Progress callback - can be used for loading indicator if needed
       },
-      (error) => {
+      (error: Error) => {
         console.error('Failed to load cloud model:', error);
       }
     );
