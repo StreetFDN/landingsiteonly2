@@ -16,6 +16,8 @@ interface StartupBuildingProps {
   isNight?: boolean;
   allBuildingRefs?: React.RefObject<THREE.Group | null>[];
   onRegisterRef?: (id: string, ref: React.RefObject<THREE.Group | null>) => void;
+  nameTagFadeIn?: boolean;
+  nameTagFadeInRef?: React.MutableRefObject<boolean>;
 }
 
 // Building height offsets - adjustments per building model to align name tags with roof
