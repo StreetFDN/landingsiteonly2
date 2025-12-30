@@ -80,7 +80,7 @@ export const LoadingClouds = forwardRef<LoadingCloudsHandle, LoadingCloudsProps>
         
         setCloudModel(object);
       },
-      (progress) => {
+      (_progress: any) => {
         // Progress callback - can be used for loading indicator if needed
       },
       (error: Error) => {
