@@ -97,12 +97,12 @@ export const LoadingClouds = forwardRef<LoadingCloudsHandle, LoadingCloudsProps>
       
       // Make clouds white and set up opacity for fade-in
       // Removed renderOrder and depthWrite - no longer needed since name tags fade in with CSS
-      left.traverse((child) => {
+      left.traverse((child: THREE.Object3D) => {
         if ((child as THREE.Mesh).isMesh) {
           const mesh = child as THREE.Mesh;
           if (mesh.material) {
             if (Array.isArray(mesh.material)) {
-              mesh.material.forEach((mat) => {
+              mesh.material.forEach((mat: THREE.Material) => {
                 if (mat instanceof THREE.MeshStandardMaterial) {
                   mat.color.set(0xffffff);
                   mat.emissive.set(0xffffff);
@@ -124,12 +124,12 @@ export const LoadingClouds = forwardRef<LoadingCloudsHandle, LoadingCloudsProps>
         }
       });
       
-      right.traverse((child) => {
+      right.traverse((child: THREE.Object3D) => {
         if ((child as THREE.Mesh).isMesh) {
           const mesh = child as THREE.Mesh;
           if (mesh.material) {
             if (Array.isArray(mesh.material)) {
-              mesh.material.forEach((mat) => {
+              mesh.material.forEach((mat: THREE.Material) => {
                 if (mat instanceof THREE.MeshStandardMaterial) {
                   mat.color.set(0xffffff);
                   mat.emissive.set(0xffffff);

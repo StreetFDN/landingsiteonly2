@@ -88,9 +88,9 @@ export const CloudScene = ({
       });
     });
 
-    Promise.all(promises).then((results) => {
+    Promise.all(promises).then((results: Array<{ type: 'cloud1' | 'cloud2' | 'cloud3' | 'cloud4'; model: THREE.Group }>) => {
       const loaded: any = {};
-      results.forEach(({ type, model }) => {
+      results.forEach(({ type, model }: { type: 'cloud1' | 'cloud2' | 'cloud3' | 'cloud4'; model: THREE.Group }) => {
         loaded[type] = model;
       });
       setLoadedModels(loaded);
