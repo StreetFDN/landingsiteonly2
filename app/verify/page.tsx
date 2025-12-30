@@ -44,7 +44,7 @@ const Navbar = () => (
                 <div className="hidden md:flex items-center gap-8 mr-2">
                     <a href="/scouting" className="text-sm font-medium text-slate-500 hover:text-slate-900 transition-colors font-sans">Scouting</a>
                     <a href="/web3" className="text-sm font-medium text-slate-500 hover:text-slate-900 transition-colors font-sans">Research</a>
-                    <a href="/city" className="group flex items-center gap-2 text-sm font-medium text-slate-500 hover:text-slate-900 transition-colors font-sans">
+                    <a href="/cockpit-test" className="group flex items-center gap-2 text-sm font-medium text-slate-500 hover:text-slate-900 transition-colors font-sans">
                         Network City
                         <span className="bg-blue-100 text-blue-600 text-[10px] font-bold px-2 py-0.5 rounded-full shadow-sm">New</span>
                     </a>

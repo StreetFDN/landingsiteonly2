@@ -11,6 +11,8 @@ import { DetailPanel } from '@/components/city/detailpanel';
 import { EnvironmentControls } from '@/components/city/ui/environmentcontrols';
 import { TimeMode } from '@/components/city/effects/environmentcontroller';
 import { Startup } from '@/components/city/types';
+import { LoadingClouds, LoadingCloudsHandle } from '@/components/city/loadingclouds';
+import { CanvasBackground } from '@/components/city/canvasbackground';
 
 // --- CONFIGURATION ---
 const LOADING_THOUGHTS = [
@@ -313,7 +315,7 @@ const Navbar = ({ onLaunch, timeMode }: { onLaunch: () => void; timeMode: TimeMo
               <div className="hidden md:flex items-center gap-8 mr-2">
                   <a href="/scouting" className={`text-sm font-medium transition-colors font-sans ${timeMode === 'day' ? 'text-black hover:text-black/80' : 'text-gray-200 hover:text-gray-300'}`}>Scouting</a>
                   <a href="/web3" className={`text-sm font-medium transition-colors font-sans ${timeMode === 'day' ? 'text-black hover:text-black/80' : 'text-gray-200 hover:text-gray-300'}`}>Research</a>
-                  <a href="/city" className={`group flex items-center gap-2 text-sm font-medium transition-colors font-sans ${timeMode === 'day' ? 'text-black hover:text-black/80' : 'text-gray-200 hover:text-gray-300'}`}>
+                  <a href="/cockpit-test" className={`group flex items-center gap-2 text-sm font-medium transition-colors font-sans ${timeMode === 'day' ? 'text-black hover:text-black/80' : 'text-gray-200 hover:text-gray-300'}`}>
                       Network City
                       <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full shadow-sm ${timeMode === 'day' ? 'bg-blue-100 text-blue-600' : 'bg-gray-300/20 text-gray-200'}`}>New</span>
                   </a>
@@ -356,6 +358,29 @@ export default function CityPage() {
   const [selected, setSelected] = useState<Startup | null>(null);
   const [timeMode, setTimeMode] = useState<TimeMode>(() => getTimeModeFromCurrentTime());
   const [cameraResetTrigger, setCameraResetTrigger] = useState(0);
+  const [showLoadingClouds, setShowLoadingClouds] = useState(true);
+  const [startCloudAnimation, setStartCloudAnimation] = useState(false);
+  const [cloudsReady, setCloudsReady] = useState(false);
+  // Initialize canvasReady and showCanvas as false so overlay is visible immediately
+  const [canvasReady, setCanvasReady] = useState(false);
+  const [showCanvas, setShowCanvas] = useState(false);
+  const [mountCanvas, setMountCanvas] = useState(false);
+  const cloudsRef = useRef<LoadingCloudsHandle>(null);
+  // Initialize CSS custom property for name tag fade-in (completely outside React)
+  // Clean up on unmount to prevent leaking to other pages
+  useEffect(() => {
+    document.documentElement.style.setProperty('--name-tag-opacity', '0');
+    document.documentElement.style.setProperty('--name-tag-translate-y', '-1rem');
+    
+    return () => {
+      // Clean up CSS custom properties when component unmounts
+      document.documentElement.style.removeProperty('--name-tag-opacity');
+      document.documentElement.style.removeProperty('--name-tag-translate-y');
+    };
+  }, []);
+  
+  // Configuration: Adjust when name tags start fading in (0.0 to 1.0, where 0.5 = halfway through cloud animation)
+  const NAMETAG_FADE_IN_START = 0.5; // Start fade-in when cloud animation is 50% complete
 
   // Loading Sequence State
   const [isTransitioning, setIsTransitioning] = useState(false);
@@ -408,10 +433,133 @@ export default function CityPage() {
     return () => clearInterval(interval);
   }, []);
 
+  // Start cloud animation after clouds are ready and a short delay
+  useEffect(() => {
+    if (cloudsReady) {
+      const timer = setTimeout(() => {
+        setStartCloudAnimation(true);
+      }, 100);
+      return () => clearTimeout(timer);
+    }
+  }, [cloudsReady]);
+
+  // Start name tag fade-in when cloud animation reaches the configured point
+  // Cloud animation progress goes from 0 to 1, with animationSpeed affecting how fast
+  // Calculate delay based on when we want fade-in to start (default 0.5 = halfway)
+  useEffect(() => {
+    if (startCloudAnimation) {
+      // Animation speed is 0.01, so progress increases by 0.01 per second
+      // To reach progress = NAMETAG_FADE_IN_START, it takes: NAMETAG_FADE_IN_START / cloudAnimationSpeed seconds
+      // cloudAnimationSpeed is 0.01, so: NAMETAG_FADE_IN_START / 0.01 = NAMETAG_FADE_IN_START * 100 seconds
+      const cloudAnimationSpeed = 0.01;
+      const fadeInDelayMs = (NAMETAG_FADE_IN_START / cloudAnimationSpeed) * 35;
+      
+      const fadeInTimer = setTimeout(() => {
+        // Update CSS custom properties directly - completely outside React render cycle
+        // This triggers the fade-in animation via pure CSS, zero React involvement
+        document.documentElement.style.setProperty('--name-tag-opacity', '1');
+        document.documentElement.style.setProperty('--name-tag-translate-y', '0');
+      }, fadeInDelayMs);
+      
+      return () => clearTimeout(fadeInTimer);
+    }
+  }, [startCloudAnimation]);
+
+
+
+
+  // Delay Canvas mount (Option 6)
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setMountCanvas(true);
+    }, 50);
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Show Canvas after it's ready (Option 2)
+  useEffect(() => {
+    if (canvasReady) {
+      const timer = setTimeout(() => {
+        setShowCanvas(true);
+      }, 50);
+      return () => clearTimeout(timer);
+    }
+  }, [canvasReady]);
+
   const renderDots = () => ".".repeat(dotCount);
 
+  // Sky colors matching the transition
+  const DAY_BG_COLOR = '#d5a7b4';
+  const NIGHT_BG_COLOR = '#43526f';
+  const skyColor = timeMode === 'day' ? DAY_BG_COLOR : NIGHT_BG_COLOR;
+
+  // Loading clouds configuration - adjust these values to position and size the clouds
+  const leftCloudX = -6;      // Left cloud X position (negative = left)
+  const leftCloudY = 21;        // Left cloud Y position (vertical)
+  const leftCloudZ = -25;       // Left cloud Z position (depth)
+  const rightCloudX =-4;      // Right cloud X position (positive = right)
+  const rightCloudY = 21;      // Right cloud Y position (vertical)
+  const rightCloudZ = -25;     // Right cloud Z position (depth)
+  const leftCloudSize = 0.015;  // Left cloud size multiplier
+  const rightCloudSize = 0.017; // Right cloud size multiplier
+  const cloudRotation = 10;    // Rotation for both clouds (in radians, 0 = facing camera)
+  const cloudAnimationSpeed = 0.01; // Animation speed (higher = faster)
+
+
+  // Set CSS variable for sky color so Loader can use it
+  useEffect(() => {
+    document.documentElement.style.setProperty('--sky-color', skyColor);
+    return () => {
+      document.documentElement.style.removeProperty('--sky-color');
+    };
+  }, [skyColor]);
+
+  // Immediately set body/html background on mount to prevent black frame
+  useEffect(() => {
+    // Get sky color from sessionStorage if coming from cockpit transition
+    const transitionColor = typeof window !== 'undefined' ? sessionStorage.getItem('transitionSkyColor') : null;
+    const initialColor = transitionColor || skyColor;
+    
+    // Set immediately before React hydrates
+    if (typeof document !== 'undefined') {
+      document.body.style.backgroundColor = initialColor;
+      document.documentElement.style.backgroundColor = initialColor;
+      document.documentElement.style.transition = 'background-color 0.3s ease-in-out';
+      
+      // Clean up sessionStorage after a delay
+      if (transitionColor) {
+        setTimeout(() => {
+          sessionStorage.removeItem('transitionSkyColor');
+        }, 2000);
+      }
+      
+      return () => {
+        // Complete cleanup when leaving city page - remove ALL properties we set
+        document.body.style.backgroundColor = '';
+        document.body.style.removeProperty('background-color');
+        document.documentElement.style.backgroundColor = '';
+        document.documentElement.style.removeProperty('background-color');
+        document.documentElement.style.transition = '';
+        document.documentElement.style.removeProperty('transition');
+        
+        // Force a reflow to ensure styles are cleared before next page renders
+        void document.body.offsetHeight;
+      };
+    }
+  }, [skyColor]);
+
   return (
-    <div className="w-screen h-screen bg-[#f2f4f7] relative overflow-hidden">
+    <div className="w-screen h-screen relative overflow-hidden" style={{ backgroundColor: skyColor }}>
+      {/* Full-screen overlay to cover black flash - fades out when Canvas is ready (Option 1) */}
+      {!canvasReady && (
+        <div 
+          className="fixed inset-0 z-[3000] transition-opacity duration-300"
+          style={{ 
+            backgroundColor: skyColor,
+            opacity: canvasReady ? 0 : 1
+          }}
+        />
+      )}
       
       {/* 1. LOADING OVERLAY - CHANGED Z-INDEX TO 2000 TO BEAT THE 3D LABELS */}
       {isTransitioning && (
@@ -435,29 +583,88 @@ export default function CityPage() {
       {/* Day/night mode is automatically controlled by real-world time */}
       <EnvironmentControls />
 
-      <Canvas
-        dpr={[1, 2]}
-        camera={{ position: [20, 20, 20], fov: 35 }} 
-        shadows
-        className="w-full h-full"
-        onCreated={({ gl }) => {
-          gl.toneMapping = THREE.ACESFilmicToneMapping;
-          gl.toneMappingExposure = 1.0;
-        }}
-      >
-        <color attach="background" args={['#d5a7b4']} />
+      {/* Delay Canvas mount (Option 6) */}
+      {mountCanvas && (
+        <Canvas
+          dpr={[1, 2]}
+          camera={{ position: [20, 20, 20], fov: 35 }} 
+          shadows
+          frameloop="always"
+          className="w-full h-full"
+          style={{ 
+            backgroundColor: skyColor, // Option 4: CSS background on Canvas
+            opacity: showCanvas ? 1 : 0, // Option 2: Hide until ready
+            transition: 'opacity 0.3s ease-in'
+          }}
+          onCreated={({ gl, scene }) => {
+            // Set clear color FIRST - IMMEDIATE
+            const bgColor = timeMode === 'day' ? DAY_BG_COLOR : NIGHT_BG_COLOR;
+            gl.setClearColor(bgColor, 1);
+            
+            // Get WebGL context and set clear color immediately - BEFORE any rendering
+            const webglContext = gl.getContext();
+            if (webglContext) {
+              const color = new THREE.Color(bgColor);
+              webglContext.clearColor(color.r, color.g, color.b, 1);
+              // Clear immediately to show sky color
+              webglContext.clear(webglContext.COLOR_BUFFER_BIT | webglContext.DEPTH_BUFFER_BIT);
+            }
+            
+            // Set scene background - IMMEDIATE
+            scene.background = new THREE.Color(bgColor);
+            
+            // Configure renderer - initialize exposure based on timeMode
+            gl.toneMapping = THREE.ACESFilmicToneMapping;
+            gl.toneMappingExposure = timeMode === 'day' ? 1.0 : 0.6; // Match EnvironmentController target
+            
+            // Mark canvas as ready after ensuring background is set
+            setTimeout(() => {
+              setCanvasReady(true);
+            }, 200);
+          }}
+          gl={{ 
+            alpha: false,
+            antialias: true,
+            preserveDrawingBuffer: false
+          }}
+        >
+        {/* Background color - set immediately to prevent black flash */}
+        <CanvasBackground color={timeMode === 'day' ? DAY_BG_COLOR : NIGHT_BG_COLOR} />
+        <color attach="background" args={[timeMode === 'day' ? DAY_BG_COLOR : NIGHT_BG_COLOR]} />
         
         <fog attach="fog" args={['#9BA4B5', 10, 120]} />
 
-        <Suspense fallback={null}>
-          <FutureCity 
-            selected={selected} 
-            onSelect={setSelected} 
-            introFinished={true}
-            timeMode={timeMode}
-          />
-          {/* Environment removed - using Sky component for dynamic day/night */}
-        </Suspense>
+        {/* City only renders after clouds are ready */}
+        {cloudsReady && (
+          <Suspense fallback={null}>
+            <FutureCity 
+              selected={selected} 
+              onSelect={setSelected} 
+              introFinished={true}
+              timeMode={timeMode}
+            />
+          </Suspense>
+        )}
+
+        {/* Loading clouds animation - MUST render before city */}
+        {/* Keep mounted but hide when animation completes to prevent depth buffer changes */}
+        <LoadingClouds
+          ref={cloudsRef}
+          leftCloudX={leftCloudX}
+          leftCloudY={leftCloudY}
+          leftCloudZ={leftCloudZ}
+          rightCloudX={rightCloudX}
+          rightCloudY={rightCloudY}
+          rightCloudZ={rightCloudZ}
+          leftCloudSize={leftCloudSize}
+          rightCloudSize={rightCloudSize}
+          cloudRotation={cloudRotation}
+          animationSpeed={cloudAnimationSpeed}
+          startStatic={true}
+          startAnimation={startCloudAnimation}
+          onReady={() => setCloudsReady(true)}
+          onComplete={() => setShowLoadingClouds(false)}
+        />
 
         <OrbitControls 
           makeDefault 
@@ -475,13 +682,20 @@ export default function CityPage() {
           resetTrigger={cameraResetTrigger} 
           onResetComplete={() => {}}
         />
-      </Canvas>
+        </Canvas>
+      )}
       
       {selected && (
         <DetailPanel startup={selected} onClose={() => setSelected(null)} />
       )}
       
-      <Loader />
+      {/* Loader with sky color background to prevent black frame */}
+      <Loader 
+        containerStyles={{ 
+          background: skyColor,
+          backgroundColor: skyColor,
+        }}
+      />
     </div>
   );
 }

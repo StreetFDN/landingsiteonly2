@@ -67,9 +67,10 @@ interface FutureCityProps {
   onSelect: (s: Startup | null) => void;
   introFinished?: boolean;
   timeMode?: TimeMode;
+  nameTagFadeIn?: boolean; // Controls when name tags should fade in
 }
 
-export const FutureCity = ({ selected, onSelect, introFinished = true, timeMode = 'day' }: FutureCityProps) => {
+export const FutureCity = ({ selected, onSelect, introFinished = true, timeMode = 'day', nameTagFadeIn = false }: FutureCityProps) => {
   const lightsRef = useRef<LightsHandle>(null);
   const groundMaterialRef = useRef<THREE.ShaderMaterial>(null);
   
@@ -81,7 +82,7 @@ export const FutureCity = ({ selected, onSelect, introFinished = true, timeMode 
     <group>
         <FogController introFinished={introFinished} />
         
-        <Lights ref={lightsRef} />
+        <Lights ref={lightsRef} timeMode={timeMode} />
         <EnvironmentController 
           mode={timeMode}
           groundMaterialRef={groundMaterialRef}

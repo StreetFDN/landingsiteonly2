@@ -771,7 +771,7 @@ export default function LandingPage() {
                    <div className="hidden md:flex items-center gap-8 mr-2">
                         <Link href="/scouting" className="text-sm font-medium text-white/90 hover:text-white transition-colors font-sans">Scouting</Link>
                         <Link href="/web3" className="text-sm font-medium text-white/90 hover:text-white transition-colors font-sans">Research</Link>
-                        <Link href="/city" className="group flex items-center gap-2 text-sm font-medium text-white/90 hover:text-white transition-colors font-sans">
+                        <Link href="/cockpit-test" className="group flex items-center gap-2 text-sm font-medium text-white/90 hover:text-white transition-colors font-sans">
                             Network City
                             <span className="bg-white text-blue-600 text-[10px] font-bold px-2 py-0.5 rounded-full shadow-sm">New</span>
                         </Link>

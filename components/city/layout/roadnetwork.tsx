@@ -1,7 +1,7 @@
 // FILE: components/city/layout/RoadNetwork.tsx
 'use client';
 
-import { useMemo, useRef, useCallback, useState } from "react";
+import { useRef, useCallback, useState, useMemo, useEffect } from "react";
 import { RoadSegment, RoadVariant, CELL_SIZE } from "../assets/roads";
 import { startups } from "../startupsconfig";
 import { StartupBuilding } from "../startupbuilding";
@@ -49,6 +49,7 @@ interface RoadNetworkProps {
   groundMaterialRef?: React.RefObject<THREE.MeshStandardMaterial | THREE.ShaderMaterial | null>;
   timeOfDay?: number; // 0 = day, 1 = night
   isNight?: boolean; // NEW: Night mode prop
+  cloudRefs?: React.RefObject<THREE.Group | null>[];
 }
 
 export const RoadNetwork = ({ onBuildingSelect, labelsVisible = true, groundMaterialRef, timeOfDay = 0, isNight = false }: RoadNetworkProps) => {
@@ -63,6 +64,7 @@ export const RoadNetwork = ({ onBuildingSelect, labelsVisible = true, groundMate
     setAllBuildingRefs(Array.from(buildingRefsMap.current.values()));
   }, []);
 
+  // Render buildings - name tag fade-in is handled via CSS custom properties (no React involvement)
   const buildings = useMemo(() => {
     return startups.map(s => {
       const x = (s.gridPosition[0] - 6) * CELL_SIZE;
@@ -73,10 +75,10 @@ export const RoadNetwork = ({ onBuildingSelect, labelsVisible = true, groundMate
             startup={s} 
             position={[x, 0, z]} 
             onSelect={onBuildingSelect}
-            visible={labelsVisible} // PASS DOWN
-            isNight={isNight} // PASS DOWN
-            allBuildingRefs={allBuildingRefs} // Pass all building refs for occlusion
-            onRegisterRef={registerBuildingRef} // Pass callback to register ref
+            visible={labelsVisible}
+            isNight={isNight}
+            allBuildingRefs={allBuildingRefs}
+            onRegisterRef={registerBuildingRef}
         />
       );
     });

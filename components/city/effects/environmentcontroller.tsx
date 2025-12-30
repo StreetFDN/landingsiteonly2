@@ -86,6 +86,151 @@ export const EnvironmentController = ({
       }
     }
   }, [mode, moonLightRef]);
+
+  // Set background color immediately on mount/mode change to prevent white flash
+  useLayoutEffect(() => {
+    const targetBgColor = isDay ? DAY_BG_COLOR : NIGHT_BG_COLOR;
+    if (scene.background) {
+      if (scene.background instanceof THREE.Color) {
+        scene.background.copy(targetBgColor);
+      } else {
+        scene.background = targetBgColor.clone();
+      }
+    } else {
+      scene.background = targetBgColor.clone();
+    }
+  }, [isDay, scene]);
+
+  // IMMEDIATELY initialize all lights to correct values for current mode (before first render)
+  // This prevents orange flash when navigating to city page at night
+  useLayoutEffect(() => {
+    // Set directionalLight (sun) immediately
+    if (directionalLightRef?.current) {
+      const light = directionalLightRef.current;
+      light.intensity = isDay ? 2.0 : 0;
+      light.color.copy(isDay ? DAY_DIRECTIONAL_COLOR : new THREE.Color(0, 0, 0));
+    }
+
+    // Set moon light immediately
+    if (moonLightRef?.current) {
+      const moon = moonLightRef.current;
+      moon.intensity = isDay ? 0 : 0.15;
+      moon.color.copy(isDay ? new THREE.Color(0, 0, 0) : NIGHT_DIRECTIONAL_COLOR);
+    }
+
+    // Set sunLight immediately
+    if (sunLightRef?.current) {
+      const sunLight = sunLightRef.current;
+      sunLight.intensity = isDay ? 3.0 : 0;
+      sunLight.color.copy(isDay ? DAY_SUN_COLOR : new THREE.Color(0, 0, 0));
+    }
+
+    // Set ambient light immediately
+    const ambientLight = scene.children.find(
+      (child) => child instanceof THREE.AmbientLight
+    ) as THREE.AmbientLight | undefined;
+    if (ambientLight) {
+      ambientLight.intensity = isDay ? 0.35 : 0.04;
+      ambientLight.color.copy(isDay ? DAY_AMBIENT_COLOR : NIGHT_AMBIENT_COLOR);
+    }
+
+    // Set hemisphere light immediately
+    const hemisphereLight = scene.children.find(
+      (child) => child instanceof THREE.HemisphereLight
+    ) as THREE.HemisphereLight | undefined;
+    if (hemisphereLight) {
+      hemisphereLight.intensity = isDay ? 0.5 : 0.05;
+      hemisphereLight.color.copy(isDay ? new THREE.Color('#ffffff') : new THREE.Color('#5b5c71'));
+      hemisphereLight.groundColor.copy(isDay ? new THREE.Color('#444444') : new THREE.Color('#63606e'));
+    }
+
+    // Set spot light immediately
+    const spotLight = scene.children.find(
+      (child) => child instanceof THREE.SpotLight
+    ) as THREE.SpotLight | undefined;
+    if (spotLight) {
+      spotLight.intensity = isDay ? 0.5 : 0.15;
+      spotLight.color.copy(isDay ? new THREE.Color('#c2e6ff') : new THREE.Color('#FFD4A3'));
+    }
+
+    // Set fog color immediately
+    if (scene.fog) {
+      const fog = scene.fog as THREE.Fog;
+      fog.color.copy(isDay ? DAY_FOG_COLOR : NIGHT_FOG_COLOR);
+      fog.near = isDay ? 25 : 20;
+      fog.far = isDay ? 120 : 30;
+    }
+  }, [isDay, scene, directionalLightRef, moonLightRef, sunLightRef]);
+
+  // Fallback: Also try to initialize lights in useEffect (in case they weren't ready in useLayoutEffect)
+  useEffect(() => {
+    // Helper function to initialize all lights
+    const initializeLights = () => {
+      // Set directionalLight (sun) immediately
+      if (directionalLightRef?.current) {
+        const light = directionalLightRef.current;
+        light.intensity = isDay ? 2.0 : 0;
+        light.color.copy(isDay ? DAY_DIRECTIONAL_COLOR : new THREE.Color(0, 0, 0));
+      }
+
+      // Set moon light immediately
+      if (moonLightRef?.current) {
+        const moon = moonLightRef.current;
+        moon.intensity = isDay ? 0 : 0.15;
+        moon.color.copy(isDay ? new THREE.Color(0, 0, 0) : NIGHT_DIRECTIONAL_COLOR);
+      }
+
+      // Set sunLight immediately
+      if (sunLightRef?.current) {
+        const sunLight = sunLightRef.current;
+        sunLight.intensity = isDay ? 3.0 : 0;
+        sunLight.color.copy(isDay ? DAY_SUN_COLOR : new THREE.Color(0, 0, 0));
+      }
+
+      // Set ambient light immediately
+      const ambientLight = scene.children.find(
+        (child) => child instanceof THREE.AmbientLight
+      ) as THREE.AmbientLight | undefined;
+      if (ambientLight) {
+        ambientLight.intensity = isDay ? 0.35 : 0.04;
+        ambientLight.color.copy(isDay ? DAY_AMBIENT_COLOR : NIGHT_AMBIENT_COLOR);
+      }
+
+      // Set hemisphere light immediately
+      const hemisphereLight = scene.children.find(
+        (child) => child instanceof THREE.HemisphereLight
+      ) as THREE.HemisphereLight | undefined;
+      if (hemisphereLight) {
+        hemisphereLight.intensity = isDay ? 0.5 : 0.05;
+        hemisphereLight.color.copy(isDay ? new THREE.Color('#ffffff') : new THREE.Color('#5b5c71'));
+        hemisphereLight.groundColor.copy(isDay ? new THREE.Color('#444444') : new THREE.Color('#63606e'));
+      }
+
+      // Set spot light immediately
+      const spotLight = scene.children.find(
+        (child) => child instanceof THREE.SpotLight
+      ) as THREE.SpotLight | undefined;
+      if (spotLight) {
+        spotLight.intensity = isDay ? 0.5 : 0.15;
+        spotLight.color.copy(isDay ? new THREE.Color('#c2e6ff') : new THREE.Color('#FFD4A3'));
+      }
+
+      // Set fog color immediately
+      if (scene.fog) {
+        const fog = scene.fog as THREE.Fog;
+        fog.color.copy(isDay ? DAY_FOG_COLOR : NIGHT_FOG_COLOR);
+        fog.near = isDay ? 25 : 20;
+        fog.far = isDay ? 120 : 30;
+      }
+    };
+
+    // Try immediately
+    initializeLights();
+
+    // Also try after a small delay to catch lights that might not be ready yet
+    const timeoutId = setTimeout(initializeLights, 0);
+    return () => clearTimeout(timeoutId);
+  }, [isDay, scene, directionalLightRef, moonLightRef, sunLightRef]);
   
   useFrame((state, delta) => {
     const { gl } = state;
@@ -230,14 +375,14 @@ export const EnvironmentController = ({
       fog.far = THREE.MathUtils.lerp(fog.far, targetFogFar, delta * 2);
     }
     
-    // Update background color (#d5a7b4)
-    // Set directly to ensure it's always the correct color (no lerp needed on first frame)
+    // Update background color - set immediately on first frame to prevent white flash
     const targetBgColor = isDay ? DAY_BG_COLOR : NIGHT_BG_COLOR;
-    if (scene.background) {
-      if (scene.background instanceof THREE.Color) {
+    if (!scene.background) {
+      scene.background = targetBgColor.clone();
+    } else if (scene.background instanceof THREE.Color) {
+      // Only lerp if colors are different to avoid unnecessary updates
+      if (!scene.background.equals(targetBgColor)) {
         scene.background.lerp(targetBgColor, delta * 2);
-      } else {
-        scene.background = targetBgColor.clone();
       }
     } else {
       scene.background = targetBgColor.clone();

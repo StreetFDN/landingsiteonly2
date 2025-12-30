@@ -11,7 +11,14 @@ export interface LightsHandle {
   sunLightRef: React.RefObject<DirectionalLight | null>;
 }
 
-export const Lights = forwardRef<LightsHandle>((props, ref) => {
+type TimeMode = 'day' | 'night';
+
+interface LightsProps {
+  timeMode?: TimeMode;
+}
+
+export const Lights = forwardRef<LightsHandle, LightsProps>(({ timeMode = 'day' }, ref) => {
+  const isDay = timeMode === 'day';
   const directionalRef = useRef<DirectionalLight | null>(null);
   const moonRef = useRef<DirectionalLight | null>(null);
   const sunLightRef = useRef<DirectionalLight | null>(null);
@@ -73,8 +80,8 @@ export const Lights = forwardRef<LightsHandle>((props, ref) => {
       <directionalLight 
         ref={directionalRef}
         position={[30, 45, 30]} 
-        intensity={2.0} 
-        color={new Color("#FFE4B5")} 
+        intensity={isDay ? 2.0 : 0} 
+        color={isDay ? new Color("#FFE4B5") : new Color(0, 0, 0)} 
         castShadow
         shadow-bias={-0.0005}
         shadow-mapSize={[2048, 2048]}
