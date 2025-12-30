@@ -2,6 +2,7 @@
 
 import { useRef, useEffect, useState, forwardRef, useImperativeHandle } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
+// @ts-ignore - FBXLoader types may not be available in all three.js versions
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader';
 import * as THREE from 'three';
 
